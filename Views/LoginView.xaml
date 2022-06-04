@@ -70,7 +70,7 @@
         </WrapPanel>
         <TextBlock 
           TextWrapping="WrapWithOverflow" 
-          FontSize="36" 
+          FontSize="33.5" 
           Foreground="DimGray"
           HorizontalAlignment="Left"
         >
@@ -103,6 +103,7 @@
           Lozinka:
         </TextBlock>
         <PasswordBox 
+          FontSize="16"
           x:Name="password" 
           Height="50"
           VerticalContentAlignment="Center"

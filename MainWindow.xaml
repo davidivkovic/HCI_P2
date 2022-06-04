@@ -8,7 +8,8 @@
   xmlns:local="clr-namespace:P2" 
   xmlns:Views="clr-namespace:P2.Views"
   mc:Ignorable="d"
-  Height="800" Width="1300" FontSize="28">
+  Height="800" Width="1300" FontSize="28"
+  FontFamily="/Fonts/#Inter">
   <Grid>
     <Views:LoginView/>
   </Grid>
