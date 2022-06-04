@@ -7,85 +7,126 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   xmlns:local="clr-namespace:P2.Views"
   mc:Ignorable="d" 
-  Height="800" Width="1300"
   Background="White"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
+  <Primitives:Component.Resources>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+    <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type ButtonBase}">
+      <Border x:Name="border" 
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="true"
+             >
+        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="Button.IsDefaulted" Value="true">
+          <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+        </Trigger>
+        <Trigger Property="IsMouseOver" Value="true">
+          <Setter Property="Background" TargetName="border" Value="#013275"/>
+          <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="White"/>
+          <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+        </Trigger>
+        <Trigger Property="IsPressed" Value="true">
+          <Setter Property="Background" TargetName="border" Value="#013275"/>
+          <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+        </Trigger>
+        <Trigger Property="IsEnabled" Value="false">
+          <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+          <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+          <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+  </Primitives:Component.Resources>
 
-  <Grid>
-    <Grid.InputBindings>
-      <KeyBinding Key="Enter" Command="{Binding LoginCommand}"></KeyBinding>
-    </Grid.InputBindings>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="40"/>
-      <ColumnDefinition Width="auto"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-    </Grid.RowDefinitions>
-    <TextBlock Grid.Row="0" 
-               Grid.Column="2" 
-               Grid.ColumnSpan="1" 
-               HorizontalAlignment="Center" 
-               FontWeight="Medium" 
-               FontSize="68" 
-               Margin="0 20 0 1"
-            >   Srbija železnice
-    </TextBlock>
-    <Image VerticalAlignment="Center" 
-           Grid.Column="1"  
-           Width="120"
-           Margin="0 20 0 0"
-           RenderOptions.BitmapScalingMode="HighQuality" 
-           Source="/Assets/logo.png" />
-    <TextBlock Grid.Row="1" 
-               Grid.Column="1"
-               Grid.ColumnSpan="2" 
-               TextWrapping="WrapWithOverflow" 
-               FontSize="36" 
-               Foreground="DimGray"
-               HorizontalAlignment="Center">
-      Železnički sektor Srbije na jednom mestu
-    </TextBlock>
-    <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
-               Margin="0 60 0 10"  
-               FontWeight="Medium" 
-               TextWrapping="NoWrap">Korisničko ime:
-    </TextBlock>
-    <TextBox x:Name="username" Grid.Row="3" 
-             Grid.Column="1" Grid.ColumnSpan="2" 
-             HorizontalAlignment="Center" Height="50"  
-             Text="{Binding Username}" 
-             Width="649" />
-    <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" 
-               Margin="0 60 0 6"  
-               FontWeight="Medium"  
-               TextWrapping="NoWrap">Lozinka:
-    </TextBlock>
-    <PasswordBox x:Name="password" Grid.Row="5" Grid.Column="1" 
-                 HorizontalAlignment="Center" 
-                 Grid.ColumnSpan="2" Height="50"
-                 PasswordChanged="PasswordChanged" 
-                 Width="649" Margin="0,0,0,138"/>
-    <Button x:Name="loginButton" 
-            Grid.Row="5" Grid.Column="1" 
-            Grid.ColumnSpan="3" 
-            Padding="0 10" 
-            Cursor="Hand"
-            Command="{Binding LoginCommand}" 
-            Background="#0b4596" 
-            Foreground="White" 
-            Margin="1,150,325,0"
-            IsEnabled="{Binding IsButtonEnabled}">Uloguj se</Button>
-    <TextBlock Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="0 20 0 0" Text="{Binding Error}" Foreground="Red"></TextBlock>
-  </Grid>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="20 60 20 20">
+      <StackPanel HorizontalAlignment="Center">
+        <WrapPanel>
+          <Image 
+            VerticalAlignment="Center" 
+            Margin="0 0 20 0"
+            Width="120"
+            RenderOptions.BitmapScalingMode="HighQuality" 
+            Source="/Assets/logo.png" 
+          />
+          <TextBlock
+            FontWeight="Medium" 
+            FontSize="68" 
+            TextWrapping="WrapWithOverflow" 
+          > 
+            Srbija železnice
+          </TextBlock>
+        </WrapPanel>
+        <TextBlock 
+          TextWrapping="WrapWithOverflow" 
+          FontSize="36" 
+          Foreground="DimGray"
+          HorizontalAlignment="Left"
+        >
+          Železnički sektor Srbije na jednom mestu
+        </TextBlock>
+      </StackPanel>
+
+      <StackPanel MaxWidth="650" MinWidth="200">
+        <TextBlock 
+          Margin="0 60 0 10"  
+          FontWeight="Medium" 
+          TextWrapping="NoWrap"
+        >
+          Korisničko ime:
+        </TextBlock>
+        <TextBox 
+          x:Name="username" 
+          Height="50"  
+          VerticalContentAlignment="Center"
+          Padding="5 0"
+          Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+        />
+        <TextBlock Visibility="{Binding UsernameErrorVisible}" Margin="0 20 0 0" Text="{Binding UsernameError}" Foreground="Red"/>
+
+        <TextBlock
+          Margin="0 20 0 6"  
+          FontWeight="Medium"  
+          TextWrapping="NoWrap"
+        >
+          Lozinka:
+        </TextBlock>
+        <PasswordBox 
+          x:Name="password" 
+          Height="50"
+          VerticalContentAlignment="Center"
+          Padding="5 0"
+          PasswordChanged="PasswordChanged"
+        />
+        <TextBlock Visibility="{Binding PasswordErrorVisible}" Margin="0 20 0 0" Text="{Binding PasswordError}" Foreground="Red"/>
+
+        <Button 
+          Template="{DynamicResource ButtonTemplate}"
+          x:Name="loginButton"
+          Margin="0 60 0 0"
+          Padding="0 10" 
+          Cursor="Hand"
+          Background="#0b4596" 
+          Foreground="White" 
+          Command="{Binding LoginCommand}" 
+          IsTabStop="False"
+          IsDefault="True"
+          IsEnabled="{Binding IsButtonEnabled}"
+        >
+          PRIJAVA
+        </Button>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
 </Primitives:Component>

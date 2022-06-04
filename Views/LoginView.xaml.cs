@@ -14,16 +14,6 @@ namespace P2.Views
         public LoginView()
         {
             InitializeComponent();
-
-            using DbContext db = new();
-            db.Add(new User
-            {
-                Username = "admin",
-                Password = "admin",
-                FirstName = "John",
-                LastName = "Admin"
-            });
-            db.SaveChanges();
         }
 
         public string Username { get; set; }
@@ -31,19 +21,21 @@ namespace P2.Views
 
         public bool IsButtonEnabled => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
 
-        public string Error { get; set; }
+        public string UsernameError { get; set; }
+        public string PasswordError { get; set; }
+
+        public Visibility UsernameErrorVisible => string.IsNullOrEmpty(UsernameError) ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility PasswordErrorVisible => string.IsNullOrEmpty(PasswordError) ? Visibility.Collapsed : Visibility.Visible;
 
         [ICommand] public void Login()
         {
+            UsernameError = PasswordError = "";
             using DbContext db = new();
             var user = db.Users.Where(u => u.Username == Username).FirstOrDefault();
             if (user is null)
-                Error = "Korisnik ne postoji. Pokušajte ponovo.";
+                UsernameError = "Korisnik ne postoji. Pokušajte ponovo.";
             else if (user.Password != Password)
-                Error = "Neispravna lozinka. Pokušajte ponovo.";
-            else
-                Error = "";
-                // TODO navigacija
+                PasswordError = "Neispravna lozinka. Pokušajte ponovo.";
         }
 
         private void PasswordChanged(object sender, RoutedEventArgs e) => Password = ((PasswordBox)sender).Password;
