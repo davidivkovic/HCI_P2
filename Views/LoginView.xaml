@@ -1,0 +1,91 @@
+﻿<Primitives:Component 
+  xmlns:Primitives="clr-namespace:P2.Primitives"
+  x:Class="P2.Views.LoginView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  xmlns:local="clr-namespace:P2.Views"
+  mc:Ignorable="d" 
+  Height="800" Width="1300"
+  Background="White"
+  DataContext="{Binding RelativeSource={RelativeSource Self}}"
+>
+
+  <Grid>
+    <Grid.InputBindings>
+      <KeyBinding Key="Enter" Command="{Binding LoginCommand}"></KeyBinding>
+    </Grid.InputBindings>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="40"/>
+      <ColumnDefinition Width="auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" 
+               Grid.Column="2" 
+               Grid.ColumnSpan="1" 
+               HorizontalAlignment="Center" 
+               FontWeight="Medium" 
+               FontSize="68" 
+               Margin="0 20 0 1"
+            >   Srbija železnice
+    </TextBlock>
+    <Image VerticalAlignment="Center" 
+           Grid.Column="1"  
+           Width="120"
+           Margin="0 20 0 0"
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           Source="/Assets/logo.png" />
+    <TextBlock Grid.Row="1" 
+               Grid.Column="1"
+               Grid.ColumnSpan="2" 
+               TextWrapping="WrapWithOverflow" 
+               FontSize="36" 
+               Foreground="DimGray"
+               HorizontalAlignment="Center">
+      Železnički sektor Srbije na jednom mestu
+    </TextBlock>
+    <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+               Margin="0 60 0 10"  
+               FontWeight="Medium" 
+               TextWrapping="NoWrap">Korisničko ime:
+    </TextBlock>
+    <TextBox x:Name="username" Grid.Row="3" 
+             Grid.Column="1" Grid.ColumnSpan="2" 
+             HorizontalAlignment="Center" Height="50"  
+             Text="{Binding Username}" 
+             Width="649" />
+    <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" 
+               Margin="0 60 0 6"  
+               FontWeight="Medium"  
+               TextWrapping="NoWrap">Lozinka:
+    </TextBlock>
+    <PasswordBox x:Name="password" Grid.Row="5" Grid.Column="1" 
+                 HorizontalAlignment="Center" 
+                 Grid.ColumnSpan="2" Height="50"
+                 PasswordChanged="PasswordChanged" 
+                 Width="649" Margin="0,0,0,138"/>
+    <Button x:Name="loginButton" 
+            Grid.Row="5" Grid.Column="1" 
+            Grid.ColumnSpan="3" 
+            Padding="0 10" 
+            Cursor="Hand"
+            Command="{Binding LoginCommand}" 
+            Background="#0b4596" 
+            Foreground="White" 
+            Margin="1,150,325,0"
+            IsEnabled="{Binding IsButtonEnabled}">Uloguj se</Button>
+    <TextBlock Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="0 20 0 0" Text="{Binding Error}" Foreground="Red"></TextBlock>
+  </Grid>
+</Primitives:Component>
