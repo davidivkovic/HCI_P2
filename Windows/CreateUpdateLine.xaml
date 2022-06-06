@@ -7,57 +7,68 @@
         xmlns:local="clr-namespace:P2.Windows"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="CreateUpdateLine" Height="800" Width="1300" FontSize="30" FontFamily="/Fonts/#Inter"
+        Title="CreateUpdateLine" FontSize="30" FontFamily="/Fonts/#Inter"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        MinWidth="1200"
 >
+  <Window.Resources>
+    <ControlTemplate TargetType="{x:Type m:Pushpin}" x:Key="PinTemplate" >
+      <StackPanel>
+        <TextBlock  HorizontalAlignment="Center" FontSize="26" Foreground="Black" Text="{TemplateBinding Content}"/>
+        <Image Width="40" Height="40" Source="/Assets/icon.png"/>
+      </StackPanel>
+    </ControlTemplate>
+  </Window.Resources>
   <Window.InputBindings>
     <KeyBinding Modifiers="Control"
                 Key="Up"
                 Command="{Binding BringUpCommand}" />
   </Window.InputBindings>
-  <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <StackPanel  Margin="10 5">
-      <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
-          FontWeight="Medium" 
-          FontSize="50" 
-          TextWrapping="WrapWithOverflow"
-          HorizontalAlignment="Left"
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid>
+      <StackPanel Margin="10 5">
+        <Grid Margin="10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"  />
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+            FontWeight="Medium" 
+            FontSize="50" 
+            TextWrapping="WrapWithOverflow"
+            HorizontalAlignment="Left"
           > 
             Dodavanje i izmena linija
-        </TextBlock>
-        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="250" HorizontalAlignment="Left" >
-          <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga stanica:</TextBlock>
-          <Grid>
-            <TextBox VerticalContentAlignment="Center" 
+          </TextBlock>
+          <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="250" HorizontalAlignment="Left" >
+            <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga stanica</TextBlock>
+            <Grid>
+              <TextBox VerticalContentAlignment="Center" 
                      Padding="5 0" Margin="0 10 0 0" 
                      Height="50" TextChanged="SearchTextChanged"
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SearchInput">
-            </TextBox>
-            <TextBlock FontSize="26" IsHitTestVisible="False" Text="Ime stanice" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
-              <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding Text, ElementName=SearchInput}" Value="">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </TextBlock.Style>
-            </TextBlock>
-            <Button Width="50"
+              </TextBox>
+              <TextBlock FontSize="26" IsHitTestVisible="False" Text="Ime stanice" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+                <TextBlock.Style>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding Text, ElementName=SearchInput}" Value="">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+              <Button Width="50"
                     Height="50" 
                     Background="Transparent" 
                     BorderBrush="Transparent" 
@@ -65,99 +76,94 @@
                     HorizontalAlignment="Right"
                     Visibility="{Binding IsInputClearable}"
                     Command="{Binding ClearInputCommand}">
-              x
-            </Button>
-          </Grid>
-          <ListView ItemsSource="{Binding FilteredStations}"                     
+                x
+              </Button>
+            </Grid>
+            <ListView ItemsSource="{Binding FilteredStations}"                     
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     Name="FilteredStationsListView"
-                    Height="500">
-            <ListView.ItemTemplate 
+                    Height="550">
+              <ListView.ItemTemplate 
               >
-              <DataTemplate 
+                <DataTemplate 
                 >
-                <StackPanel
+                  <StackPanel
                   MouseDown="StationMouseDown"
-                  Margin="8 21" Cursor="Hand" 
+                  Margin="8 20" Cursor="Hand" 
                   Background="Transparent">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto"/>
-                      <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock MaxWidth="170" Grid.Column="0" TextWrapping="Wrap"  Text="{Binding Name}"/>
-                    <Image 
-                      HorizontalAlignment="Right" 
-                      Grid.Column="1"
-                      VerticalAlignment="Center" 
-                      Margin="0 0 10 0"
-                      Width="30"
-                      RenderOptions.BitmapScalingMode="HighQuality" 
-                      Source="/Assets/icon.png" 
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <TextBlock MaxWidth="170" Grid.Column="0" TextWrapping="Wrap"  Text="{Binding Name}"/>
+                      <Image 
+                        HorizontalAlignment="Right" 
+                        Grid.Column="1"
+                        VerticalAlignment="Center" 
+                        Margin="0 0 10 0"
+                        Width="30"
+                        RenderOptions.BitmapScalingMode="HighQuality" 
+                        Source="/Assets/icon.png" 
                     />
-                  </Grid>
-                </StackPanel>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
-        </StackPanel>
-        
-          <Grid Grid.Column="1" Grid.Row="1" Margin="20 70 20 20">
-          <m:Map Name="StationMap"
-                   PreviewDragEnter="PreviewMapDropEnter"
-                   AllowDrop="True"
-                   CredentialsProvider="xSIlQoZP2ZYkUqhaqMph~bleJNY8DyQJwIhZQQM7gQg~AqT-Ova12BSWCBj4aWfNLwhh5XtURpGjTlpWPXjnvejxc2ClnYvyzpIqdM5yzdIl"
-                   ZoomLevel="7"
-                   Center="43.990060, 20.436927">
-          </m:Map>
+                    </Grid>
+                  </StackPanel>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
+          </StackPanel>
+          <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mrežna linija</TextBlock>
+          <Grid Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="610">
+            <m:Map Name="StationMap"
+              PreviewDragEnter="PreviewMapDropEnter"
+              AllowDrop="True"
+              CredentialsProvider="xSIlQoZP2ZYkUqhaqMph~bleJNY8DyQJwIhZQQM7gQg~AqT-Ova12BSWCBj4aWfNLwhh5XtURpGjTlpWPXjnvejxc2ClnYvyzpIqdM5yzdIl"
+              ZoomLevel="7"
+              Center="43.990060, 20.436927">
+            </m:Map>
           </Grid>
-        <StackPanel
-                    Grid.Column="1" Grid.Row="1" 
-                    Drop="MapDragDrop"
-                    PreviewDragLeave="PreviewMapDropLeave"
-                    AllowDrop="True"
-                    Margin="20 70 20 20" 
-                    Visibility="{Binding IsOverlayVisible}"
-                   >
-          <StackPanel.Background>
-            <SolidColorBrush Color="Black" Opacity="0.7" />
-          </StackPanel.Background>
-          <TextBlock Margin="0 230 0 0" VerticalAlignment="Center" 
+          <StackPanel
+            Grid.Column="1" Grid.Row="1" 
+            Drop="MapDragDrop"
+            PreviewDragLeave="PreviewMapDropLeave"
+            AllowDrop="True"
+            Margin="20 65 20 20" 
+            Visibility="{Binding IsOverlayVisible}">
+            <StackPanel.Background>
+              <SolidColorBrush Color="Black" Opacity="0.7" />
+            </StackPanel.Background>
+            <TextBlock Margin="0 230 0 0" Padding="10" VerticalAlignment="Center" 
                      HorizontalAlignment="Center" Foreground="White" 
                      TextWrapping="Wrap" TextAlignment="Center">
             Spusti pin ovde da dodaš stanicu u liniju
-          </TextBlock>
-        </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="1" Margin="0 10 0 0">
-          <TextBlock FontWeight="Medium" 
+            </TextBlock>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Grid.Row="1" Margin="0 15 0 0">
+            <TextBlock FontWeight="Medium" 
                      TextWrapping="NoWrap">
             Stanice linije:
-          </TextBlock>
-          <WrapPanel Margin="0 10 0 0">
-            <Button Template="{DynamicResource ButtonTemplate}"
+            </TextBlock>
+            <WrapPanel Margin="0 10 0 0">
+              <Button Template="{StaticResource DefaultButtonTemplate}"
                     Command="{Binding BringUpCommand}"
                     Name="BringUpButton"
                     Cursor="Hand"
                     Padding="12 5" 
-                    Background="#0b4596" 
-                    Foreground="White" 
                     IsEnabled="{Binding IsStationSelected}">
-              Pomeri iznad
-            </Button>
-            <Button Template="{DynamicResource ButtonTemplate}"
+                Pomeri iznad
+              </Button>
+              <Button Template="{StaticResource DefaultButtonTemplate}"
                     Command="{Binding BringDownCommand}"
-                    Margin="20 0 0 0" 
+                    Margin="10 0 0 0" 
                     Name="BringDownButton"
                     Cursor="Hand"
                     Padding="12  5"
-                    Background="#0b4596" 
-                    Foreground="White" 
                     IsEnabled="{Binding IsStationSelected}">
-              Pomeri ispod
-            </Button>
-          </WrapPanel>
-          <ListView ItemsSource="{Binding CurrentStops}" 
+                Pomeri ispod
+              </Button>
+            </WrapPanel>
+            <ListView ItemsSource="{Binding CurrentStops}" 
                     SelectionChanged="ListViewSelectionChanged"
                     Name="CurrentStationsListView"
                     LostFocus="ListViewLostFocus"
@@ -165,49 +171,65 @@
                     HorizontalContentAlignment="Stretch"
                     Height="500"
                     >
-            <ListView.InputBindings>
-              <KeyBinding Modifiers="Ctrl" Key="Up" Command="{Binding BringUpCommand}"/>
-              <KeyBinding Modifiers="Ctrl" Key="Down" Command="{Binding BringDownCommand}"/>
-              <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
-            </ListView.InputBindings>
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <StackPanel Margin="8 12 10 12" Cursor="Hand" Background="Transparent">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto"/>
-                      <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0">
+              <ListView.InputBindings>
+                <KeyBinding Modifiers="Ctrl" Key="Up" Command="{Binding BringUpCommand}"/>
+                <KeyBinding Modifiers="Ctrl" Key="Down" Command="{Binding BringDownCommand}"/>
+                <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
+              </ListView.InputBindings>
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="8 12 10 12" Cursor="Hand" Background="Transparent">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0">
                       <Run Text="{Binding Number}"/>.
                       <Run Text="{Binding Station.Name}" />
-                    </TextBlock>
-                    <TextBlock 
+                      </TextBlock>
+                      <TextBlock 
                       Grid.Column="1"
                       Text="{Binding FormattedPrice, Mode=OneWay}"
                       FontSize="26" VerticalAlignment="Bottom"
                       HorizontalAlignment="Right"
                     />
-                  </Grid>
-                  <TextBlock FontSize="26" Foreground="DimGray">
+                    </Grid>
+                    <TextBlock FontSize="26" Foreground="DimGray">
                     <Run Text="{Binding FormattedDuration, Mode=OneWay}"/>
-                  </TextBlock>
-                </StackPanel>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
-          <Button IsEnabled="{Binding IsStationSelected}"
-                  Template="{DynamicResource DeleteButtonTemplate}"
+                    </TextBlock>
+                  </StackPanel>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
+            <Button IsEnabled="{Binding IsStationSelected}"
+                  Template="{StaticResource RedButtonTemplate}"
                   Command="{Binding DeleteCommand}"
                   Name="DeleteButton"
                   Cursor="Hand"
-                  Background="DarkRed"
-                  Foreground="White"
                   Margin="0 10 0 0"
                   Padding="5">
-            Obriši stanicu</Button>
-        </StackPanel>
-      </Grid>
-    </StackPanel>
+              Obriši stanicu</Button>
+          </StackPanel>
+          <Button Template="{StaticResource DefaultButtonTemplate}"
+                  Grid.Row="2"  
+                  Grid.Column="1"
+                  Width="430"
+                  HorizontalAlignment="Right"
+                  Cursor="Hand"
+                  Margin="0 0 15 0"
+                  Padding="5 20">
+            Sacuvaj promene</Button>
+          <Button 
+                  Template="{StaticResource RedButtonTemplate}"
+                  Grid.Row="2"  
+                  Grid.Column="2"
+                  Cursor="Hand"
+                  Margin="0 0 0 0"
+                  Padding="5 20">
+            Odustani</Button>
+        </Grid>
+      </StackPanel>
+    </Grid>
   </ScrollViewer>
 </Primitives:Window>

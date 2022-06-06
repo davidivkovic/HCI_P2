@@ -123,22 +123,30 @@ public partial class CreateUpdateLine : Primitives.Window
         List<Location> locations = new();
         foreach(var stop in CurrentStops)
         {
-            Pushpin pin = new();
-            pin.Location = new Location(stop.Station.Latitude, stop.Station.Longitude);
-            var tb = new TextBlock
+            TextBlock tb = new ()
             {
                 Text = stop.Number.ToString()
             };
-            pin.Content = tb;
+            Pushpin pin = new ()
+            {
+                Location = new Location(stop.Station.Latitude, stop.Station.Longitude),
+                Content = stop.Number.ToString(),
+                Template = (ControlTemplate)FindResource("PinTemplate"),
+                Background = Brushes.Transparent,
+                Height = 70,
+                Width = 35,
+                ToolTip = stop.Station.Name
+            };
             StationMap.Children.Add(pin);
             locations.Add(pin.Location);
         }
+
         MapPolyline polyline = new ();
         polyline.Locations = new LocationCollection();
         polyline.Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0b4596"));
 
         locations.ForEach(l => polyline.Locations.Add(l));
-        polyline.StrokeThickness = 3;
+        polyline.StrokeThickness = 4;
         polyline.Opacity = 0.7;
 
         StationMap.Children.Add(polyline);

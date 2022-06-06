@@ -46,7 +46,7 @@ public class Stop : Observable
     //    $"{Duration.Minutes}m od prethodne stanice") : "početna stanica";
 
     public string FormattedDuration => Number > 1 ? $"{Duration:hh}h {Duration:mm}m od prethodne stanice" : "početna stanica";
-    public string FormattedPrice => Price > 0 ? $"{Price} RSD" : "";
+    public string FormattedPrice => Number > 1 ? $"{Price} RSD" : "";
 }
 
 public class TrainLine : Entity

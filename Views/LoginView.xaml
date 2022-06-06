@@ -72,15 +72,12 @@
           PasswordChanged="PasswordChanged"
         />
         <TextBlock Visibility="{Binding PasswordErrorVisible}" Margin="0 20 0 0" Text="{Binding PasswordError}" Foreground="Red"/>
-
         <Button 
-          Template="{DynamicResource ButtonTemplate}"
+          Template="{StaticResource DefaultButtonTemplate}"
           x:Name="loginButton"
           Margin="0 60 0 0"
           Padding="0 10" 
           Cursor="Hand"
-          Background="#0b4596" 
-          Foreground="White" 
           Command="{Binding LoginCommand}" 
           IsTabStop="False"
           IsDefault="True"
