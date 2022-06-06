@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:P2"
              StartupUri="Windows/CreateUpdateLine.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+      <ResourceDictionary Source="Primitives/ButtonStyles.xaml" />
+  </Application.Resources>
 </Application>
