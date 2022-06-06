@@ -10,9 +10,14 @@ using CommunityToolkit.Mvvm.Input;
 using P2.Extensions;
 using P2.Model;
 using P2.Primitives;
-using P2.Views;
 
 namespace P2.Windows;
+
+public record class TrainViewModel(
+    string Name,
+    TrainType Type,
+    string Image
+);
 
 public class Slot : Observable
 {
@@ -51,6 +56,16 @@ public partial class AddEditTrain : Primitives.Window
     public ObservableCollection<Slot[]> Slots { get; set; }
     public List<IEnumerable<Slot>> TakenSlots { get; set; } = new();
 
+    public static List<TrainViewModel> TrainTypes { get; set; } = new() 
+    {
+        new ("Soko", TrainType.Falcon, "/Assets/Images/soko.png"),
+        new ("Regio", TrainType.Regio, "/Assets/Images/regio.jpg"),
+        new ("Inter City", TrainType.InterCity, "/Assets/Images/intercity.jpg")
+    };
+    public TrainViewModel SelectedTrainType { get; set; } = TrainTypes.First();
+    public string TrainNumber { get; set; }
+    public bool AllowTrainNumberEdit { get; set; }
+    public string TrainNumberEditText => AllowTrainNumberEdit ? "Gotovo" : "Izmeni";
     public bool CanDeleteSeats { get; set; }
     public Brush TrashForeground { get; set; } = Brushes.Gray;
     public Brush TrashBorder { get; set; } = Brushes.DimGray;
@@ -69,7 +84,24 @@ public partial class AddEditTrain : Primitives.Window
             })
             .Chunk(4)
         );
+        MouseDown += (s, e) =>
+        {
+            if (s is not TextBox)
+            {
+                AllowTrainNumberEdit = false;
+            }
+        };
+        TrainNumberTextBox.LostKeyboardFocus += (s, e) =>
+        {
+            if (e.NewFocus != TrainNumberButton)
+            {
+                AllowTrainNumberEdit = false;
+            }
+        };
     }
+
+    public void WithTrain(Train t)
+    { }
 
     private void ReorderSeatNumbers()
     {
@@ -359,7 +391,8 @@ public partial class AddEditTrain : Primitives.Window
         LeaveTrash(sender, e);
     }
 
-    [ICommand] public void DeleteAllSeats()
+    [ICommand] 
+    public void DeleteAllSeats()
     {
         var window = new ConfirmCancelWindow
         {
@@ -375,6 +408,20 @@ public partial class AddEditTrain : Primitives.Window
             Slots.SelectMany(s => s).ToList().ForEach(s => s.SeatType = SeatType.None);
             TakenSlots.Clear();
             CanDeleteSeats = false;
+        }
+    }
+
+    [ICommand]
+    public void EditTrainNumber()
+    {
+        if (AllowTrainNumberEdit)
+        {
+            AllowTrainNumberEdit = false;
+        }
+        else
+        {
+            AllowTrainNumberEdit = true;
+            TrainNumberTextBox.Focus();
         }
     }
 }

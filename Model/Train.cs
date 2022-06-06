@@ -14,6 +14,13 @@ public enum SeatType
     DoubleTable
 }
 
+public enum TrainType
+{
+    Falcon,
+    Regio,
+    InterCity
+}
+
 [Owned]
 public class Slot
 {
@@ -31,6 +38,8 @@ public class Seat : Entity
 public class Train : Entity
 {
     public virtual List<Seat> Seating { get; set; }
+    public string Number { get; set; }
+    public TrainType Type { get; set; }
 }
 
 public class Station : Entity
@@ -56,10 +65,6 @@ public class Stop : Observable
     public virtual Station Station { get; set; }
     public double Price { get; set; }
     public TimeSpan Duration { get; set; }
-    //public string FormattedDuration => Duration.Minutes > 0 ? ((Duration.TotalHours >= 1) ? 
-    //    $"{Duration.Hours} {Duration.Minutes}m od prethodne stanice" : 
-    //    $"{Duration.Minutes}m od prethodne stanice") : "početna stanica";
-
     public string FormattedDuration => Number > 1 ? $"{Duration:hh}h {Duration:mm}m od prethodne stanice" : "početna stanica";
     public string FormattedPrice => Number > 1 ? $"{Price} RSD" : "";
 }

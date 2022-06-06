@@ -13,6 +13,9 @@
     <None Remove="Assets\Cursors\grab.cur" />
     <None Remove="Assets\Cursors\grabbing.cur" />
     <None Remove="Assets\Icons\logo.ico" />
+    <None Remove="Assets\Images\intercity.jpg" />
+    <None Remove="Assets\Images\regio.jpg" />
+    <None Remove="Assets\Images\soko.png" />
     <None Remove="Assets\Images\trashcan.png" />
     <None Remove="Assets\Images\trashcan_open.png" />
     <None Remove="Assets\logo.png" />
@@ -38,6 +41,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Icons\logo.ico" />
+    <Content Include="Assets\Images\intercity.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\regio.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\soko.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
