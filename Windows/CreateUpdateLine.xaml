@@ -1,0 +1,280 @@
+﻿<Primitives:Window x:Class="P2.Windows.CreateUpdateLine"
+        xmlns:Primitives="clr-namespace:P2.Primitives"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2.Windows"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        mc:Ignorable="d"
+        Title="CreateUpdateLine" Height="800" Width="1300" FontSize="30" FontFamily="/Fonts/#Inter"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+>
+  <Primitives:Window.Resources>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+    <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type ButtonBase}">
+      <Border x:Name="border" 
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="true"
+             >
+        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="Button.IsDefaulted" Value="true">
+          <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+        </Trigger>
+        <Trigger Property="IsMouseOver" Value="true">
+          <Setter Property="Background" TargetName="border" Value="#013275"/>
+          <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="White"/>
+          <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+        </Trigger>
+        <Trigger Property="IsPressed" Value="true">
+          <Setter Property="Background" TargetName="border" Value="#013275"/>
+          <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+        </Trigger>
+        <Trigger Property="IsEnabled" Value="false">
+          <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+          <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+          <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <SolidColorBrush x:Key="Button.MouseOver.Border1" Color="#FF3C7FB1"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border1" Color="#FF2C628B"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background1" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Border1" Color="#FFADB2B5"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground1" Color="#FF838383"/>
+    <ControlTemplate x:Key="DeleteButtonTemplate" TargetType="{x:Type ButtonBase}">
+        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Button.IsDefaulted" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Background" TargetName="border" Value="#720000"/>
+                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="White"/>
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border1}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Background" TargetName="border" Value="#720000"/>
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border1}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background1}"/>
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border1}"/>
+                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground1}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+  </Primitives:Window.Resources>
+  <Window.InputBindings>
+    <KeyBinding Modifiers="Control"
+                Key="Up"
+                Command="{Binding BringUpCommand}" />
+  </Window.InputBindings>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel  Margin="10 5">
+      <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+          FontWeight="Medium" 
+          FontSize="50" 
+          TextWrapping="WrapWithOverflow"
+          HorizontalAlignment="Left"
+          > 
+            Dodavanje i izmena linija
+        </TextBlock>
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="250" HorizontalAlignment="Left" >
+          <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga stanica:</TextBlock>
+          <Grid>
+            <TextBox VerticalContentAlignment="Center" 
+                     Padding="5 0" Margin="0 10 0 0" 
+                     Height="50" TextChanged="SearchTextChanged"
+                     Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="SearchInput">
+            </TextBox>
+            <TextBlock FontSize="26" IsHitTestVisible="False" Text="Ime stanice" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=SearchInput}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <Button Width="50"
+                    Height="50" 
+                    Background="Transparent" 
+                    BorderBrush="Transparent" 
+                    Cursor="Hand" Margin="0 10 0 0" 
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsInputClearable}"
+                    Command="{Binding ClearInputCommand}">
+              x
+            </Button>
+          </Grid>
+          <ListView ItemsSource="{Binding FilteredStations}"                     
+                    HorizontalContentAlignment="Stretch"
+                    Margin="0 10 0 0" 
+                    Name="FilteredStationsListView"
+                    Height="500">
+            <ListView.ItemTemplate 
+              >
+              <DataTemplate 
+                >
+                <StackPanel
+                  MouseDown="StationMouseDown"
+                  Margin="8 21" Cursor="Hand" 
+                  Background="Transparent">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock MaxWidth="170" Grid.Column="0" TextWrapping="Wrap"  Text="{Binding Name}"/>
+                    <Image 
+                      HorizontalAlignment="Right" 
+                      Grid.Column="1"
+                      VerticalAlignment="Center" 
+                      Margin="0 0 10 0"
+                      Width="30"
+                      RenderOptions.BitmapScalingMode="HighQuality" 
+                      Source="/Assets/icon.png" 
+                    />
+                  </Grid>
+                </StackPanel>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </StackPanel>
+        
+          <Grid Grid.Column="1" Grid.Row="1" Margin="20 70 20 20">
+          <m:Map Name="StationMap"
+                   PreviewDragEnter="PreviewMapDropEnter"
+                   AllowDrop="True"
+                   CredentialsProvider="xSIlQoZP2ZYkUqhaqMph~bleJNY8DyQJwIhZQQM7gQg~AqT-Ova12BSWCBj4aWfNLwhh5XtURpGjTlpWPXjnvejxc2ClnYvyzpIqdM5yzdIl"
+                   ZoomLevel="7"
+                   Center="43.990060, 20.436927">
+          </m:Map>
+          </Grid>
+        <StackPanel
+                    Grid.Column="1" Grid.Row="1" 
+                    Drop="MapDragDrop"
+                    PreviewDragLeave="PreviewMapDropLeave"
+                    AllowDrop="True"
+                    Margin="20 70 20 20" 
+                    Visibility="{Binding IsOverlayVisible}"
+                   >
+          <StackPanel.Background>
+            <SolidColorBrush Color="Black" Opacity="0.7" />
+          </StackPanel.Background>
+          <TextBlock Margin="0 230 0 0" VerticalAlignment="Center" 
+                     HorizontalAlignment="Center" Foreground="White" 
+                     TextWrapping="Wrap" TextAlignment="Center">
+            Spusti pin ovde da dodaš stanicu u liniju
+          </TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="1" Margin="0 10 0 0">
+          <TextBlock FontWeight="Medium" 
+                     TextWrapping="NoWrap">
+            Stanice linije:
+          </TextBlock>
+          <WrapPanel Margin="0 10 0 0">
+            <Button Template="{DynamicResource ButtonTemplate}"
+                    Command="{Binding BringUpCommand}"
+                    Name="BringUpButton"
+                    Cursor="Hand"
+                    Padding="12 5" 
+                    Background="#0b4596" 
+                    Foreground="White" 
+                    IsEnabled="{Binding IsStationSelected}">
+              Pomeri iznad
+            </Button>
+            <Button Template="{DynamicResource ButtonTemplate}"
+                    Command="{Binding BringDownCommand}"
+                    Margin="20 0 0 0" 
+                    Name="BringDownButton"
+                    Cursor="Hand"
+                    Padding="12  5"
+                    Background="#0b4596" 
+                    Foreground="White" 
+                    IsEnabled="{Binding IsStationSelected}">
+              Pomeri ispod
+            </Button>
+          </WrapPanel>
+          <ListView ItemsSource="{Binding CurrentStops}" 
+                    SelectionChanged="ListViewSelectionChanged"
+                    Name="CurrentStationsListView"
+                    LostFocus="ListViewLostFocus"
+                    Margin="0 10 0 0" 
+                    HorizontalContentAlignment="Stretch"
+                    Height="500"
+                    >
+            <ListView.InputBindings>
+              <KeyBinding Modifiers="Ctrl" Key="Up" Command="{Binding BringUpCommand}"/>
+              <KeyBinding Modifiers="Ctrl" Key="Down" Command="{Binding BringDownCommand}"/>
+              <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
+            </ListView.InputBindings>
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Margin="8 12 10 12" Cursor="Hand" Background="Transparent">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0">
+                      <Run Text="{Binding Number}"/>.
+                      <Run Text="{Binding Station.Name}" />
+                    </TextBlock>
+                    <TextBlock 
+                      Grid.Column="1"
+                      Text="{Binding FormattedPrice, Mode=OneWay}"
+                      FontSize="26" VerticalAlignment="Bottom"
+                      HorizontalAlignment="Right"
+                    />
+                  </Grid>
+                  <TextBlock FontSize="26" Foreground="DimGray">
+                    <Run Text="{Binding FormattedDuration, Mode=OneWay}"/>
+                  </TextBlock>
+                </StackPanel>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+          <Button IsEnabled="{Binding IsStationSelected}"
+                  Template="{DynamicResource DeleteButtonTemplate}"
+                  Command="{Binding DeleteCommand}"
+                  Name="DeleteButton"
+                  Cursor="Hand"
+                  Background="DarkRed"
+                  Foreground="White"
+                  Margin="0 10 0 0"
+                  Padding="5">
+            Obriši stanicu</Button>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</Primitives:Window>

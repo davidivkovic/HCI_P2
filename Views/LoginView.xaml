@@ -65,7 +65,7 @@
             FontSize="68" 
             TextWrapping="WrapWithOverflow" 
           > 
-            Srbija železnice
+            Železnice Srbije
           </TextBlock>
         </WrapPanel>
         <TextBlock 

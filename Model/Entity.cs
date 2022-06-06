@@ -1,6 +1,8 @@
-﻿namespace P2.Model;
+﻿using P2.Primitives;
 
-public class Entity
+namespace P2.Model;
+
+public class Entity : Observable
 {
     public int Id { get; set; }
 }
