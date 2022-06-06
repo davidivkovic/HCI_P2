@@ -5,11 +5,14 @@
   <SolidColorBrush x:Key="Button.Disabled.Background1" Color="#FFF4F4F4"/>
   <SolidColorBrush x:Key="Button.Disabled.Border1" Color="#FFADB2B5"/>
   <SolidColorBrush x:Key="Button.Disabled.Foreground1" Color="#FF838383"/>
-  <ControlTemplate x:Key="DeleteButtonTemplate" TargetType="{x:Type ButtonBase}">
-    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+  <ControlTemplate x:Key="RedButtonTemplate" TargetType="{x:Type ButtonBase}">
+    <Border x:Name="border" Background="DarkRed" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
       <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
     </Border>
     <ControlTemplate.Triggers>
+      <Trigger Property="IsEnabled" Value="true">
+        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="White"/>
+      </Trigger>
       <Trigger Property="Button.IsDefaulted" Value="true">
         <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
       </Trigger>
@@ -36,15 +39,19 @@
   <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
   <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
   <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-  <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type ButtonBase}">
+  
+  <ControlTemplate x:Key="DefaultButtonTemplate" TargetType="{x:Type ButtonBase}">
     <Border x:Name="border" 
-                    Background="{TemplateBinding Background}"
+                    Background="#0b4596"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     SnapsToDevicePixels="true">
       <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
     </Border>
     <ControlTemplate.Triggers>
+      <Trigger Property="IsEnabled" Value="true">
+        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="White"/>
+      </Trigger>
       <Trigger Property="Button.IsDefaulted" Value="true">
         <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
       </Trigger>
