@@ -5,17 +5,32 @@ using P2.Primitives;
 
 namespace P2.Model;
 
-[Owned]
-public class Seating
+public enum SeatType
 {
-    public int Rows { get; set; }
-    public int SeatsPerRow { get; set; }
+    None,
+    Override,
+    Single,
+    Double,
+    DoubleTable
+}
+
+[Owned]
+public class Slot
+{
+    public int Row { get; set; }
+    public int Col { get; set; }
+    public int SeatNumber { get; set; }
+    public SeatType SeatType { get; set; }
+}
+
+public class Seat : Entity
+{
+    public List<Slot> Slots { get; set; }
 }
 
 public class Train : Entity
 {
-    public string Name { get; set; }
-    public List<Seating> Seating { get; set; }
+    public virtual List<Seat> Seating { get; set; }
 }
 
 public class Station : Entity
@@ -58,6 +73,7 @@ public class TrainLine : Entity
 
 public class Departure : Entity
 {
+    public virtual Train Train { get; set; }
     public virtual TrainLine Line { get; set; }
     public TimeOnly Time { get; set; }
 }
