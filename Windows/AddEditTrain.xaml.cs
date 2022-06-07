@@ -75,6 +75,8 @@ public partial class AddEditTrain : Primitives.Window
     public string TrashImage { get; set; } = "/Assets/Images/trashcan.png";
     public double TrashOpacity { get; set; } = 0.6;
 
+    public void OnTrainNumberChanged() => TrainNumberTextBox.ClearValue(BorderBrushProperty);
+
     public AddEditTrain()
     {
         InitializeComponent();
@@ -290,7 +292,7 @@ public partial class AddEditTrain : Primitives.Window
             seatType = ((Slot)e.Data.GetData(typeof(Slot))).SeatType;
             sourceSlot = e.Data.GetData(typeof(Slot)) as Slot;
 
-            if (sourceSlot.SeatType == slot.SeatType) return;
+            //if (sourceSlot.SeatType == slot.SeatType) return;
 
             var overlapingSourceSlots = GetOverlappingSlots(sourceSlot, sourceSlot.SeatType, sourceSlot.SeatType != SeatType.DoubleTable);
 
@@ -338,6 +340,7 @@ public partial class AddEditTrain : Primitives.Window
                 s.SeatType = seatType;
             }
         );
+        SlotsPanel.ClearValue(BorderBrushProperty);
         TakenSlots.Add(connectedSlots);
         CanDeleteSeats = TakenSlots.Count > 0;
         ReorderSeatNumbers();
@@ -404,7 +407,8 @@ public partial class AddEditTrain : Primitives.Window
             Title = "Uklanjanje svih sedišta",
             Message = "Da li ste sigurni da želite da uklonite sva sedišta iz voza?",
             ConfirmButtonText = "Ukloni",
-            ConfirmIsDanger = true
+            ConfirmIsDanger = true,
+            Image = MessageBoxImage.Stop
         };
         window.ShowDialog();
 
@@ -433,8 +437,18 @@ public partial class AddEditTrain : Primitives.Window
     [ICommand]
     public void Confrim()
     {
-        //List<string> Errors = new();
-        List<string> Errors = new() { "Broj voza ne može biti prazan", "Voz mora sadržati bar jedno sedište" };
+        List<string> Errors = new();
+        if (TakenSlots.Count == 0)
+        {
+            Errors.Add("Raspored voza mora sadržati bar jedno sedište");
+            SlotsPanel.BorderBrush = Brushes.Red;
+        }
+        if (string.IsNullOrEmpty(TrainNumber))
+        {
+            Errors.Add("Broj voza ne sme biti prazan");
+            TrainNumberTextBox.BorderBrush = Brushes.Red;
+        }
+
         var w = new ConfirmCancelWindow
         {
             Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate izmene voza?",
@@ -443,6 +457,29 @@ public partial class AddEditTrain : Primitives.Window
             Image = MessageBoxImage.Question
         };
         w.ShowDialog();
+
+        if (Errors.Count == 0 && w.Confirmed)
+        {
+            CurrentTrain = new()
+            {
+                Number = TrainNumber,
+                Type = SelectedTrainType.Type,
+                Seating = TakenSlots.Select(s => new Seat
+                {
+                    Slots = s.Select(slot => new Model.Slot()
+                    {
+                        Row = slot.Row,
+                        Col = slot.Col,
+                        SeatNumber = slot.SeatNumber,
+                        SeatType = slot.SeatType
+                    }).ToList()
+                }).ToList()
+            };
+            using DbContext db = new();
+            db.Update(CurrentTrain);
+            db.SaveChanges();
+            Close();
+        }
     }
 
     [ICommand]
@@ -450,12 +487,14 @@ public partial class AddEditTrain : Primitives.Window
     {
         var w = new ConfirmCancelWindow
         {
-            Message = "Da li ste sigurni da želite da odustanete od promene voza?",
+            Message = "Da li ste sigurni da želite da odustanete od izmene voza?",
             ConfirmButtonText = "Odustani",
             CancelButtonText = "Otakži",
             ConfirmIsDanger = true,
-            Image = MessageBoxImage.Error
+            Image = MessageBoxImage.Stop
         };
         w.ShowDialog();
+
+        if (w.Confirmed) Close();
     }
 }

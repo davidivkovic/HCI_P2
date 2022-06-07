@@ -21,8 +21,7 @@ public enum TrainType
     InterCity
 }
 
-[Owned]
-public class Slot
+public class Slot : Entity
 {
     public int Row { get; set; }
     public int Col { get; set; }
@@ -32,7 +31,7 @@ public class Slot
 
 public class Seat : Entity
 {
-    public List<Slot> Slots { get; set; }
+    public virtual List<Slot> Slots { get; set; }
 }
 
 public class Train : Entity
@@ -58,8 +57,7 @@ public class Station : Entity
     }
 }
 
-[Owned]
-public class Stop : Observable
+public class Stop : Entity
 {
     public int Number { get; set; }
     public virtual Station Station { get; set; }

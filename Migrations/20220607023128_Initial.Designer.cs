@@ -11,8 +11,8 @@ using P2;
 namespace P2.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20220605225845_SeatSlots")]
-    partial class SeatSlots
+    [Migration("20220607023128_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,6 +59,34 @@ namespace P2.Migrations
                     b.ToTable("Seat");
                 });
 
+            modelBuilder.Entity("P2.Model.Slot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Col")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Row")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("SeatId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SeatType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeatId");
+
+                    b.ToTable("Slot");
+                });
+
             modelBuilder.Entity("P2.Model.Station", b =>
                 {
                     b.Property<int>("Id")
@@ -79,10 +107,46 @@ namespace P2.Migrations
                     b.ToTable("Stations");
                 });
 
+            modelBuilder.Entity("P2.Model.Stop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<int?>("StationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("TrainLineId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StationId");
+
+                    b.HasIndex("TrainLineId");
+
+                    b.ToTable("Stop");
+                });
+
             modelBuilder.Entity("P2.Model.Train", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -157,37 +221,26 @@ namespace P2.Migrations
                     b.HasOne("P2.Model.Train", null)
                         .WithMany("Seating")
                         .HasForeignKey("TrainId");
+                });
 
-                    b.OwnsMany("P2.Model.Slot", "Slots", b1 =>
-                        {
-                            b1.Property<int>("SeatId")
-                                .HasColumnType("INTEGER");
+            modelBuilder.Entity("P2.Model.Slot", b =>
+                {
+                    b.HasOne("P2.Model.Seat", null)
+                        .WithMany("Slots")
+                        .HasForeignKey("SeatId");
+                });
 
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER");
+            modelBuilder.Entity("P2.Model.Stop", b =>
+                {
+                    b.HasOne("P2.Model.Station", "Station")
+                        .WithMany()
+                        .HasForeignKey("StationId");
 
-                            b1.Property<int>("Col")
-                                .HasColumnType("INTEGER");
+                    b.HasOne("P2.Model.TrainLine", null)
+                        .WithMany("Stops")
+                        .HasForeignKey("TrainLineId");
 
-                            b1.Property<int>("Row")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("SeatNumber")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("SeatType")
-                                .HasColumnType("INTEGER");
-
-                            b1.HasKey("SeatId", "Id");
-
-                            b1.ToTable("Slot");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SeatId");
-                        });
-
-                    b.Navigation("Slots");
+                    b.Navigation("Station");
                 });
 
             modelBuilder.Entity("P2.Model.TrainLine", b =>
@@ -200,50 +253,24 @@ namespace P2.Migrations
                         .WithMany()
                         .HasForeignKey("SourceId");
 
-                    b.OwnsMany("P2.Model.Stop", "Stops", b1 =>
-                        {
-                            b1.Property<int>("TrainLineId")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<TimeSpan>("Duration")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<double>("Price")
-                                .HasColumnType("REAL");
-
-                            b1.Property<int?>("StationId")
-                                .HasColumnType("INTEGER");
-
-                            b1.HasKey("TrainLineId", "Id");
-
-                            b1.HasIndex("StationId");
-
-                            b1.ToTable("Stop");
-
-                            b1.HasOne("P2.Model.Station", "Station")
-                                .WithMany()
-                                .HasForeignKey("StationId");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TrainLineId");
-
-                            b1.Navigation("Station");
-                        });
-
                     b.Navigation("Destination");
 
                     b.Navigation("Source");
+                });
 
-                    b.Navigation("Stops");
+            modelBuilder.Entity("P2.Model.Seat", b =>
+                {
+                    b.Navigation("Slots");
                 });
 
             modelBuilder.Entity("P2.Model.Train", b =>
                 {
                     b.Navigation("Seating");
+                });
+
+            modelBuilder.Entity("P2.Model.TrainLine", b =>
+                {
+                    b.Navigation("Stops");
                 });
 #pragma warning restore 612, 618
         }

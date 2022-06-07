@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:P2"
              StartupUri="Windows/AddEditTrain.xaml">
     <Application.Resources>
-      <ResourceDictionary Source="Primitives/ButtonStyles.xaml" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Primitives/ButtonStyles.xaml" />
+        <ResourceDictionary Source="Primitives/ComboBoxStyle.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </Application.Resources>
 </Application>
