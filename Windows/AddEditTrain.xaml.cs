@@ -62,7 +62,10 @@ public partial class AddEditTrain : Primitives.Window
         new ("Regio", TrainType.Regio, "/Assets/Images/regio.jpg"),
         new ("Inter City", TrainType.InterCity, "/Assets/Images/intercity.jpg")
     };
+
+    public Train CurrentTrain { get; set; }
     public TrainViewModel SelectedTrainType { get; set; } = TrainTypes.First();
+    public string HeaderText => CurrentTrain is null ? "Dodavanje novog voza" : "Izmena voza " + CurrentTrain.Number;
     public string TrainNumber { get; set; }
     public bool AllowTrainNumberEdit { get; set; }
     public string TrainNumberEditText => AllowTrainNumberEdit ? "Gotovo" : "Izmeni";
@@ -101,7 +104,9 @@ public partial class AddEditTrain : Primitives.Window
     }
 
     public void WithTrain(Train t)
-    { }
+    {
+        CurrentTrain = t;
+    }
 
     private void ReorderSeatNumbers()
     {
@@ -423,5 +428,34 @@ public partial class AddEditTrain : Primitives.Window
             AllowTrainNumberEdit = true;
             TrainNumberTextBox.Focus();
         }
+    }
+
+    [ICommand]
+    public void Confrim()
+    {
+        //List<string> Errors = new();
+        List<string> Errors = new() { "Broj voza ne može biti prazan", "Voz mora sadržati bar jedno sedište" };
+        var w = new ConfirmCancelWindow
+        {
+            Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate izmene voza?",
+            ConfirmButtonText = Errors.Count > 0 ? "U redu" : "Sačuvaj izmene",
+            Errors = Errors,
+            Image = MessageBoxImage.Question
+        };
+        w.ShowDialog();
+    }
+
+    [ICommand]
+    public void Cancel()
+    {
+        var w = new ConfirmCancelWindow
+        {
+            Message = "Da li ste sigurni da želite da odustanete od promene voza?",
+            ConfirmButtonText = "Odustani",
+            CancelButtonText = "Otakži",
+            ConfirmIsDanger = true,
+            Image = MessageBoxImage.Error
+        };
+        w.ShowDialog();
     }
 }

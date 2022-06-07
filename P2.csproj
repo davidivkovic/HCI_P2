@@ -12,7 +12,11 @@
     <None Remove="Assets\icon.png" />
     <None Remove="Assets\Cursors\grab.cur" />
     <None Remove="Assets\Cursors\grabbing.cur" />
+    <None Remove="Assets\Icons\danger.png" />
+    <None Remove="Assets\Icons\info.jpg" />
     <None Remove="Assets\Icons\logo.ico" />
+    <None Remove="Assets\Icons\question.png" />
+    <None Remove="Assets\Icons\warning.png" />
     <None Remove="Assets\Images\intercity.jpg" />
     <None Remove="Assets\Images\regio.jpg" />
     <None Remove="Assets\Images\soko.png" />
@@ -40,7 +44,19 @@
     <Content Include="Assets\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Icons\danger.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Icons\info.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Assets\Icons\logo.ico" />
+    <Resource Include="Assets\Icons\question.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Icons\warning.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Assets\Images\intercity.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

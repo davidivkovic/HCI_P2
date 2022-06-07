@@ -11,7 +11,7 @@
   SizeToContent="Height"
   WindowStartupLocation="CenterScreen"
   MinHeight="210"
-  MinWidth="410"
+  MinWidth="420"
   MaxWidth="600"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
   ResizeMode="{Binding CanResize}"
@@ -22,7 +22,26 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <ContentPresenter Grid.Row="0" Content="{Binding Slot}" />
-    <TextBlock TextWrapping="WrapWithOverflow" Margin="5 -15 5 0" FontSize="30" Visibility="{Binding MessageVisibility}"  Grid.Row="0" Text="{Binding Message}"/>
+    <StackPanel Grid.Row="0">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Margin="0 0 10 0" Grid.Column="0" Width="70" Height="70" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding ImageURL}"/>
+        <TextBlock Grid.Column="1" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Margin="5 -10 5 0" FontSize="30" Visibility="{Binding MessageVisibility}" Text="{Binding Message}"/>
+      </Grid>
+      <ItemsControl Margin="20 10 0 0" ItemsSource="{Binding Errors}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock FontSize="26" TextWrapping="WrapWithOverflow">
+              <Run>•</Run>
+              <Run Text="{Binding Path=.}"/>
+            </TextBlock>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
     <StackPanel Grid.Row="1" Margin="0 25 0 0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button Template="{Binding ConfirmButtonStyle}" Cursor="Hand" MinWidth="150" FontSize="30" Padding="15 5" Command="{Binding ConfirmCommand}" Content="{Binding ConfirmButtonText}"/>
       <Button Template="{StaticResource NeutralButtonTemplate}" Name="CancelButton" IsDefault="True" Cursor="Hand" MinWidth="150" FontSize="30" Padding="15 5"  Margin="10 0 0 0" Command="{Binding CancelCommand}" Visibility="{Binding CancelButtonVisibility}" Content="{Binding CancelButtonText}"/>

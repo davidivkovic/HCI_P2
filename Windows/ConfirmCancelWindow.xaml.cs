@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -26,19 +27,42 @@ public partial class ConfirmCancelWindow : Primitives.Window
         CancelButton.Focus();
     }
 
+    public ControlTemplate GetConfirmButtonStyle()
+    {
+        if (Errors?.Count > 0) return (ControlTemplate)FindResource("NeutralButtonTemplate");
+        else if (ConfirmIsDanger) return (ControlTemplate)FindResource("RedButtonTemplate");
+        return (ControlTemplate)FindResource("DefaultButtonTemplate");
+    }
+
+    public string GetImageURL()
+    {
+        if (Errors?.Count > 0) return "/Assets/Icons/warning.png";
+        return "/Assets/Icons/" + Image switch
+        {
+            MessageBoxImage.Question => "question.png",
+            MessageBoxImage.Warning or MessageBoxImage.Exclamation => "warning.png",
+            MessageBoxImage.Stop or MessageBoxImage.Error => "danger.png",
+            MessageBoxImage.Information or _ => "info.jpg"
+        };
+    }
+
     [Bind] public object Slot { get; set; }
+    public List<string> Errors { get; set; }
+    public MessageBoxImage Image { get; set; }
+    public string ImageURL => GetImageURL();
     public bool Confirmed { get; set; }
     public bool Cancelled { get; set; }
     public string Message { get; set; }
     public string ConfirmButtonText { get; set; } = "Potvrdi";
     public string CancelButtonText { get; set; } = "Odustani";
     public bool ConfirmIsDanger { get; set; } = false;
-    public ControlTemplate ConfirmButtonStyle => (ControlTemplate)FindResource(ConfirmIsDanger ? "RedButtonTemplate" : "DefaultButtonTemplate");
-    public Visibility CancelButtonVisibility => string.IsNullOrEmpty(CancelButtonText) ? Visibility.Collapsed : Visibility.Visible;
+    public ControlTemplate ConfirmButtonStyle => GetConfirmButtonStyle();
+    public Visibility CancelButtonVisibility => string.IsNullOrEmpty(CancelButtonText) || Errors?.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
     public Visibility MessageVisibility => Slot is null ? Visibility.Visible : Visibility.Collapsed;
     public ResizeMode CanResize => Slot is null ? ResizeMode.NoResize : ResizeMode.CanResize;
 
-    [ICommand] public void Confirm()
+    [ICommand]
+    public void Confirm()
     {
         Confirmed = true;
         Close();
