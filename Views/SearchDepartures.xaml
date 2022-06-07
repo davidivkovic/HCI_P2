@@ -1,0 +1,102 @@
+﻿<Primitives:Component 
+        xmlns:Primitives="clr-namespace:P2.Primitives"
+        x:Class="P2.Views.SearchDepartures"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2.Views"
+        mc:Ignorable="d"
+        Background="White"
+        FontSize="30"
+        FontFamily="/Fonts/#Inter"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        MinWidth="1200"
+>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid>
+      <StackPanel Margin="10 5">
+        <Grid Margin="10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"  />
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+            FontWeight="Medium" 
+            FontSize="50" 
+            TextWrapping="WrapWithOverflow"
+            HorizontalAlignment="Left"
+          > 
+            Pretraga polazaka
+          </TextBlock>
+          <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="300" HorizontalAlignment="Left">
+            <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Polazište:</TextBlock>
+            <TextBox Margin="0 0 0 10" Text="{Binding SelectedStartStation}"></TextBox>
+            <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Odredište:</TextBlock>
+            <TextBox Margin="0 0 0 10" Text="{Binding SelectedEndStation}"></TextBox>
+            <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Datum polaska:</TextBlock>
+            <DatePicker Name="selectedSearchDate" IsTodayHighlighted="True" />
+            <Button Template="{StaticResource DefaultButtonTemplate}"
+                  Command="{Binding Search}"
+                  Grid.Row="2"
+                  Grid.Column="2"
+                  Width="200"
+                  HorizontalAlignment="Right"
+                  Cursor="Hand"
+                  Margin="50 30 50 0"
+                  Padding="5 20">
+              Pretraži</Button>
+
+          </StackPanel>
+
+          <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Margin="0 0 0 0" HorizontalAlignment="Left">
+            <Grid Margin="50 50 10 10">
+              <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <DataGrid Name="departuresTable" CanUserAddRows="False" IsReadOnly="True" CanUserReorderColumns="False"
+                          CanUserResizeColumns="False" AutoGenerateColumns="False" Visibility="{Binding ShowDepartures}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Broj voza" Binding="{Binding Path=Train.Number}" />
+                    <DataGridTextColumn Header="Ime" Binding="{Binding Path=Train.Name}" />
+                    <DataGridTextColumn Header="Polazak" Binding="{Binding Path=Time, StringFormat=HH:mm}" />
+                    <DataGridTextColumn Header="Dolazak" Binding="{Binding Path=Time, StringFormat=HH:mm}" />
+                    <DataGridTextColumn Header="Putuje" Binding="{Binding Path=Time}" />
+                    <DataGridTemplateColumn Header="Rang" Width="*">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Image Height="25" Width="50" Source="{Binding Path=Train.Image}"  />
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Button Name="btnDetails" Content="Detalji"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <Button Name="btnBuy" Content="Kupi"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </ScrollViewer>
+            </Grid>
+          </StackPanel>
+
+        </Grid>
+      </StackPanel>
+    </Grid>
+  </ScrollViewer>
+</Primitives:Component>

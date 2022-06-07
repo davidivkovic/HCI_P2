@@ -11,6 +11,6 @@
   Height="800" Width="1300" FontSize="28"
   FontFamily="/Fonts/#Inter">
   <Grid>
-    <Views:LoginView/>
+    <Views:SearchDepartures/>
   </Grid>
 </Primitives:Window>
