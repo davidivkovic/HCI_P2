@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="CreateUpdateLine" FontSize="30" FontFamily="/Fonts/#Inter"
         WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         MinWidth="1200"
 >

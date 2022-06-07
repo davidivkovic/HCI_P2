@@ -464,14 +464,15 @@ public partial class AddEditTrain : Primitives.Window
             {
                 Number = TrainNumber,
                 Type = SelectedTrainType.Type,
-                Seating = TakenSlots.Select(s => new Seat
+                Seating = TakenSlots.Select(s => new SeatGroup
                 {
-                    Slots = s.Select(slot => new Model.Slot()
+                    SeatType = s.First().SeatType,
+                    Seats = s.Select(slot => new Seat()
                     {
-                        Row = slot.Row,
-                        Col = slot.Col,
                         SeatNumber = slot.SeatNumber,
-                        SeatType = slot.SeatType
+                        SeatType = slot.SeatType,
+                        Row = slot.Row,
+                        Col = slot.Col
                     }).ToList()
                 }).ToList()
             };

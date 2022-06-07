@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using P2.Primitives;
 
@@ -21,7 +22,7 @@ public enum TrainType
     InterCity
 }
 
-public class Slot : Entity
+public class Seat : Entity
 {
     public int Row { get; set; }
     public int Col { get; set; }
@@ -29,16 +30,33 @@ public class Slot : Entity
     public SeatType SeatType { get; set; }
 }
 
-public class Seat : Entity
+public class SeatGroup : Entity
 {
-    public virtual List<Slot> Slots { get; set; }
+    public virtual List<Seat> Seats { get; set; }
+    public SeatType SeatType { get; set; }
 }
 
 public class Train : Entity
 {
-    public virtual List<Seat> Seating { get; set; }
+    public virtual List<SeatGroup> Seating { get; set; }
     public string Number { get; set; }
     public TrainType Type { get; set; }
+
+    public string Image => Type switch
+    {
+        TrainType.Falcon => "/Assets/Images/soko.png",
+        TrainType.Regio => "/Assets/Images/regio.jpg",
+        TrainType.InterCity or _ => "/Assets/Images/intercity.jpg"
+    };
+
+    public string Name => Type switch
+    {
+        TrainType.Falcon => "Soko",
+        TrainType.Regio => "Regio",
+        TrainType.InterCity or _ => "Inter City"
+    };
+
+    public int NumberOfSeats => Seating.Select(sg => sg).SelectMany(s => s.Seats).Count();
 }
 
 public class Station : Entity
