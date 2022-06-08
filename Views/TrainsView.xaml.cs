@@ -34,6 +34,7 @@ public partial class TrainsView : Component
     public Visibility ClearFilterVisible => string.IsNullOrEmpty(Filter) ? Visibility.Collapsed : Visibility.Visible;
     public List<List<Slot>> Seats => GetSeats();
     public bool IsEditable => SelectedTrain is not null;
+    public Visibility DetailsVisible => SelectedTrain is null ? Visibility.Collapsed : Visibility.Visible;
 
     public List<List<Slot>> GetSeats()
     {

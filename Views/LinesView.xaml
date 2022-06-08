@@ -23,7 +23,7 @@
       </StackPanel>
     </ControlTemplate>
   </UserControl.Resources>
-  <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10 5">
+  <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" Margin="10 5">
     <StackPanel Margin="10 5">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -135,7 +135,7 @@
                     Margin="0 10 0 0" 
                     HorizontalContentAlignment="Stretch"
                     Height="565"
-                    Width="450">
+                    Width="420">
             <ListView.ItemTemplate>
               <DataTemplate>
                 <StackPanel Cursor="Arrow" Margin="8 12 10 12" MinWidth="380" Background="Transparent">

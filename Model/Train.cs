@@ -88,7 +88,7 @@ public class TrainLine : Entity
     public virtual Station Source { get; set; }
     public virtual Station Destination { get; set; }
     public virtual List<Stop> Stops { get; set; } // Includes source and destination stops
-    public string FormattedLine => $"{Source.Name} \u2192 {Destination.Name}";
+    public string FormattedLine => $"{Source?.Name} \u2192 {Destination?.Name}";
     public void UpdateRoute()
     {
         for (int i = 0; i < Stops.Count; i++)
