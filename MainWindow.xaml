@@ -8,9 +8,10 @@
   xmlns:local="clr-namespace:P2" 
   xmlns:Views="clr-namespace:P2.Views"
   mc:Ignorable="d"
+  WindowStartupLocation="CenterScreen"
   Height="800" Width="1300" FontSize="28"
   FontFamily="/Fonts/#Inter">
   <Grid>
-    <Views:SearchDepartures/>
+    <Views:TrainsView/>
   </Grid>
 </Primitives:Window>

@@ -9,16 +9,34 @@
   mc:Ignorable="d" 
   MinWidth="500"
   d:DesignHeight="450" d:DesignWidth="800"
-  
+  FocusManager.IsFocusScope="True"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
   <Grid Margin="20 15">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="*"  />
     </Grid.ColumnDefinitions>
-    <StackPanel Grid.Column="0" Width="300" HorizontalAlignment="Left">
-      <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga vozova</TextBlock>
+    <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+      <TextBlock VerticalAlignment="Center" FontSize="42">Pregled Vozova</TextBlock>
+      <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+        <Button Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}">
+          Dodaj voz
+        </Button>
+        <Button Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}">
+          Izmeni voz
+        </Button>
+        <Button Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}">
+          Obriši voz
+        </Button>
+      </WrapPanel>
+    </Grid>
+    <StackPanel Grid.Row="1" Grid.Column="0" Width="300" HorizontalAlignment="Left">
+      <TextBlock FontSize="28" FontWeight="Medium" TextWrapping="NoWrap">Pretraga vozova</TextBlock>
       <Grid>
         <TextBox 
           VerticalContentAlignment="Center" 
@@ -53,7 +71,7 @@
           ×
         </Button>
       </Grid>
-      <ListView Height="642" Margin="0 10 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
+      <ListView Name="TrainsListView" LostFocus="ListViewLostFocus" Height="445" Margin="0 10 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
         <ListView.ItemTemplate>
           <DataTemplate>
             <Grid Margin="6">
@@ -79,13 +97,8 @@
         </ListView.ItemTemplate>
       </ListView>
     </StackPanel>
-    <StackPanel Grid.Column="1" >
-      <WrapPanel Margin="0 40 0 0" HorizontalAlignment="Right">
-        <Button Padding="10 5" Template="{StaticResource RedButtonTemplate}">
-          Obriši voz
-        </Button>
-      </WrapPanel>
-      <StackPanel Margin="30 25 0 0" Orientation="Horizontal">
+    <StackPanel Grid.Row="1" Grid.Column="1" >
+      <StackPanel Margin="30 0 0 0" Orientation="Horizontal">
         <StackPanel>
           <TextBlock FontSize="26">Raspored sedišta</TextBlock>
           <ItemsControl BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Seats}">
@@ -93,18 +106,18 @@
               <DataTemplate>
                 <WrapPanel>
                   <WrapPanel>
-                    <Border Background="{Binding [0].Background}" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                    <Border Background="{Binding [0].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
                       <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
-                    <Border Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                    <Border Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
                       <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                   </WrapPanel>
                   <WrapPanel Margin="60 0 0 0">
-                    <Border Background="{Binding [2].Background}" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                    <Border Background="{Binding [2].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
                       <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
-                    <Border Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                    <Border Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
                       <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                   </WrapPanel>
@@ -115,15 +128,15 @@
         </StackPanel>
         <StackPanel Margin="20 43 0 0">
           <StackPanel Orientation="Horizontal">
-            <Border Width="50" Height="50" Background="LightSkyBlue" BorderBrush="Gray" BorderThickness="1" />
+            <Border Width="40" Height="40" Background="LightSkyBlue" BorderBrush="Gray" BorderThickness="1" />
             <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Jedno sedište</TextBlock>
           </StackPanel>
           <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-            <Border Width="50" Height="50" Background="LawnGreen" BorderBrush="Gray" BorderThickness="1" />
+            <Border Width="80" Height="40" Background="LawnGreen" BorderBrush="Gray" BorderThickness="1" />
             <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Duplo sedište</TextBlock>
           </StackPanel>
           <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-            <Border Width="50" Height="50" Background="Orange" BorderBrush="Gray" BorderThickness="1" />
+            <Border Width="80" Height="80" Background="Orange" BorderBrush="Gray" BorderThickness="1" />
             <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Dupli sto</TextBlock>
           </StackPanel>
         </StackPanel>

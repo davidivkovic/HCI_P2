@@ -14,6 +14,6 @@ public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=HCI.db;");
+        optionsBuilder.UseSqlite("Data Source=HCI.db;");
     }
 }

@@ -21,6 +21,7 @@ public record class TrainViewModel(
 
 public class Slot : Observable
 {
+    public int Id { get; set; }
     public int Row { get; set; }
     public int Col { get; set; }
     public int SeatNumber { get; set; }
@@ -53,7 +54,7 @@ public class Slot : Observable
 
 public partial class AddEditTrain : Primitives.Window
 {
-    public ObservableCollection<Slot[]> Slots { get; set; }
+    public ObservableCollection<List<Slot>> Slots { get; set; }
     public List<IEnumerable<Slot>> TakenSlots { get; set; } = new();
 
     public static List<TrainViewModel> TrainTypes { get; set; } = new() 
@@ -74,12 +75,39 @@ public partial class AddEditTrain : Primitives.Window
     public Brush TrashBorder { get; set; } = Brushes.DimGray;
     public string TrashImage { get; set; } = "/Assets/Images/trashcan.png";
     public double TrashOpacity { get; set; } = 0.6;
+    public bool Confirmed { get; set; }
 
     public void OnTrainNumberChanged() => TrainNumberTextBox.ClearValue(BorderBrushProperty);
+
+    public AddEditTrain(Train train, List<List<Slot>> slots)
+    {
+        InitializeComponent();
+        InitializeFocus();
+        CurrentTrain = train;
+        Slots = new(slots);
+        TakenSlots = new(
+             Slots.SelectMany(s => s)
+             .Where(s => s.Id != 0)
+             .GroupBy(
+             s => s.Id,
+             s => s,
+             (key, g) => new
+             {
+                 Slots = g
+             })
+             .Select(s => s.Slots)
+             .ToList()
+        );
+
+        SelectedTrainType = TrainTypes.Find(t => t.Type == train.Type);
+        TrainNumber = train.Number;
+        CanDeleteSeats = TakenSlots.Count > 0;
+    }
 
     public AddEditTrain()
     {
         InitializeComponent();
+        InitializeFocus();
         Slots = new(
             Enumerable.Range(0, 48)
             .Select(index => new Slot
@@ -88,7 +116,12 @@ public partial class AddEditTrain : Primitives.Window
                 Col = index % 4
             })
             .Chunk(4)
+            .Select(c => c.ToList())
         );
+    }
+
+    public void InitializeFocus()
+    {
         MouseDown += (s, e) =>
         {
             if (s is not TextBox)
@@ -105,11 +138,6 @@ public partial class AddEditTrain : Primitives.Window
         };
     }
 
-    public void WithTrain(Train t)
-    {
-        CurrentTrain = t;
-    }
-
     private void ReorderSeatNumbers()
     {
         int i = 1;
@@ -122,6 +150,9 @@ public partial class AddEditTrain : Primitives.Window
     private IEnumerable<Slot> GetOverlappingSlots(Slot slot, SeatType seatType, bool greedy = true)
     {
         var connntectedSlots = GetConnectedSlots(slot, seatType, greedy);
+
+        //return connntectedSlots.Where(s => TakenSlots.Any(g => g.Any(gg => s.Row == gg.Row && s.Col == gg.Col)));
+
         return TakenSlots.Where(slots =>
             slots.Where(s => connntectedSlots.Any(cs => s.Row == cs.Row && s.Col == cs.Col))
                  .Any()
@@ -159,20 +190,12 @@ public partial class AddEditTrain : Primitives.Window
 
     private IEnumerable<Slot> ExecuteOnSlots(Slot slot, SeatType seatType, Action<Slot> action, IEnumerable<Slot> connectedSlots = null)
     {
-        if (seatType == SeatType.Single)
+        connectedSlots ??= GetConnectedSlots(slot, seatType);
+        foreach (var s in connectedSlots)
         {
-            action(slot);
-            return new[] { slot };
+            action(s);
         }
-        else
-        {
-            connectedSlots ??= GetConnectedSlots(slot, seatType);
-            foreach (var s in connectedSlots)
-            {
-                action(s);
-            }
-            return connectedSlots;
-        }
+        return connectedSlots;
     }
 
     private void SeatDrag(object sender, MouseEventArgs e)
@@ -305,7 +328,7 @@ public partial class AddEditTrain : Primitives.Window
             if (sourceSlotsToRemove.Any())
             {
                 TakenSlots = TakenSlots.Where(slots =>
-                    !slots.Any(s => s.Row == sourceSlotsToRemove.First().Row && s.Col == sourceSlotsToRemove.First().Col)
+                    !slots.Any(s => sourceSlotsToRemove.Any(ss => ss.Row == s.Row && ss.Col == s.Col))
                 ).ToList();
             }
         }
@@ -326,7 +349,7 @@ public partial class AddEditTrain : Primitives.Window
             if (slotsToRemove.Any())
             {
                 TakenSlots = TakenSlots.Where(slots =>
-                    !slots.Any(s => s.Row == slotsToRemove.First().Row && s.Col == slotsToRemove.First().Col)
+                    !slots.Any(s => slotsToRemove.Any(ss => ss.Row == s.Row && ss.Col == s.Col))
                 ).ToList();
             }
         }
@@ -390,7 +413,7 @@ public partial class AddEditTrain : Primitives.Window
             if (sourceSlotsToRemove.Any())
             {
                 TakenSlots = TakenSlots.Where(slots =>
-                    !slots.Any(s => s.Row == sourceSlotsToRemove.First().Row && s.Col == sourceSlotsToRemove.First().Col)
+                    !slots.Any(s => sourceSlotsToRemove.Any(ss => ss.Row == s.Row && ss.Col == s.Col))
                 ).ToList();
             }
             ReorderSeatNumbers();
@@ -460,25 +483,32 @@ public partial class AddEditTrain : Primitives.Window
 
         if (Errors.Count == 0 && w.Confirmed)
         {
-            CurrentTrain = new()
-            {
-                Number = TrainNumber,
-                Type = SelectedTrainType.Type,
-                Seating = TakenSlots.Select(s => new SeatGroup
-                {
-                    SeatType = s.First().SeatType,
-                    Seats = s.Select(slot => new Seat()
-                    {
-                        SeatNumber = slot.SeatNumber,
-                        SeatType = slot.SeatType,
-                        Row = slot.Row,
-                        Col = slot.Col
-                    }).ToList()
-                }).ToList()
-            };
             using DbContext db = new();
+            if (CurrentTrain is null)
+            {
+                CurrentTrain = new();
+            }
+            else
+            {
+                db.Attach(CurrentTrain);
+            }
+            CurrentTrain.Number = TrainNumber;
+            CurrentTrain.Type = SelectedTrainType.Type;
+            CurrentTrain.Seating = TakenSlots.Select(s => new SeatGroup
+            {
+                SeatType = s.First().SeatType,
+                Seats = s.Select(slot => new Seat()
+                {
+                    SeatNumber = slot.SeatNumber,
+                    SeatType = slot.SeatType,
+                    Row = slot.Row,
+                    Col = slot.Col
+                }).ToList()
+            }).ToList();
+            
             db.Update(CurrentTrain);
             db.SaveChanges();
+            Confirmed = true;
             Close();
         }
     }
