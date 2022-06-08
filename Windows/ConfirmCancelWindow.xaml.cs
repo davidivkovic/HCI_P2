@@ -56,22 +56,29 @@ public partial class ConfirmCancelWindow : Primitives.Window
     public string ConfirmButtonText { get; set; } = "Potvrdi";
     public string CancelButtonText { get; set; } = "Odustani";
     public bool ConfirmIsDanger { get; set; } = false;
+    public bool AutoClose { get; set; } = true;
     public ControlTemplate ConfirmButtonStyle => GetConfirmButtonStyle();
     public Visibility CancelButtonVisibility => string.IsNullOrEmpty(CancelButtonText) || Errors?.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
     public Visibility MessageVisibility => Slot is null ? Visibility.Visible : Visibility.Collapsed;
     public ResizeMode CanResize => Slot is null ? ResizeMode.NoResize : ResizeMode.CanResize;
+    public Visibility IsImageVisible => Image == MessageBoxImage.None ? Visibility.Collapsed : Visibility.Visible;
+    public Action<ConfirmCancelWindow> OnAction { get; set; }
 
     [ICommand]
     public void Confirm()
     {
         Confirmed = true;
-        Close();
+        Cancelled = false;
+        OnAction?.Invoke(this);
+        if (AutoClose) Close();
     }
 
     [ICommand]
     public void Cancel()
     {
+        Confirmed = false;
         Cancelled = true;
-        Close();
+        OnAction?.Invoke(this);
+        if (AutoClose) Close();
     }
 }

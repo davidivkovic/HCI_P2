@@ -1,0 +1,175 @@
+﻿<Primitives:Component x:Class="P2.Views.LinesView"
+             xmlns:Primitives="clr-namespace:P2.Primitives"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+             xmlns:local="clr-namespace:P2.Views"
+             mc:Ignorable="d" 
+             FocusManager.IsFocusScope="True"
+             FontSize="28" 
+             Background="White">
+  <UserControl.Resources>
+    <ControlTemplate TargetType="{x:Type m:Pushpin}" x:Key="PinTemplate" >
+      <StackPanel>
+        <TextBlock FontWeight="Medium" 
+                   HorizontalAlignment="Center" 
+                   FontSize="26" Background="White" 
+                   Padding="8 0 8 10" Margin="0 0 0 -10" 
+                   Foreground="Black" 
+                   Text="{TemplateBinding Content}"/>
+        <Image Width="40" Height="40" Source="/Assets/icon.png"/>
+      </StackPanel>
+    </ControlTemplate>
+  </UserControl.Resources>
+  <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10 5">
+    <StackPanel Margin="10 5">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"  />
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="0 0 0 20">
+          <TextBlock 
+              FontWeight="Medium" 
+              FontSize="42" 
+              TextWrapping="WrapWithOverflow"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Center"
+            > 
+              Pregled voznih linija
+          </TextBlock>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Template="{StaticResource DefaultButtonTemplate}" 
+                    Padding="15 5"
+                    Cursor="Hand"
+                    Command="{Binding CreateNewLineCommand}"
+                    >Dodaj liniju
+            </Button>
+            <Button Name="EditButton"
+                    Cursor="Hand"
+                    Command="{Binding EditLineCommand}"
+                    IsEnabled="{Binding IsEditable}" 
+                    Template="{StaticResource DefaultButtonTemplate}" 
+                    Margin="10 0 0 0"
+                    Padding="15 5">
+              Izmeni liniju
+            </Button>
+            <Button Name="DeleteButton"
+                    Cursor="Hand"
+                    IsEnabled="{Binding IsEditable}" 
+                    Template="{StaticResource RedButtonTemplate}" 
+                    Command="{Binding DeleteLineCommand}"
+                    Margin="10 0 0 0" Padding="15 5">
+              Obriši liniju
+            </Button>
+          </StackPanel>
+        </Grid>
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="300" HorizontalAlignment="Left" >
+          <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga linija</TextBlock>
+          <Grid>
+            <TextBox VerticalContentAlignment="Center" 
+                     Padding="5 0" Margin="0 10 0 0" 
+                     Height="50"
+                     Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="SearchInput">
+            </TextBox>
+            <TextBlock FontSize="26" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=SearchInput}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <Button Width="50"
+                    Height="50" 
+                    Background="Transparent" 
+                    BorderBrush="Transparent" 
+                    Cursor="Hand" Margin="0 10 0 0" 
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsInputClearable}"
+                    Command="{Binding ClearInputCommand}">
+              x
+            </Button>
+          </Grid>
+          <ListView ItemsSource="{Binding FilteredLines}"                     
+                    HorizontalContentAlignment="Stretch"
+                    Margin="0 10 0 0" 
+                    SelectionChanged="LinesListViewSelectionChanged"
+                    LostFocus="LinesListViewLostFocus"
+                    Name="LinesListView"
+                    Height="500">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Margin="10 15" MaxWidth="280" Grid.Column="0" TextWrapping="Wrap" Text="{Binding FormattedLine}"/>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </StackPanel>
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mrežna linija</TextBlock>
+        <m:Map Name="StationMap"
+                Focusable="True"
+                Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="560" VerticalAlignment="Top"
+                CredentialsProvider="xSIlQoZP2ZYkUqhaqMph~bleJNY8DyQJwIhZQQM7gQg~AqT-Ova12BSWCBj4aWfNLwhh5XtURpGjTlpWPXjnvejxc2ClnYvyzpIqdM5yzdIl"
+                ZoomLevel="7"
+                Center="43.990060, 20.436927">
+        </m:Map>
+        <StackPanel Grid.Column="2" Grid.Row="1" Margin="0 15 0 0">
+          <TextBlock FontWeight="Medium" 
+                     TextWrapping="NoWrap">
+            Stanice linije
+          </TextBlock>
+          <ListView ItemsSource="{Binding SelectedTrainLine.Stops}" 
+                    Name="CurrentStationsListView"
+                    Margin="0 10 0 0" 
+                    HorizontalContentAlignment="Stretch"
+                    Height="565"
+                    Width="450">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Cursor="Arrow" Margin="8 12 10 12" MinWidth="380" Background="Transparent">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0">
+                      <Run Text="{Binding Number}"/>.
+                      <Run Text="{Binding Station.Name}" />
+                    </TextBlock>
+                    <TextBlock 
+                      Grid.Column="1"
+                      Text="{Binding FormattedPrice, Mode=OneWay}"
+                      FontSize="26" VerticalAlignment="Bottom"
+                      HorizontalAlignment="Right"
+                    />
+                  </Grid>
+                  <TextBlock FontSize="26" Foreground="DimGray">
+                    <Run Text="{Binding FormattedDuration, Mode=OneWay}"/>
+                  </TextBlock>
+                </StackPanel>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+              <Style TargetType="ListViewItem">
+                <Setter Property="Focusable" Value="false"/>
+                
+              </Style>
+            </ListView.ItemContainerStyle>
+          </ListView>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</Primitives:Component>

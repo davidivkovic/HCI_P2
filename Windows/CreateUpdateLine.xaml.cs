@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,11 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maps.MapControl.WPF;
 using P2.Model;
 using P2.Primitives;
+using P2.Views;
 
 namespace P2.Windows;
 
@@ -18,53 +19,14 @@ public partial class CreateUpdateLine : Primitives.Window
 {
     public CreateUpdateLine()
     {
+        using DbContext db = new();
+        db.ChangeTracker.LazyLoadingEnabled = false;
 
-        var s1 = new Station()
-        {
-            Name = "Beograd Centar",
-            Latitude = 44.755717,
-            Longitude = 20.520289
-        };
-
-        var s2 = new Station()
-        {
-            Name = "Novi Sad (MAS)",
-            Latitude = 45.248851,
-            Longitude = 19.810473
-        };
-
-        var s3 = new Station()
-        {
-            Name = "Nis",
-            Latitude = 43.305059,
-            Longitude = 21.889582
-        };
-
-        AvailableStations.Add(s1);
-        AvailableStations.Add(s2);
-        AvailableStations.Add(s3);
-
-        var stop1 = new Stop()
-        {
-            Number = 1,
-            Station = s1,
-        };
-
-        var stop2 = new Stop()
-        {
-            Number = 2,
-            Station = s2,
-            Price = 500
-        };
-
-       
-        CurrentStops.Add(stop2);
-        CurrentStops.Add(stop1);
-
+        AvailableStations = db.Stations.ToList();
         FilteredStations = new(AvailableStations);
 
         UpdateRoute();
-
+        
         InitializeComponent();
 
         GeneratePins();
@@ -72,9 +34,15 @@ public partial class CreateUpdateLine : Primitives.Window
 
     public List<Station> AvailableStations { get; set; } = new();
 
+    public string Header { get; set; }
+
+    public TrainLine CurrentLine { get; set; }
+
     public ObservableCollection<Stop> CurrentStops { get; set; } = new();
 
     public ObservableCollection<Station> FilteredStations { get; set; }
+
+    public bool ConfirmedSave { get; set; } = false;
 
     public Stop SelectedStop { get; set; }
 
@@ -82,7 +50,9 @@ public partial class CreateUpdateLine : Primitives.Window
 
     public Visibility IsInputClearable => SearchInputText != null && SearchInputText != "" ? Visibility.Visible : Visibility.Collapsed;
 
-    public bool IsStationSelected => SelectedStop is not null;
+    public bool IsStopSelected => SelectedStop is not null;
+
+    public bool IsNotFirstStop => IsStopSelected && SelectedStop.Number != 1;
 
     public Visibility IsOverlayVisible { get; set; } = Visibility.Collapsed;
 
@@ -104,8 +74,25 @@ public partial class CreateUpdateLine : Primitives.Window
         }
     }
 
-    public bool CanBringUp => IsStationSelected && SelectedStop != CurrentStops.First();
-    public bool CanBringDown => IsStationSelected && SelectedStop != CurrentStops.Last();
+    public bool CanBringUp => IsStopSelected && SelectedStop != CurrentStops.First();
+    public bool CanBringDown => IsStopSelected && SelectedStop != CurrentStops.Last();
+
+    public void SetLine(TrainLine line)
+    {
+        CurrentLine = line;
+        CurrentStops = new();
+        foreach(Stop stop in CurrentLine.Stops)
+        {
+            CurrentStops.Add(new()
+            {
+                Station = stop.Station,
+                Price = stop.Price,
+                Number = stop.Number
+            });
+        }
+        GeneratePins();
+        UpdateRoute();
+    }
 
     public void GeneratePins()
     {
@@ -196,12 +183,23 @@ public partial class CreateUpdateLine : Primitives.Window
         GeneratePins();
 
         CurrentStationsListView.Focus();
-
     }
 
     [ICommand]
     public void Delete()
     {
+        var window = new ConfirmCancelWindow
+        {
+            Title = "Brisanje stanice iz linije",
+            Message = "Da li ste sigurni da želite da obrišete stanicu iz linije?",
+            ConfirmButtonText = "Obriši",
+            ConfirmIsDanger = true,
+            Image = MessageBoxImage.Stop
+        };
+        window.ShowDialog();
+
+        if (!window.Confirmed) return;
+
         if (SelectedStop is null) return;
         int currentIndex = CurrentStops.IndexOf(SelectedStop);
         CurrentStops.Remove(SelectedStop);
@@ -225,6 +223,105 @@ public partial class CreateUpdateLine : Primitives.Window
 
     }
 
+    [ICommand]
+    public void SaveChanges()
+    {
+        List<string> Errors = new();
+        if(CurrentStops.Count < 2)
+        {
+            Errors.Add("Linija mora sadržati bar 2 stanice");
+        }
+
+        var window = new ConfirmCancelWindow
+        {
+            Title = "Čuvanje promena",
+            Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate promene?",
+            Errors = Errors,
+            ConfirmButtonText = Errors.Count > 0 ? "U redu" : "Sačuvaj izmene",
+            ConfirmIsDanger = false,
+            Image = Errors.Count > 0 ? MessageBoxImage.Error : MessageBoxImage.Question
+        };
+        window.ShowDialog();
+
+        if (window.Confirmed && Errors.Count == 0)
+        {
+            CurrentLine ??= new TrainLine();
+            CurrentLine.Stops = new(CurrentStops);
+            CurrentLine.Source = CurrentStops.First().Station;
+            CurrentLine.Destination = CurrentStops.Last().Station;
+            ConfirmedSave = true;
+            Close();
+        }
+    }
+
+    [ICommand] 
+    public void DiscardChanges()
+    {
+        var window = new ConfirmCancelWindow
+        {
+            Title = "Odustajanje",
+            Message = "Da li ste sigurni da želite da odustanete od promena?",
+            ConfirmButtonText = "Odustani od promena",
+            CancelButtonText = "Otkaži",
+            ConfirmIsDanger = true,
+            Image = MessageBoxImage.Error
+        };
+        window.ShowDialog();
+
+        if(window.Confirmed)
+        {
+            Close();
+        }
+    }
+
+    [ICommand]
+    public void ChangePrice()
+    {
+        if (SelectedStop.Number == 1) return;
+
+        var window = new ConfirmCancelWindow
+        {
+            Title = "Promena cene",
+            ConfirmButtonText = "Sačuvaj",
+            CancelButtonText = "Odustani",
+            Slot = new EditStopDialog() { Price = SelectedStop.Price.ToString(), StopName = SelectedStop.Station.Name },
+            Image = MessageBoxImage.None,
+            AutoClose = false,
+            OnAction = w =>
+            {
+                if (w.Confirmed)
+                {
+                    bool IsValid = double.TryParse(((EditStopDialog)w.Slot).Price, out double newPrice);
+                    if (!IsValid)
+                    {
+                        var warningWindow = new ConfirmCancelWindow
+                        {
+                            Title = "Neuspela promena cene",
+                            Message = "Nije moguće izmeniti cenu zbog sledećih grešaka:",
+                            Errors = new() { "Cena mora biti brojčana vrednost" },
+                            ConfirmButtonText = "U redu",
+                            ConfirmIsDanger = false,
+                            Image = MessageBoxImage.Warning,
+                        };
+                        warningWindow.ShowDialog();
+                    }
+                    else
+                    {
+                        SelectedStop.Price = newPrice;
+                        w.Close();
+                    }
+                }
+                else
+                {
+                    w.Close();
+                }
+            }
+        };
+        window.ShowDialog();
+
+        
+    }
+
     [ICommand] public void ClearInput() => SearchInput.Text = "";
 
 
@@ -241,10 +338,6 @@ public partial class CreateUpdateLine : Primitives.Window
         var element = FocusManager.GetFocusedElement(this);
         if(element is Button or ListView)
         {
-            if (element is Button button)
-            {
-                if (button.Name == "BringUpButton" || button.Name == "BringDownButton" || button.Name == "DeleteButton") return;
-            }
             return;
         }
         SelectedStop = null;
@@ -282,17 +375,16 @@ public partial class CreateUpdateLine : Primitives.Window
             Price = 0
         });
 
-
         UpdateRoute();
         GeneratePins();
     }
 
     private void StationMouseDown(object sender, MouseEventArgs e)
     {
-        StackPanel station = sender as StackPanel;
-        if (station != null && e.LeftButton == MouseButtonState.Pressed)
+        StackPanel element = sender as StackPanel;
+        if (element != null && e.LeftButton == MouseButtonState.Pressed && element.Tag is Station station)
         {
-            DragDrop.DoDragDrop(station, station.DataContext, DragDropEffects.Copy);
+            DragDrop.DoDragDrop(element, station, DragDropEffects.Copy);
         }
     }
 
@@ -303,15 +395,15 @@ public partial class CreateUpdateLine : Primitives.Window
         IsOverlayVisible = Visibility.Collapsed;
     }
 
-    private void PreviewMapDropEnter(object sender, DragEventArgs e)
+    private void MapDropEnter(object sender, DragEventArgs e)
     {
+        Mouse.SetCursor(Cursors.Hand);
         IsOverlayVisible = Visibility.Visible;
     }
 
-    private void PreviewMapDropLeave(object sender, DragEventArgs e)
+    private void MapDropLeave(object sender, DragEventArgs e)
     {
         IsOverlayVisible = Visibility.Collapsed;
     }
-
 
 }

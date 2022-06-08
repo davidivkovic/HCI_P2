@@ -7,16 +7,23 @@
         xmlns:local="clr-namespace:P2.Windows"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="CreateUpdateLine" FontSize="30" FontFamily="/Fonts/#Inter"
+        Title="CreateUpdateLine" FontSize="28" FontFamily="/Fonts/#Inter"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         MinWidth="1200"
+        Width="1300"
+        Height="900"
 >
   <Window.Resources>
     <ControlTemplate TargetType="{x:Type m:Pushpin}" x:Key="PinTemplate" >
       <StackPanel>
-        <TextBlock  HorizontalAlignment="Center" FontSize="26" Foreground="Black" Text="{TemplateBinding Content}"/>
+        <TextBlock FontWeight="Medium" 
+                   HorizontalAlignment="Center" 
+                   FontSize="26" Background="White" 
+                   Padding="8 0 8 10" Margin="0 0 0 -10" 
+                   Foreground="Black" 
+                   Text="{TemplateBinding Content}"/>
         <Image Width="40" Height="40" Source="/Assets/icon.png"/>
       </StackPanel>
     </ControlTemplate>
@@ -26,7 +33,7 @@
                 Key="Up"
                 Command="{Binding BringUpCommand}" />
   </Window.InputBindings>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
     <Grid>
       <StackPanel Margin="10 5">
         <Grid Margin="10">
@@ -42,12 +49,11 @@
           </Grid.RowDefinitions>
           <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
             FontWeight="Medium" 
-            FontSize="50" 
+            FontSize="42" 
             TextWrapping="WrapWithOverflow"
             HorizontalAlignment="Left"
-          > 
-            Dodavanje i izmena linija
-          </TextBlock>
+            Text="{Binding Header}"
+          />
           <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="250" HorizontalAlignment="Left" >
             <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga stanica</TextBlock>
             <Grid>
@@ -84,16 +90,17 @@
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     Name="FilteredStationsListView"
-                    Height="550">
+                    Height="530">
               <ListView.ItemTemplate 
               >
                 <DataTemplate 
                 >
                   <StackPanel
                   MouseDown="StationMouseDown"
-                  Margin="8 20" Cursor="Hand" 
-                  Background="Transparent">
-                    <Grid>
+                  Cursor="Hand" 
+                  Background="Transparent"
+                  Tag="{Binding Path=.}">
+                    <Grid Margin="8 20">
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -115,9 +122,10 @@
             </ListView>
           </StackPanel>
           <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mrežna linija</TextBlock>
-          <Grid Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="610">
+          <Grid Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="590">
             <m:Map Name="StationMap"
-              PreviewDragEnter="PreviewMapDropEnter"
+              DragEnter="MapDropEnter"
+              MinWidth="540"
               AllowDrop="True"
               CredentialsProvider="xSIlQoZP2ZYkUqhaqMph~bleJNY8DyQJwIhZQQM7gQg~AqT-Ova12BSWCBj4aWfNLwhh5XtURpGjTlpWPXjnvejxc2ClnYvyzpIqdM5yzdIl"
               ZoomLevel="7"
@@ -127,17 +135,17 @@
           <StackPanel
             Grid.Column="1" Grid.Row="1" 
             Drop="MapDragDrop"
-            PreviewDragLeave="PreviewMapDropLeave"
+            DragLeave="MapDropLeave"
             AllowDrop="True"
             Margin="20 65 20 20" 
             Visibility="{Binding IsOverlayVisible}">
             <StackPanel.Background>
               <SolidColorBrush Color="Black" Opacity="0.7" />
             </StackPanel.Background>
-            <TextBlock Margin="0 230 0 0" Padding="10" VerticalAlignment="Center" 
+            <TextBlock Margin="0 230 0 0" Padding="30 0" VerticalAlignment="Center" 
                      HorizontalAlignment="Center" Foreground="White" 
                      TextWrapping="Wrap" TextAlignment="Center">
-            Spusti pin ovde da dodaš stanicu u liniju
+            Spusti ovde da dodaš stanicu u liniju
             </TextBlock>
           </StackPanel>
           <StackPanel Grid.Column="2" Grid.Row="1" Margin="0 15 0 0">
@@ -145,24 +153,31 @@
                      TextWrapping="NoWrap">
             Stanice linije
             </TextBlock>
-            <WrapPanel Margin="0 10 0 0">
+            <WrapPanel>
               <Button Template="{StaticResource DefaultButtonTemplate}"
-                    Command="{Binding BringUpCommand}"
-                    Name="BringUpButton"
-                    Cursor="Hand"
-                    Padding="12 5" 
-                    IsEnabled="{Binding IsStationSelected}">
-                Pomeri iznad
+                      IsEnabled="{Binding IsNotFirstStop}"
+                      Command="{Binding ChangePriceCommand}"
+                      Padding="12 5"
+                      Margin="0 10 0 0">
+                Izmeni cenu
               </Button>
-              <Button Template="{StaticResource DefaultButtonTemplate}"
-                    Command="{Binding BringDownCommand}"
-                    Margin="10 0 0 0" 
-                    Name="BringDownButton"
-                    Cursor="Hand"
-                    Padding="12  5"
-                    IsEnabled="{Binding IsStationSelected}">
-                Pomeri ispod
-              </Button>
+              <StackPanel Margin="10 10 0 0">
+                <Button Template="{StaticResource DefaultButtonTemplate}"
+                      Command="{Binding BringUpCommand}"
+                      Name="BringUpButton"
+                      Padding="12 5" 
+                      IsEnabled="{Binding IsStopSelected}">
+                  &#8593; Pomeri iznad
+                </Button>
+                <Button Template="{StaticResource DefaultButtonTemplate}"
+                      Command="{Binding BringDownCommand}"
+                      Name="BringDownButton"
+                      Margin="0 8 0 0"
+                      Padding="12 5"
+                      IsEnabled="{Binding IsStopSelected}">
+                  &#8595; Pomeri ispod 
+                </Button>
+              </StackPanel>
             </WrapPanel>
             <ListView ItemsSource="{Binding CurrentStops}" 
                     SelectionChanged="ListViewSelectionChanged"
@@ -170,7 +185,7 @@
                     LostFocus="ListViewLostFocus"
                     Margin="0 10 0 0" 
                     HorizontalContentAlignment="Stretch"
-                    Height="500"
+                    Height="420"
                     >
               <ListView.InputBindings>
                 <KeyBinding Modifiers="Ctrl" Key="Up" Command="{Binding BringUpCommand}"/>
@@ -203,29 +218,27 @@
                 </DataTemplate>
               </ListView.ItemTemplate>
             </ListView>
-            <Button IsEnabled="{Binding IsStationSelected}"
+            <Button IsEnabled="{Binding IsStopSelected}"
                   Template="{StaticResource RedButtonTemplate}"
                   Command="{Binding DeleteCommand}"
                   Name="DeleteButton"
-                  Cursor="Hand"
                   Margin="0 10 0 0"
                   Padding="5">
               Obriši stanicu</Button>
           </StackPanel>
           <Button Template="{StaticResource DefaultButtonTemplate}"
+                  Command="{Binding SaveChangesCommand}"
                   Grid.Row="2"  
                   Grid.Column="1"
                   Width="430"
                   HorizontalAlignment="Right"
-                  Cursor="Hand"
                   Margin="0 0 15 0"
                   Padding="5 20">
-            Sacuvaj promene</Button>
+            Sacuvaj izmene</Button>
           <Button Template="{StaticResource NeutralButtonTemplate}"
+                  Command="{Binding DiscardChangesCommand}"
                   Grid.Row="2"  
                   Grid.Column="2"
-                  Cursor="Hand"
-                  Margin="0 0 0 0"
                   Padding="5 20">
             Odustani</Button>
         </Grid>

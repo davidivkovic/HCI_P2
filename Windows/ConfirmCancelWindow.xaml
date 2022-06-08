@@ -28,7 +28,11 @@
           <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image Margin="0 0 10 0" Grid.Column="0" Width="70" Height="70" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding ImageURL}"/>
+        <Image Margin="0 0 10 0" Grid.Column="0" 
+               Width="70" Height="70" 
+               Visibility="{Binding IsImageVisible}"
+               RenderOptions.BitmapScalingMode="HighQuality" 
+               Source="{Binding ImageURL}"/>
         <TextBlock Grid.Column="1" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Margin="5 -10 5 0" FontSize="30" Visibility="{Binding MessageVisibility}" Text="{Binding Message}"/>
       </Grid>
       <ItemsControl Margin="20 10 0 0" ItemsSource="{Binding Errors}">

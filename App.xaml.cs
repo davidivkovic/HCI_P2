@@ -35,6 +35,31 @@ public partial class App : Application
             });
         }
 
+        if(!db.Stations.Any())
+        {
+            db.Add(new Station
+            {
+                Name = "Beograd Centar",
+                Latitude = 44.755717,
+                Longitude = 20.520289
+            });
+
+            db.Add(new Station
+            {
+                Name = "Novi Sad (MAS)",
+                Latitude = 45.248851,
+                Longitude = 19.810473
+            });
+
+            db.Add(new Station
+            {
+                Name = "Nis",
+                Latitude = 43.305059,
+                Longitude = 21.889582
+            });
+
+        }
+
         db.SaveChanges();
     }
 }

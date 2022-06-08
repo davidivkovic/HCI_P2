@@ -88,6 +88,24 @@ public class TrainLine : Entity
     public virtual Station Source { get; set; }
     public virtual Station Destination { get; set; }
     public virtual List<Stop> Stops { get; set; } // Includes source and destination stops
+    public string FormattedLine => $"{Source.Name} \u2192 {Destination.Name}";
+    public void UpdateRoute()
+    {
+        for (int i = 0; i < Stops.Count; i++)
+        {
+            Stops[i].Number = i + 1;
+            if (i > 0)
+            {
+                Station previousStation = Stops[i - 1].Station;
+                Stops[i].Duration = TimeSpan.FromHours(Stops[i].Station.DistanceTo(previousStation) / 80);
+            }
+            else
+            {
+                Stops[i].Duration = TimeSpan.FromMinutes(0);
+                Stops[i].Price = 0;
+            }
+        }
+    }
 }
 
 public class Departure : Entity
