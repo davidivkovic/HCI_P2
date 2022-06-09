@@ -10,7 +10,8 @@ public enum SeatType
     Override,
     Single,
     Double,
-    DoubleTable
+    DoubleTable,
+    Taken
 }
 
 public enum TrainType
@@ -88,7 +89,7 @@ public class TrainLine : Entity
     public virtual Station Source { get; set; }
     public virtual Station Destination { get; set; }
     public virtual List<Stop> Stops { get; set; } // Includes source and destination stops
-    public string FormattedLine => $"{Source.Name} \u2192 {Destination.Name}";
+    public string FormattedLine => $"{Source?.Name} \u2192 {Destination?.Name}";
     public void UpdateRoute()
     {
         for (int i = 0; i < Stops.Count; i++)
@@ -113,4 +114,22 @@ public class Departure : Entity
     public virtual Train Train { get; set; }
     public virtual TrainLine Line { get; set; }
     public TimeOnly Time { get; set; }
+    public TimeSpan TravelTime()
+    {
+        TimeSpan totalDurations = Line.Stops.First().Duration;
+        Line.Stops.ForEach(s => totalDurations = totalDurations.Add(s.Duration));
+        return totalDurations;
+    }
+
+    public string TableTime => Time.ToString("HH:mm");
+    public string ArrivalTableTime => Time.Add(TravelTime()).ToString("HH:mm");
+    public string TravelTableTime => $"{TravelTime():hh}h {TravelTime():mm}m";
+}
+
+public class Ticket : Entity
+{
+    public Departure Departure { get; set; }
+    public List<Seat> Seats { get; set; }
+    public DateOnly DepartureDate { get; set; }
+    public DateTime Timestamp { get; set; }
 }

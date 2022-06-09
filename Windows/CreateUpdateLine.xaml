@@ -142,7 +142,7 @@
             <StackPanel.Background>
               <SolidColorBrush Color="Black" Opacity="0.7" />
             </StackPanel.Background>
-            <TextBlock Margin="0 230 0 0" Padding="30 0" VerticalAlignment="Center" 
+            <TextBlock IsHitTestVisible="False" Margin="0 230 0 0" Padding="30 0" VerticalAlignment="Center" 
                      HorizontalAlignment="Center" Foreground="White" 
                      TextWrapping="Wrap" TextAlignment="Center">
             Spusti ovde da dodaš stanicu u liniju

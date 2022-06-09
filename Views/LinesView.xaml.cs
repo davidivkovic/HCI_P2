@@ -24,10 +24,13 @@ public partial class LinesView : Component
     {
         using DbContext db = new();
 
-        AvailableLines = db.Lines.Include(l => l.Stops)
-                                 .Include(l => l.Source)
-                                 .Include(l => l.Destination)
-                                 .ToList();
+        AvailableLines = db.Lines
+                           .AsNoTrackingWithIdentityResolution()
+                           .Include(l => l.Stops)
+                               .ThenInclude(s => s.Station)
+                           .Include(l => l.Source)
+                           .Include(l => l.Destination)
+                           .ToList();
         foreach (TrainLine line in AvailableLines) { line.UpdateRoute(); }
 
         FilteredLines = new(AvailableLines);
@@ -155,34 +158,21 @@ public partial class LinesView : Component
         if(window.ConfirmedSave)
         {
             using DbContext db = new();
+            
             var tl = db.Lines.Include(l => l.Stops)
-                             .Include(l => l.Source)
-                             .Include(l => l.Destination)
-                             .FirstOrDefault(l => l.Id == SelectedTrainLine.Id);
+                            .Include(l => l.Source)
+                            .Include(l => l.Destination)
+                            .FirstOrDefault(l => l.Id == SelectedTrainLine.Id);
 
-            db.Entry(tl).CurrentValues.SetValues(SelectedTrainLine);
+            SelectedTrainLine.Stops.ForEach(s => s.Station = db.Stations.Find(s.Station.Id));
+            SelectedTrainLine.Source = db.Stations.Find(SelectedTrainLine.Source.Id);
+            SelectedTrainLine.Destination = db.Stations.Find(SelectedTrainLine.Destination.Id);
 
-            foreach (var stop in tl.Stops)
-            {
-                var existingStop = db.Stops
-                    .FirstOrDefault(p => p.Id == stop.Id);
-
-                if (existingStop == null)
-                {
-                    tl.Stops.Add(stop);
-                }
-                else
-                {
-                    db.Entry(existingStop).CurrentValues.SetValues(stop);
-                }
-            }
-
-            //tl.Source = SelectedTrainLine.Source;
-            //tl.Destination = SelectedTrainLine.Destination;
-            //tl.Stops = SelectedTrainLine.Stops;
-            //db.Update(tl);
+            tl.Source = SelectedTrainLine.Source;
+            tl.Destination = SelectedTrainLine.Destination;
+            tl.Stops = SelectedTrainLine.Stops;
             db.SaveChanges();
-
+            
             var successWindow = new ConfirmCancelWindow
             {
                 Title = "Uspeh",
@@ -194,6 +184,7 @@ public partial class LinesView : Component
             successWindow.ShowDialog();
             UpdateMap();
         }
+        LinesListView.Focus();
     }
 
     [ICommand] public void CreateNewLine()
@@ -223,7 +214,7 @@ public partial class LinesView : Component
 
             UpdateMap();
         }
-
+        LinesListView.Focus();
     }
 
     [ICommand] public void ClearInput() => SearchInput.Text = "";

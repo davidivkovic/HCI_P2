@@ -11,6 +11,7 @@ public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<TrainLine> Lines { get; set; }
     public DbSet<Departure> Departures { get; set; }
     public DbSet<Stop> Stops { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
