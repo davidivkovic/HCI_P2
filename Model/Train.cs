@@ -113,4 +113,14 @@ public class Departure : Entity
     public virtual Train Train { get; set; }
     public virtual TrainLine Line { get; set; }
     public TimeOnly Time { get; set; }
+    public TimeSpan TravelTime()
+    {
+        TimeSpan totalDurations = Line.Stops.First().Duration;
+        Line.Stops.ForEach(s => totalDurations = totalDurations.Add(s.Duration));
+        return totalDurations;
+    }
+
+    public string TableTime => Time.ToString("HH:mm");
+    public string ArrivalTableTime => Time.Add(TravelTime()).ToString("HH:mm");
+    public string TravelTableTime => $"{TravelTime():hh}h {TravelTime():mm}m";
 }

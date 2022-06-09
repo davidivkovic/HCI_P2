@@ -1,0 +1,116 @@
+﻿<Primitives:Component  xmlns:Primitives="clr-namespace:P2.Primitives" x:Class="P2.Views.TimetableView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:P2.Views"
+             mc:Ignorable="d" 
+             Background="White"
+             FontSize="28" 
+             d:DesignHeight="800" d:DesignWidth="1300">
+  <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10 5">
+    <StackPanel Margin="10 5">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+          <TextBlock 
+              FontWeight="Medium" 
+              FontSize="42" 
+              TextWrapping="WrapWithOverflow"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Center"
+            > 
+              Pregled polazaka
+          </TextBlock>
+          <WrapPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Template="{StaticResource DefaultButtonTemplate}"
+                    Padding="15 5"
+                    Cursor="Hand"
+                    >Dodaj polazak
+            </Button>
+            <Button Name="EditButton"
+                    IsEnabled="{Binding IsEditable}"
+                    Template="{StaticResource DefaultButtonTemplate}" 
+                    Margin="10 0 0 0"
+                    Padding="15 5">
+              Izmeni polazak
+            </Button>
+            <Button Name="DeleteButton"
+                    Template="{StaticResource RedButtonTemplate}" 
+                    IsEnabled="{Binding IsEditable}"
+                    Margin="10 0 0 0" Padding="15 5">
+              Obriši polazak
+            </Button>
+          </WrapPanel>
+        </Grid>
+        <StackPanel Grid.Column="0" Grid.Row="1" Width="300" HorizontalAlignment="Left" >
+          <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga linija</TextBlock>
+          <Grid>
+            <TextBox VerticalContentAlignment="Center" 
+                     Margin="0 10 0 0" 
+                     Padding="10 0 50 0"
+                     Height="50"
+                     Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="SearchInput">
+            </TextBox>
+            <TextBlock FontSize="26" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=SearchInput}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <Button Width="50"
+                    Height="50" 
+                    Background="Transparent" 
+                    BorderBrush="Transparent" 
+                    Cursor="Hand" Margin="0 10 0 0" 
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsInputClearable}"
+                    Command="{Binding ClearInputCommand}">
+              x
+            </Button>
+          </Grid>
+          <ListView ItemsSource="{Binding FilteredLines}"                     
+                    HorizontalContentAlignment="Stretch"
+                    Margin="0 10 0 0" 
+                    SelectionChanged="LinesListViewSelectionChanged"
+                    LostFocus="LinesListViewLostFocus"
+                    Name="LinesListView"
+                    Height="500">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Margin="10 15" MaxWidth="280" Grid.Column="0" TextWrapping="Wrap" Text="{Binding FormattedLine}"/>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 0 0 0">
+          <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Raspored vožnji</TextBlock>
+          <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Voz" Binding="{Binding Train.Number}" IsReadOnly="True"/>
+              <DataGridTextColumn Header="Tip" Binding="{Binding Train.Name}" IsReadOnly="True"/>
+              <DataGridTextColumn Header="Polazak" Binding="{Binding TableTime}" IsReadOnly="True"/>
+              <DataGridTextColumn Header="Dolazak" Binding="{Binding ArrivalTableTime, Mode=OneTime}" IsReadOnly="True" />
+              <DataGridTextColumn Width="*" Header="Vreme putovanja" Binding="{Binding TravelTableTime, Mode=OneTime}" IsReadOnly="True" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</Primitives:Component>

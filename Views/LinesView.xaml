@@ -75,7 +75,8 @@
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga linija</TextBlock>
           <Grid>
             <TextBox VerticalContentAlignment="Center" 
-                     Padding="5 0" Margin="0 10 0 0" 
+                     Padding="10 0 50 0"
+                     Margin="0 10 0 0" 
                      Height="50"
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SearchInput">
@@ -164,7 +165,7 @@
             <ListView.ItemContainerStyle>
               <Style TargetType="ListViewItem">
                 <Setter Property="Focusable" Value="false"/>
-                
+
               </Style>
             </ListView.ItemContainerStyle>
           </ListView>
