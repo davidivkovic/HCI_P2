@@ -10,6 +10,7 @@
   Title="ConfirmCancelWindow"
   SizeToContent="Height"
   WindowStartupLocation="CenterScreen"
+  FontFamily="/Fonts/#Inter"
   MinHeight="210"
   MinWidth="420"
   MaxWidth="600"

@@ -84,14 +84,14 @@
                   Voz <Run Text="{Binding Number}"/>
                 </TextBlock>
                 <TextBlock FontSize="26">
-                  Tip <Run Text="{Binding Name, Mode=OneTime}"/>
+                  Tip <Run Text="{Binding Name, Mode=OneWay}"/>
                 </TextBlock>
                 <TextBlock FontSize="24">
-                  <Run Text="{Binding NumberOfSeats, Mode=OneTime}"/>
+                  <Run Text="{Binding NumberOfSeats, Mode=OneWay}"/>
                   Sedišta
                 </TextBlock>
               </StackPanel>
-              <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding Image, Mode=OneTime}" />
+              <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding Image, Mode=OneWay}" />
             </Grid>
           </DataTemplate>
         </ListView.ItemTemplate>

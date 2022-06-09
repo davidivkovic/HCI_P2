@@ -30,6 +30,7 @@ public class Slot : Observable
     public bool Assigned => SeatType != SeatType.None;
     public string FormattedSeatNumber => SeatType == SeatType.None ? "" : SeatNumber.ToString();
     public string Cursor => SeatType == SeatType.None ? "Arrow" : "/Assets/Cursors/grab.cur";
+    public string PurchaseCursor => SeatType == SeatType.None || PreviewSeatType == SeatType.Taken ? "Arrow" : "Hand";
     public Brush GetBackground()
     {
         if (PreviewSeatType != SeatType.None) return PreviewSeatType switch
@@ -37,6 +38,7 @@ public class Slot : Observable
             SeatType.Single => "#cee4f5".ToBrush(),
             SeatType.Double => "#e2ffab".ToBrush(),
             SeatType.DoubleTable => "#ffda96".ToBrush(),
+            SeatType.Taken => Brushes.DimGray,
             _ or SeatType.None or SeatType.Override => "#dbdbdb".ToBrush()
         };
 

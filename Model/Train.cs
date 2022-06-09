@@ -10,7 +10,8 @@ public enum SeatType
     Override,
     Single,
     Double,
-    DoubleTable
+    DoubleTable,
+    Taken
 }
 
 public enum TrainType
@@ -123,4 +124,12 @@ public class Departure : Entity
     public string TableTime => Time.ToString("HH:mm");
     public string ArrivalTableTime => Time.Add(TravelTime()).ToString("HH:mm");
     public string TravelTableTime => $"{TravelTime():hh}h {TravelTime():mm}m";
+}
+
+public class Ticket : Entity
+{
+    public Departure Departure { get; set; }
+    public List<Seat> Seats { get; set; }
+    public DateOnly DepartureDate { get; set; }
+    public DateTime Timestamp { get; set; }
 }
