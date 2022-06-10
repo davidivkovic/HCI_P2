@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using P2.Model;
@@ -150,5 +151,10 @@ public partial class AddEditTimetable : P2.Primitives.Window
         w.ShowDialog();
 
         //TODO close window
+    }
+
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("AddEditTimetable", this);
     }
 }

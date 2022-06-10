@@ -406,4 +406,10 @@ public partial class CreateUpdateLine : Primitives.Window
         IsOverlayVisible = Visibility.Collapsed;
     }
 
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("CreateUpdateLineHelp", this);
+    }
+
+
 }

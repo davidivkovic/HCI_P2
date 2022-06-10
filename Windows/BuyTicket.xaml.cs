@@ -120,4 +120,10 @@ public partial class BuyTicket : Primitives.Window
             PleaseText = TakenSeats.Count > 0 ? "" : "Molimo Vas odaberite neko od sedišta";
         }
     }
+
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("BuyTicket", this);
+    }
+
 }

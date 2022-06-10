@@ -10,7 +10,11 @@
   FontFamily="/Fonts/#Inter"
   Title="BuyTicket" Height="800" Width="800"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
+  FocusManager.IsFocusScope="True"
 >
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Window.CommandBindings>
   <Grid Margin="20 10 20 20">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -97,18 +101,18 @@
             <WrapPanel>
               <StackPanel Margin="0 0 60 0" Orientation="Horizontal">
                 <Border MouseDown="SeatClicked" Tag="{Binding [0]}" Cursor="{Binding [0].PurchaseCursor}" Background="{Binding [0].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" ToolTip="Odaberi sedište. Siv kvadratić nije moguće odabrati." VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
                 <Border MouseDown="SeatClicked" Tag="{Binding [1]}" Cursor="{Binding [1].PurchaseCursor}"  Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" ToolTip="Odaberi sedište. Siv kvadratić nije moguće odabrati." VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
               </StackPanel>
               <StackPanel Orientation="Horizontal">
                 <Border MouseDown="SeatClicked" Tag="{Binding [2]}" Cursor="{Binding [2].PurchaseCursor}"  Background="{Binding [2].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" ToolTip="Odaberi sedište. Siv kvadratić nije moguće odabrati." VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
                 <Border MouseDown="SeatClicked" Tag="{Binding [3]}" Cursor="{Binding [3].PurchaseCursor}"  Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" ToolTip="Odaberi sedište. Siv kvadratić nije moguće odabrati." VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
               </StackPanel>
             </WrapPanel>

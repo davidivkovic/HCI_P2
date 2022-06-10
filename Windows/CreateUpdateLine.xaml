@@ -14,7 +14,11 @@
         MinWidth="1200"
         Width="1300"
         Height="900"
+        FocusManager.IsFocusScope="True"
 >
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Window.CommandBindings>
   <Window.Resources>
     <ControlTemplate TargetType="{x:Type m:Pushpin}" x:Key="PinTemplate" >
       <StackPanel>
@@ -82,7 +86,8 @@
                     Cursor="Hand" Margin="0 10 0 0" 
                     HorizontalAlignment="Right"
                     Visibility="{Binding IsInputClearable}"
-                    Command="{Binding ClearInputCommand}">
+                    Command="{Binding ClearInputCommand}"
+                    ToolTip="Obriši unos">
                 x
               </Button>
             </Grid>
@@ -158,7 +163,8 @@
                       IsEnabled="{Binding IsNotFirstStop}"
                       Command="{Binding ChangePriceCommand}"
                       Padding="12 5"
-                      Margin="0 10 0 0">
+                      Margin="0 10 0 0"
+                      ToolTip="Izmeni cenu putovanja do selektovane stanice">
                 Izmeni cenu
               </Button>
               <StackPanel Margin="10 10 0 0">
@@ -166,7 +172,8 @@
                       Command="{Binding BringUpCommand}"
                       Name="BringUpButton"
                       Padding="12 5" 
-                      IsEnabled="{Binding IsStopSelected}">
+                      IsEnabled="{Binding IsStopSelected}"
+                      ToolTip="Pomeri selektovanu stanicu iznad">
                   &#8593; Pomeri iznad
                 </Button>
                 <Button Template="{StaticResource DefaultButtonTemplate}"
@@ -174,7 +181,8 @@
                       Name="BringDownButton"
                       Margin="0 8 0 0"
                       Padding="12 5"
-                      IsEnabled="{Binding IsStopSelected}">
+                      IsEnabled="{Binding IsStopSelected}"
+                      ToolTip="Pomeri selektovanu stanicu ispod">
                   &#8595; Pomeri ispod 
                 </Button>
               </StackPanel>
@@ -223,7 +231,8 @@
                   Command="{Binding DeleteCommand}"
                   Name="DeleteButton"
                   Margin="0 10 0 0"
-                  Padding="5">
+                  Padding="5"
+                  ToolTip="Obriši selektovanu stanicu">
               Obriši stanicu</Button>
           </StackPanel>
           <Button Template="{StaticResource DefaultButtonTemplate}"
@@ -233,13 +242,15 @@
                   Width="430"
                   HorizontalAlignment="Right"
                   Margin="0 0 15 0"
-                  Padding="5 20">
+                  Padding="5 20"
+                  ToolTip="Sačuvaj izmene">
             Sacuvaj izmene</Button>
           <Button Template="{StaticResource NeutralButtonTemplate}"
                   Command="{Binding DiscardChangesCommand}"
                   Grid.Row="2"  
                   Grid.Column="2"
-                  Padding="5 20">
+                  Padding="5 20"
+                  ToolTip="Odustani od izmena">
             Odustani</Button>
         </Grid>
       </StackPanel>

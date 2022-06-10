@@ -8,7 +8,11 @@
         FontFamily="/Fonts/#Inter"
         FontSize="28"
         mc:Ignorable="d"
-        Title="AddEditTimetable">
+        Title="AddEditTimetable"
+        FocusManager.IsFocusScope="True">
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Window.CommandBindings>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel HorizontalAlignment="Center" Margin="30 10">
       <TextBlock Text="{Binding HeadingText}"
@@ -38,7 +42,7 @@
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel>
+                <StackPanel ToolTip="Podaci o vozu">
                   <TextBlock>
                   Voz <Run Text="{Binding Number}"/>
                   </TextBlock>
@@ -100,7 +104,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <StackPanel>
+              <StackPanel ToolTip="Podaci o vozu">
                 <TextBlock>
                   Voz <Run Text="{Binding SelectedTrain.Number}"/>
                 </TextBlock>
@@ -123,7 +127,8 @@
               <ComboBox MaxDropDownHeight="200" Width="100" 
                     Style="{DynamicResource ComboBoxStyle}" 
                     ItemsSource="{Binding Hours}"
-                    SelectedItem="{Binding SelectedHours}" >
+                    SelectedItem="{Binding SelectedHours}" 
+                    ToolTip="Promeni sate">
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Margin="0 0 15 0" FontSize="28" Text="{Binding Path=.}" />
@@ -139,7 +144,8 @@
               <ComboBox MaxDropDownHeight="200"  Width="100"
                     Style="{DynamicResource ComboBoxStyle}" 
                     Margin="10 0 0 0" ItemsSource="{Binding Minutes}" 
-                    SelectedItem="{Binding SelectedMinutes}" >
+                    SelectedItem="{Binding SelectedMinutes}"
+                    ToolTip="Promeni minute">
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Margin="0 0 15 0" FontSize="28" Text="{Binding Path=.}" />
@@ -158,13 +164,16 @@
       <WrapPanel HorizontalAlignment="Center" Margin="0 40 0 10">
         <Button Template="{StaticResource DefaultButtonTemplate}" 
                 Padding="40 10"
-                Command="{Binding SaveChangesCommand}">
+                Command="{Binding SaveChangesCommand}"
+                ToolTip="Sačuvaj izmene">
           Sačuvaj
         </Button>
         <Button Margin="15 0 0 0" 
                 Template="{StaticResource NeutralButtonTemplate}" 
                 Command="{Binding CancelCommand}"
-                Padding="40 10">Odustani</Button>
+                Padding="40 10"
+                ToolTip="Odustani od izmena">
+          Odustani</Button>
       </WrapPanel>
     </StackPanel>
   </ScrollViewer>

@@ -13,7 +13,11 @@
   SizeToContent="WidthAndHeight"
   WindowStartupLocation="CenterScreen"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
+  FocusManager.IsFocusScope="True"
 >
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Window.CommandBindings>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="-20 20 20 20" HorizontalAlignment="Center">
       <TextBlock Text="{Binding HeaderText}" Margin="40 0 0 10" FontSize="32" FontWeight="Medium"/>
@@ -85,7 +89,7 @@
               <TextBlock Margin="0 20 0 5" FontSize="24">Broj voza</TextBlock>
               <Grid>
                 <TextBox Name="TrainNumberTextBox" IsEnabled="{Binding AllowTrainNumberEdit}" Text="{Binding TrainNumber}" Padding="5 5 110 5" VerticalContentAlignment="Center" FontSize="28" MaxWidth="{Binding ActualWidth, ElementName=RightStackPanel}"/>
-                <Button Name="TrainNumberButton"  Command="{Binding EditTrainNumberCommand}" Content="{Binding TrainNumberEditText}" Cursor="Hand" Margin="0 0 5 0" FontSize="26" Padding="5 0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Button Name="TrainNumberButton" ToolTip="Izmeni jedinstveni broj voza"  Command="{Binding EditTrainNumberCommand}" Content="{Binding TrainNumberEditText}" Cursor="Hand" Margin="0 0 5 0" FontSize="26" Padding="5 0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
               </Grid>
               <TextBlock Margin="0 4 0 0" FontSize="22" Foreground="DimGray">Polje je obavezno</TextBlock>
             </StackPanel>
@@ -98,7 +102,7 @@
                   <Image Opacity="{Binding TrashOpacity}" Width="60" Height="60" Source="{Binding TrashImage}" RenderOptions.BitmapScalingMode="HighQuality"/>
                 </StackPanel>
               </Border>
-              <Button IsEnabled="{Binding CanDeleteSeats}" Command="{Binding DeleteAllSeatsCommand}" FontSize="26" Margin="0 20 0 0" Padding="0 5" Cursor="Hand">Ukloni sva sedišta</Button>
+              <Button IsEnabled="{Binding CanDeleteSeats}" ToolTip="Ukloni sva sedišta koja su dodata" Command="{Binding DeleteAllSeatsCommand}" FontSize="26" Margin="0 20 0 0" Padding="0 5" Cursor="Hand">Ukloni sva sedišta</Button>
             </StackPanel>
           </Grid>
         </StackPanel>
@@ -112,6 +116,7 @@
           Padding="25 20"
           IsDefault="True"
           Command="{Binding ConfrimCommand}"
+          ToolTip="Sačuvaj novi voz"
         >
           Sačuvaj izmene
         </Button>
@@ -121,6 +126,7 @@
           Cursor="Hand"
           Padding="65 20"
           Command="{Binding CancelCommand}"
+          ToolTip="Odustani od dodavanja voza"
         >
           Odustani
         </Button>

@@ -530,4 +530,9 @@ public partial class AddEditTrain : Primitives.Window
 
         if (w.Confirmed) Close();
     }
+
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("AddEditTrain", this);
+    }
 }
