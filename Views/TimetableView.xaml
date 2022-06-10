@@ -7,7 +7,11 @@
              mc:Ignorable="d" 
              Background="White"
              FontSize="28" 
-             d:DesignHeight="800" d:DesignWidth="1300">
+             d:DesignHeight="800" d:DesignWidth="1300"
+             FocusManager.IsFocusScope="True">
+  <Primitives:Component.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Primitives:Component.CommandBindings>
   <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10 5">
     <StackPanel Margin="10 5">
       <Grid>

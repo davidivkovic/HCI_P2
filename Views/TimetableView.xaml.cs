@@ -106,5 +106,11 @@ namespace P2.Views
                 }
             }
         }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            HelpProvider.ShowHelp("TimetableView", this);
+        }
+
     }
 }

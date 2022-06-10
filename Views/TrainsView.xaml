@@ -12,6 +12,9 @@
   FocusManager.IsFocusScope="True"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
+  <Primitives:Component.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Primitives:Component.CommandBindings>
   <Grid Margin="20 15">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -24,13 +27,13 @@
     <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <TextBlock VerticalAlignment="Center" FontSize="42">Pregled Vozova</TextBlock>
       <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-        <Button Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}">
+        <Button Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Dodavanje novog voza">
           Dodaj voz
         </Button>
-        <Button Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}">
+        <Button Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Izmena odabranog voza">
           Izmeni voz
         </Button>
-        <Button Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}">
+        <Button Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}" ToolTip="Brisanje odabranog voza">
           Obriši voz
         </Button>
       </WrapPanel>
@@ -79,7 +82,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <StackPanel>
+              <StackPanel ToolTip="Podaci o vozu">
                 <TextBlock>
                   Voz <Run Text="{Binding Number}"/>
                 </TextBlock>

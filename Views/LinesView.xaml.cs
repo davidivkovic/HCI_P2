@@ -115,13 +115,14 @@ public partial class LinesView : Component
     {
         var element = FocusManager.GetFocusedElement(this);
         if (element is Button or ListView) return;
-        
+
         SelectedTrainLine = null;
         LinesListView.SelectedItem = null;
         ClearMap();
     }
 
-    [ICommand] public void DeleteLine()
+    [ICommand]
+    public void DeleteLine()
     {
         var window = new ConfirmCancelWindow
         {
@@ -146,7 +147,8 @@ public partial class LinesView : Component
         }
     }
 
-    [ICommand] public void EditLine()
+    [ICommand]
+    public void EditLine()
     {
         CreateUpdateLine window = new()
         {
@@ -155,10 +157,10 @@ public partial class LinesView : Component
         window.SetLine(SelectedTrainLine);
         window.ShowDialog();
 
-        if(window.ConfirmedSave)
+        if (window.ConfirmedSave)
         {
             using DbContext db = new();
-            
+
             var tl = db.Lines.Include(l => l.Stops)
                             .Include(l => l.Source)
                             .Include(l => l.Destination)
@@ -172,7 +174,7 @@ public partial class LinesView : Component
             tl.Destination = SelectedTrainLine.Destination;
             tl.Stops = SelectedTrainLine.Stops;
             db.SaveChanges();
-            
+
             var successWindow = new ConfirmCancelWindow
             {
                 Title = "Uspeh",
@@ -187,7 +189,8 @@ public partial class LinesView : Component
         LinesListView.Focus();
     }
 
-    [ICommand] public void CreateNewLine()
+    [ICommand]
+    public void CreateNewLine()
     {
         CreateUpdateLine window = new()
         {
@@ -197,7 +200,7 @@ public partial class LinesView : Component
         if (window.ConfirmedSave)
         {
             AvailableLines.Add(window.CurrentLine);
-            if(SearchInputText is null)
+            if (SearchInputText is null)
             {
                 FilteredLines.Add(window.CurrentLine);
             }
@@ -246,17 +249,16 @@ public partial class LinesView : Component
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-        IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
-        if (focusedControl is DependencyObject)
-        {
-            string str = HelpProvider.GetHelpKey((DependencyObject)focusedControl);
-            HelpProvider.ShowHelp(str, this);
-        }
+        HelpProvider.ShowHelp("LinesView", this);
     }
 
-    public void doThings(string param)
+    private void Grid_KeyDown(object sender, KeyEventArgs e)
     {
-        //Title = param;
+        if (e.SystemKey == Key.F1 || e.Key == Key.F1)
+        {
+            HelpProvider.ShowHelp("LinesView", this);
+        }
+
     }
 
 }

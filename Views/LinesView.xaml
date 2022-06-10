@@ -8,10 +8,10 @@
              xmlns:local="clr-namespace:P2.Views"
              mc:Ignorable="d"
              xmlns:l="clr-namespace:P2"
-             l:HelpProvider.HelpKey="TavelDate"
              FocusManager.IsFocusScope="True"
              FontSize="28"
-             Background="White">
+             Background="White"
+             KeyDown="Grid_KeyDown">
   <Primitives:Component.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
   </Primitives:Component.CommandBindings>
@@ -28,7 +28,7 @@
       </StackPanel>
     </ControlTemplate>
   </UserControl.Resources>
-  <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" Margin="10 5">
+  <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" Margin="10 5" KeyDown="Grid_KeyDown">
     <StackPanel Margin="10 5">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -55,7 +55,7 @@
                     Padding="15 5"
                     Cursor="Hand"
                     Command="{Binding CreateNewLineCommand}"
-                    >Dodaj liniju
+                    ToolTip="Dodaj novu liniju">Dodaj liniju
             </Button>
             <Button Name="EditButton"
                     Cursor="Hand"
@@ -63,7 +63,8 @@
                     IsEnabled="{Binding IsEditable}" 
                     Template="{StaticResource DefaultButtonTemplate}" 
                     Margin="10 0 0 0"
-                    Padding="15 5">
+                    Padding="15 5"
+                    ToolTip="Izmeni odabranu liniju">
               Izmeni liniju
             </Button>
             <Button Name="DeleteButton"
@@ -71,7 +72,8 @@
                     IsEnabled="{Binding IsEditable}" 
                     Template="{StaticResource RedButtonTemplate}" 
                     Command="{Binding DeleteLineCommand}"
-                    Margin="10 0 0 0" Padding="15 5">
+                    Margin="10 0 0 0" Padding="15 5"
+                    ToolTip="Izbriši odabranu liniju">
               Obriši liniju
             </Button>
           </StackPanel>
@@ -84,7 +86,7 @@
                      Margin="0 10 0 0" 
                      Height="50"
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     Name="SearchInput" l:HelpProvider.HelpKey="TavelDate">
+                     Name="SearchInput">
             </TextBox>
             <TextBlock FontSize="26" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
               <TextBlock.Style>
