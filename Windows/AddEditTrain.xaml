@@ -47,18 +47,18 @@
                 <DataTemplate>
                   <WrapPanel>
                     <WrapPanel>
-                      <Border Cursor="{Binding [0].Cursor}" MouseMove="SeatDrag" Tag="{Binding [0]}" Drop="SeatDrop" Background="{Binding [0].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                      <Border Cursor="{Binding [0].Cursor}" MouseMove="SeatDrag" Tag="{Binding [0]}" Drop="SeatDrop" Background="{Binding [0].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
                         <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                       </Border>
-                      <Border Cursor="{Binding [1].Cursor}" MouseMove="SeatDrag" Tag="{Binding [1]}" Drop="SeatDrop" Background="{Binding [1].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                      <Border Cursor="{Binding [1].Cursor}" MouseMove="SeatDrag" Tag="{Binding [1]}" Drop="SeatDrop" Background="{Binding [1].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
                         <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                       </Border>
                     </WrapPanel>
                     <WrapPanel Margin="60 0 0 0">
-                      <Border Cursor="{Binding [2].Cursor}" MouseMove="SeatDrag" Tag="{Binding [2]}" Drop="SeatDrop" Background="{Binding [2].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                      <Border Cursor="{Binding [2].Cursor}" MouseMove="SeatDrag" Tag="{Binding [2]}" Drop="SeatDrop" Background="{Binding [2].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
                         <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                       </Border>
-                      <Border Cursor="{Binding [3].Cursor}" MouseMove="SeatDrag" Tag="{Binding [3]}" Drop="SeatDrop" Background="{Binding [3].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="50" Width="50" BorderBrush="Gray" BorderThickness="1">
+                      <Border Cursor="{Binding [3].Cursor}" MouseMove="SeatDrag" Tag="{Binding [3]}" Drop="SeatDrop" Background="{Binding [3].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
                         <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                       </Border>
                     </WrapPanel>

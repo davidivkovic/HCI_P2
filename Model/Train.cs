@@ -129,7 +129,11 @@ public class Departure : Entity
 public class Ticket : Entity
 {
     public Departure Departure { get; set; }
+    public Station Source { get; set; }
+    public Station Destination { get; set; }
     public List<Seat> Seats { get; set; }
     public DateOnly DepartureDate { get; set; }
     public DateTime Timestamp { get; set; }
+    public bool IsReturn { get; set; }
+    public double Price { get; set; }
 }

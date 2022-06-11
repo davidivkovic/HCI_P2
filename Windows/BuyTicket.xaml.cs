@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,20 @@ public partial class BuyTicket : Primitives.Window
     public ObservableCollection<List<Slot>> Seats { get; set; }
     public ObservableCollection<Slot> TakenSeats { get; set; } = new();
     public string PleaseText { get; set; } = "Molimo Vas odaberite neko od sedišta";
+    public string TotalPrice { get; set; } = "0.00 RSD";
+    public bool IsReturnTicket { get; set; }
+
+    public void OnIsReturnTicketChanged() => TotalPrice = GetPrice();
+
+    public string GetPrice()
+    {
+        var price = TakenSeats.Count * Departure?.Line?.Stops?.LastOrDefault()?.Price ?? 0;
+        if (IsReturnTicket) price = price * 1.5;
+        var culture = (CultureInfo) new CultureInfo("sr-Latn-RS").Clone();
+        culture.NumberFormat.CurrencyGroupSeparator = ",";
+        culture.NumberFormat.CurrencyDecimalSeparator = ".";
+        return price.ToString("C2", culture);
+    }
 
     public BuyTicket()
     {
@@ -118,6 +133,7 @@ public partial class BuyTicket : Primitives.Window
                 b.ClearValue(BorderBrushProperty);
             }
             PleaseText = TakenSeats.Count > 0 ? "" : "Molimo Vas odaberite neko od sedišta";
+            TotalPrice = GetPrice();
         }
     }
 

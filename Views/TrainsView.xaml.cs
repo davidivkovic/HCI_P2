@@ -115,7 +115,7 @@ public partial class TrainsView : Component
             new ConfirmCancelWindow()
             {
                 Title = "Uspeh",
-                Message = "Vaše izmene su usešno sačuvane",
+                Message = "Vaše izmene su uspešno sačuvane",
                 ConfirmButtonText = "U redu",
                 CancelButtonText = "",
                 Image = MessageBoxImage.Information
@@ -149,7 +149,7 @@ public partial class TrainsView : Component
             new ConfirmCancelWindow()
             {
                 Title = "Uspeh",
-                Message = "Vaše izmene su usešno sačuvane",
+                Message = "Vaše izmene su uspešno sačuvane",
                 ConfirmButtonText = "U redu",
                 CancelButtonText = "",
                 Image = MessageBoxImage.Information
@@ -172,7 +172,7 @@ public partial class TrainsView : Component
             new ConfirmCancelWindow()
             {
                 Title = "Uspeh",
-                Message = "Vaše izmene su usešno sačuvane",
+                Message = "Vaše izmene su uspešno sačuvane",
                 ConfirmButtonText = "U redu",
                 CancelButtonText = "",
                 Image = MessageBoxImage.Information
