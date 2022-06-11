@@ -202,7 +202,5 @@ public partial class SearchDepartures : Primitives.Component
         departuresTable.Visibility = (Visibility)ShowDepartures;
         departuresTable.ItemsSource = FilteredDepartures;
         SearhClicked = true;
-
     }
-
 }

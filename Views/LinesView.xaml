@@ -10,11 +10,7 @@
              xmlns:l="clr-namespace:P2"
              FocusManager.IsFocusScope="True"
              FontSize="28"
-             Background="White"
-             KeyDown="Grid_KeyDown">
-  <Primitives:Component.CommandBindings>
-    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
-  </Primitives:Component.CommandBindings>
+             Background="White">
   <UserControl.Resources>
     <ControlTemplate TargetType="{x:Type m:Pushpin}" x:Key="PinTemplate" >
       <StackPanel>
@@ -28,8 +24,8 @@
       </StackPanel>
     </ControlTemplate>
   </UserControl.Resources>
-  <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" Margin="10 5" KeyDown="Grid_KeyDown">
-    <StackPanel Margin="10 5">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="20 10">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto"/>
@@ -40,7 +36,7 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="0 0 0 20">
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="0 0 0 0">
           <TextBlock 
               FontWeight="Medium" 
               FontSize="42" 
@@ -73,7 +69,7 @@
                     Template="{StaticResource RedButtonTemplate}" 
                     Command="{Binding DeleteLineCommand}"
                     Margin="10 0 0 0" Padding="15 5"
-                    ToolTip="Izbriši odabranu liniju">
+                    ToolTip="Obriši odabranu liniju">
               Obriši liniju
             </Button>
           </StackPanel>
@@ -128,7 +124,7 @@
         <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mrežna linija</TextBlock>
         <m:Map Name="StationMap"
                 Focusable="True"
-                Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="560" VerticalAlignment="Top"
+                Grid.Column="1" Grid.Row="1" Margin="20 65 20 0" Height="560" VerticalAlignment="Top"
                 CredentialsProvider="xSIlQoZP2ZYkUqhaqMph~bleJNY8DyQJwIhZQQM7gQg~AqT-Ova12BSWCBj4aWfNLwhh5XtURpGjTlpWPXjnvejxc2ClnYvyzpIqdM5yzdIl"
                 ZoomLevel="7"
                 Center="43.990060, 20.436927">

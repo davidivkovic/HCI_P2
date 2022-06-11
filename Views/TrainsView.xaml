@@ -12,138 +12,137 @@
   FocusManager.IsFocusScope="True"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
-  <Primitives:Component.CommandBindings>
-    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
-  </Primitives:Component.CommandBindings>
-  <Grid Margin="20 15">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="*"  />
-    </Grid.ColumnDefinitions>
-    <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <TextBlock VerticalAlignment="Center" FontSize="42">Pregled Vozova</TextBlock>
-      <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-        <Button Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Dodavanje novog voza">
-          Dodaj voz
-        </Button>
-        <Button Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Izmena odabranog voza">
-          Izmeni voz
-        </Button>
-        <Button Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}" ToolTip="Brisanje odabranog voza">
-          Obriši voz
-        </Button>
-      </WrapPanel>
-    </Grid>
-    <StackPanel Grid.Row="1" Grid.Column="0" Width="300" HorizontalAlignment="Left">
-      <TextBlock FontSize="28" FontWeight="Medium" TextWrapping="NoWrap">Pretraga vozova</TextBlock>
-      <Grid>
-        <TextBox 
-          VerticalContentAlignment="Center" 
-          Padding="5 0" Margin="0 10 0 0" 
-          Height="50"
-          Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          Name="FilterInput"
-        >
-        </TextBox>
-        <TextBlock FontSize="24" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
-          <TextBlock.Style>
-            <Style TargetType="{x:Type TextBlock}">
-              <Setter Property="Visibility" Value="Collapsed"/>
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding Text, ElementName=FilterInput}" Value="">
-                  <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </TextBlock.Style>
-        </TextBlock>
-        <Button 
-          Width="50"
-          Height="50" 
-          Background="Transparent" 
-          BorderBrush="Transparent" 
-          Cursor="Hand" Margin="0 10 0 0" 
-          HorizontalAlignment="Right"
-          Visibility="{Binding ClearFilterVisible}"
-          Command="{Binding ClearFilterCommand}"
-        >
-          ×
-        </Button>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid Margin="20 10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"  />
+      </Grid.ColumnDefinitions>
+      <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+        <TextBlock FontWeight="Medium" VerticalAlignment="Center" FontSize="42">Pregled vozova</TextBlock>
+        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+          <Button FontSize="28" Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Dodavanje novog voza">
+            Dodaj voz
+          </Button>
+          <Button FontSize="28" Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Izmena odabranog voza">
+            Izmeni voz
+          </Button>
+          <Button FontSize="28" Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}" ToolTip="Brisanje odabranog voza">
+            Obriši voz
+          </Button>
+        </WrapPanel>
       </Grid>
-      <ListView Name="TrainsListView" LostFocus="ListViewLostFocus" Height="445" Margin="0 10 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
-        <ListView.ItemTemplate>
-          <DataTemplate>
-            <Grid Margin="6">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <StackPanel ToolTip="Podaci o vozu">
-                <TextBlock>
-                  Voz <Run Text="{Binding Number}"/>
-                </TextBlock>
-                <TextBlock FontSize="26">
-                  Tip <Run Text="{Binding Name, Mode=OneWay}"/>
-                </TextBlock>
-                <TextBlock FontSize="24">
-                  <Run Text="{Binding NumberOfSeats, Mode=OneWay}"/>
-                  Sedišta
-                </TextBlock>
-              </StackPanel>
-              <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding Image, Mode=OneWay}" />
-            </Grid>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
-    </StackPanel>
-    <StackPanel Grid.Row="1" Grid.Column="1" >
-      <StackPanel Visibility="{Binding DetailsVisible}" Margin="30 2 0 0" Orientation="Horizontal">
-        <StackPanel>
-          <TextBlock FontSize="26">Raspored sedišta</TextBlock>
-          <ItemsControl BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Seats}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <WrapPanel>
+      <StackPanel Grid.Row="1" Grid.Column="0" Width="300" HorizontalAlignment="Left">
+        <TextBlock FontSize="28" FontWeight="Medium" TextWrapping="NoWrap">Pretraga vozova</TextBlock>
+        <Grid>
+          <TextBox 
+            VerticalContentAlignment="Center" 
+            Padding="5 0" Margin="0 10 0 0" 
+            Height="50"
+            Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            Name="FilterInput"
+          >
+          </TextBox>
+          <TextBlock FontSize="24" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+            <TextBlock.Style>
+              <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding Text, ElementName=FilterInput}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <Button 
+            Width="50"
+            Height="50" 
+            Background="Transparent" 
+            BorderBrush="Transparent" 
+            Cursor="Hand" Margin="0 10 0 0" 
+            HorizontalAlignment="Right"
+            Visibility="{Binding ClearFilterVisible}"
+            Command="{Binding ClearFilterCommand}"
+          >
+            ×
+          </Button>
+        </Grid>
+        <ListView Name="TrainsListView" LostFocus="ListViewLostFocus" Height="445" Margin="0 10 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="6">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel ToolTip="Podaci o vozu">
+                  <TextBlock>
+                    Voz <Run Text="{Binding Number}"/>
+                  </TextBlock>
+                  <TextBlock FontSize="26">
+                    Tip <Run Text="{Binding Name, Mode=OneWay}"/>
+                  </TextBlock>
+                  <TextBlock FontSize="24">
+                    <Run Text="{Binding NumberOfSeats, Mode=OneWay}"/>
+                    Sedišta
+                  </TextBlock>
+                </StackPanel>
+                <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding Image, Mode=OneWay}" />
+              </Grid>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </StackPanel>
+      <StackPanel Grid.Row="1" Grid.Column="1" >
+        <StackPanel Visibility="{Binding DetailsVisible}" Margin="30 2 0 0" Orientation="Horizontal">
+          <StackPanel>
+            <TextBlock FontSize="26">Raspored sedišta</TextBlock>
+            <ItemsControl BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Seats}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
                   <WrapPanel>
-                    <Border Background="{Binding [0].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                      <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <Border Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                      <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
+                    <WrapPanel>
+                      <Border Background="{Binding [0].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                      </Border>
+                      <Border Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                      </Border>
+                    </WrapPanel>
+                    <WrapPanel Margin="60 0 0 0">
+                      <Border Background="{Binding [2].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                      </Border>
+                      <Border Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                      </Border>
+                    </WrapPanel>
                   </WrapPanel>
-                  <WrapPanel Margin="60 0 0 0">
-                    <Border Background="{Binding [2].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                      <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <Border Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                      <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                  </WrapPanel>
-                </WrapPanel>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </StackPanel>
-        <StackPanel Margin="20 43 0 0">
-          <StackPanel Orientation="Horizontal">
-            <Border Width="40" Height="40" Background="LightSkyBlue" BorderBrush="Gray" BorderThickness="1" />
-            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Jedno sedište</TextBlock>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
           </StackPanel>
-          <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-            <Border Width="80" Height="40" Background="LawnGreen" BorderBrush="Gray" BorderThickness="1" />
-            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Duplo sedište</TextBlock>
-          </StackPanel>
-          <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-            <Border Width="80" Height="80" Background="Orange" BorderBrush="Gray" BorderThickness="1" />
-            <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Dupli sto</TextBlock>
+          <StackPanel Margin="20 43 0 0">
+            <StackPanel Orientation="Horizontal">
+              <Border Width="40" Height="40" Background="LightSkyBlue" BorderBrush="Gray" BorderThickness="1" />
+              <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Jedno sedište</TextBlock>
+            </StackPanel>
+            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+              <Border Width="80" Height="40" Background="LawnGreen" BorderBrush="Gray" BorderThickness="1" />
+              <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Duplo sedište</TextBlock>
+            </StackPanel>
+            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+              <Border Width="80" Height="80" Background="Orange" BorderBrush="Gray" BorderThickness="1" />
+              <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Dupli sto</TextBlock>
+            </StackPanel>
           </StackPanel>
         </StackPanel>
       </StackPanel>
-    </StackPanel>
-  </Grid>
+    </Grid>
+  </ScrollViewer>
 </Primitives:Component>

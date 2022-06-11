@@ -7,6 +7,7 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   xmlns:local="clr-namespace:P2.Views"
   mc:Ignorable="d" 
+  MinWidth="400"
   Background="White"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >

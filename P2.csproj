@@ -24,6 +24,12 @@
     <None Remove="Assets\Images\trashcan_open.png" />
     <None Remove="Assets\logo.png" />
     <None Remove="Fonts\Inter.ttf" />
+    <None Remove="Help\AddEditTimetable.htm" />
+    <None Remove="Help\AddEditTrain.htm" />
+    <None Remove="Help\BuyTicket.htm" />
+    <None Remove="Help\CreateUpdateLineHelp.htm" />
+    <None Remove="Help\LinesView.htm" />
+    <None Remove="Help\TrainsView.htm" />
   </ItemGroup>
 
   <ItemGroup>
@@ -93,6 +99,24 @@
     <Resource Include="Assets\Images\trashcan_open.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Help\AddEditTimetable.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\BuyTicket.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CreateUpdateLineHelp.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LinesView.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TrainsView.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

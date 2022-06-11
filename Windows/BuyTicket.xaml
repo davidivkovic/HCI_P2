@@ -7,6 +7,8 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:P2.Windows"
   mc:Ignorable="d"
+  MinWidth="960"
+  MinHeight="760"
   FontFamily="/Fonts/#Inter"
   Title="BuyTicket"
   SizeToContent="WidthAndHeight"
@@ -17,7 +19,7 @@
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
   </Window.CommandBindings>
-  <Grid Margin="30 20 50 30">
+  <Grid Margin="30 20 0 10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
@@ -70,7 +72,7 @@
           </Grid>
         </Border>
         <TextBlock FontSize="24" FontWeight="Medium" Margin="0 20 0 0">Odabrana sedišta:</TextBlock>
-        <Grid>
+        <Grid Margin="0 5 0 0">
           <TextBlock Foreground="DimGray" Height="40" FontSize="22" Text="{Binding PleaseText}"/>
           <ItemsControl MaxWidth="{Binding ActualWidth, ElementName=DepartureArrivalPanel}" ItemsSource="{Binding TakenSeats}"  AlternationCount="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}">
             <ItemsControl.ItemsPanel>
@@ -93,7 +95,7 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
         </Grid>
-        <CheckBox IsChecked="{Binding IsReturnTicket}" VerticalContentAlignment="Center" Cursor="Hand" Margin="0 20 0 0" FontSize="15.5">
+        <CheckBox IsChecked="{Binding IsReturnTicket}" VerticalContentAlignment="Center" Cursor="Hand" Margin="0 10 0 0" FontSize="15.5">
           Karta je povratna
           <CheckBox.LayoutTransform>
             <ScaleTransform ScaleX="1.55" ScaleY="1.55" />
@@ -105,35 +107,54 @@
         <Run FontWeight="Medium" Text="{Binding TotalPrice, Mode=OneWay}"/>
       </TextBlock>
     </Grid>
-    <StackPanel Margin="50 0 0 0" Grid.Row="1" Grid.Column="1">
-      <TextBlock FontWeight="Medium" FontSize="26">Odabir sedišta</TextBlock>
-      <ItemsControl BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Seats}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <WrapPanel>
-              <StackPanel Margin="0 0 60 0" Orientation="Horizontal">
-                <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [0]}" Cursor="{Binding [0].PurchaseCursor}" Background="{Binding [0].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </Border>
-                <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [1]}" Cursor="{Binding [1].PurchaseCursor}"  Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </Border>
-              </StackPanel>
-              <StackPanel Orientation="Horizontal">
-                <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [2]}" Cursor="{Binding [2].PurchaseCursor}"  Background="{Binding [2].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </Border>
-                <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [3]}" Cursor="{Binding [3].PurchaseCursor}"  Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
-                  <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </Border>
-              </StackPanel>
-            </WrapPanel>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+    <StackPanel Margin="50 0 0 0" Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+      <StackPanel >
+        <TextBlock FontWeight="Medium" FontSize="26">Odabir sedišta</TextBlock>
+        <ItemsControl BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Seats}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <WrapPanel>
+                <StackPanel Margin="0 0 60 0" Orientation="Horizontal">
+                  <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [0]}" Cursor="{Binding [0].PurchaseCursor}" Background="{Binding [0].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  </Border>
+                  <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [1]}" Cursor="{Binding [1].PurchaseCursor}"  Background="{Binding [1].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                  <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [2]}" Cursor="{Binding [2].PurchaseCursor}"  Background="{Binding [2].Background}" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  </Border>
+                  <Border Focusable="True" MouseDown="SeatClicked" Tag="{Binding [3]}" Cursor="{Binding [3].PurchaseCursor}"  Background="{Binding [3].Background}" Margin="-1 0 0 0" Height="40" Width="40" BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  </Border>
+                </StackPanel>
+              </WrapPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+      <StackPanel Margin="25 38 40 0">
+        <StackPanel >
+          <TextBlock FontSize="20">Jedno sedište</TextBlock>
+          <Border Margin="0 10 0 10" HorizontalAlignment="Left" Height="40" Width="40" Background="LightSkyBlue" BorderBrush="SteelBlue" BorderThickness="1"/>
+        </StackPanel>
+
+        <StackPanel>
+          <TextBlock FontSize="20">Duplo sedište</TextBlock>
+          <Border Margin="0 10 0 0" Height="40" Width="40" HorizontalAlignment="Left" Background="LawnGreen" BorderBrush="Green" BorderThickness="1"/>
+        </StackPanel>
+
+        <StackPanel Margin="0 10 0 0">
+          <TextBlock FontSize="20" HorizontalAlignment="Left">Dupli sto</TextBlock>
+          <Border Margin="0 10 0 0" Height="40" Width="40" HorizontalAlignment="Left" Background="Orange" BorderBrush="SaddleBrown" BorderThickness="1"/>
+        </StackPanel>
+      </StackPanel>
     </StackPanel>
-    <StackPanel Orientation="Horizontal">
-      
+    <StackPanel Margin="0 40 10 0" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button Template="{StaticResource DefaultButtonTemplate}" IsDefault="True" Cursor="Hand" MinWidth="150" FontSize="32" Padding="32 10" Command="{Binding BuyCommand}" Content="Kupi kartu"/>
+      <Button Template="{StaticResource NeutralButtonTemplate}" Cursor="Hand" MinWidth="150" FontSize="32" Padding="20 10"  Margin="10 0 0 0" Command="{Binding CancelCommand}"  Content="Odustani"/>
     </StackPanel>
   </Grid>
 </Primitives:Window>

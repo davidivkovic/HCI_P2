@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.EntityFrameworkCore;
+using CommunityToolkit.Mvvm.Input;
 using P2.Model;
 
 namespace P2.Windows;
@@ -137,9 +138,20 @@ public partial class BuyTicket : Primitives.Window
         }
     }
 
+    [ICommand]
+    public void Buy()
+    {
+        
+    }
+
+    [ICommand]
+    public void Cancel()
+    {
+
+    }
+
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
         HelpProvider.ShowHelp("BuyTicket", this);
     }
-
 }

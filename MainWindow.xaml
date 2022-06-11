@@ -10,8 +10,53 @@
   mc:Ignorable="d"
   WindowStartupLocation="CenterScreen"
   Height="800" Width="1300" FontSize="28"
-  FontFamily="/Fonts/#Inter">
+  FontFamily="/Fonts/#Inter"
+  DataContext="{Binding RelativeSource={RelativeSource Self}}"
+  MinWidth="{Binding ViewMinWidth, Mode=OneWay}"
+  MinHeight="{Binding ViewMinHeight, Mode=OneWay}"
+>
+  <Primitives:Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="ShowHelp"/>
+  </Primitives:Window.CommandBindings>
   <Grid>
-    <Views:TimetableView/>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Margin="0 0" Visibility="{Binding NavbarVisible}">
+      <StackPanel Orientation="Horizontal" >
+
+        <Menu BorderThickness="1" BorderBrush="DimGray" FontSize="24">
+          <MenuItem Padding="20 5" Cursor="Hand" Header="_Linije">
+            <MenuItem Command="{Binding ShowLinesCommand}" InputGestureText="Ctrl+L" Cursor="Hand" Header="Pregled Linija"/>
+            <MenuItem Command="{Binding ShowTimetableCommand}" InputGestureText="Ctrl+R" Cursor="Hand" Header="Pregled Reda Vožnje"/>
+          </MenuItem >
+        </Menu>
+        <Menu BorderThickness="1" BorderBrush="DimGray" FontSize="24">
+          <MenuItem Padding="20 5" Cursor="Hand" Header="_Vozovi">
+            <MenuItem Command="{Binding ShowTrainsCommand}" InputGestureText="Ctrl+Shift+V" Cursor="Hand" Header="Pregled Vozova"/>
+          </MenuItem >
+        </Menu>
+        <Menu BorderThickness="1" BorderBrush="DimGray" FontSize="24">
+          <MenuItem Padding="20 5" Cursor="Hand" Header="_Karte">
+            <MenuItem InputGestureText="Ctrl+K" Cursor="Hand" Header="Prodate Karte za Vožnju"/>
+            <MenuItem Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
+          </MenuItem >
+        </Menu>
+        <Menu BorderThickness="1" BorderBrush="DimGray" FontSize="24">
+          <MenuItem Padding="20 5" Cursor="Hand" Header="_Nalog">
+            <MenuItem Cursor="Hand" Header="Odjava" InputGestureText="Ctrl+O"  Command="{Binding LogOutCommand}"/>
+          </MenuItem >
+        </Menu>
+        <Menu BorderThickness="1" BorderBrush="DimGray" FontSize="24">
+          <MenuItem Padding="20 5" Cursor="Hand" Header="_Pomoć">
+            <MenuItem InputGestureText="Ctrl+P" Cursor="Hand" Header="Prikaži Pomoć"/>
+            <MenuItem InputGestureText="Ctrl+T" Cursor="Hand" Header="Pokreni Tutorijal"/>
+          </MenuItem >
+        </Menu>
+      </StackPanel>
+      <!--<Button FontSize="24" Template="{StaticResource NeutralButtonTemplate}" Command="{Binding LogOutCommand}" Padding="20 0" Cursor="Hand" HorizontalAlignment="Right">Odjava</Button>-->
+    </Grid>
+    <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
   </Grid>
 </Primitives:Window>

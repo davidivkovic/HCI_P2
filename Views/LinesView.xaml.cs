@@ -246,19 +246,4 @@ public partial class LinesView : Component
             }
         }
     }
-
-    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-        HelpProvider.ShowHelp("LinesView", this);
-    }
-
-    private void Grid_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.SystemKey == Key.F1 || e.Key == Key.F1)
-        {
-            HelpProvider.ShowHelp("LinesView", this);
-        }
-
-    }
-
 }

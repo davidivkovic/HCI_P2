@@ -16,6 +16,9 @@ namespace P2.Views
             InitializeComponent();
         }
 
+        public delegate void LoginSuccess(User user);
+        public event LoginSuccess OnLoginSuccess;
+
         public string Username { get; set; }
         public string Password { get; set; }
 
@@ -36,6 +39,10 @@ namespace P2.Views
                 UsernameError = "Korisnik ne postoji. Pokušajte ponovo.";
             else if (user.Password != Password)
                 PasswordError = "Neispravna lozinka. Pokušajte ponovo.";
+            else
+            {
+                OnLoginSuccess(user);
+            }
         }
 
         private void PasswordChanged(object sender, RoutedEventArgs e) => Password = ((PasswordBox)sender).Password;

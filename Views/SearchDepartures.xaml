@@ -13,7 +13,6 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         MinWidth="1200"
 >
-
   <Grid >
     <Grid  x:Name="parent">
       <Grid.ColumnDefinitions>

@@ -179,10 +179,4 @@ public partial class TrainsView : Component
             }.ShowDialog();
         }
     }
-
-    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-        HelpProvider.ShowHelp("TrainsView", this);
-    }
-
 }

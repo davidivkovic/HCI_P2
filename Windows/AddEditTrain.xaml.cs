@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,7 +30,7 @@ public class Slot : Observable
     public SeatType SeatType { get; set; }
     public bool Assigned => SeatType != SeatType.None;
     public string FormattedSeatNumber => SeatType == SeatType.None ? "" : SeatNumber.ToString();
-    public string Cursor => SeatType == SeatType.None ? "Arrow" : "/Assets/Cursors/grab.cur";
+    public string Cursor => SeatType == SeatType.None ? "Arrow" : "Hand";
     public string PurchaseCursor => SeatType == SeatType.None || PreviewSeatType == SeatType.Taken ? "Arrow" : "Hand";
     public Brush GetBackground()
     {
@@ -529,6 +530,28 @@ public partial class AddEditTrain : Primitives.Window
         w.ShowDialog();
 
         if (w.Confirmed) Close();
+    }
+
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        bool wasCodeClosed = new StackTrace()
+            .GetFrames()
+            .FirstOrDefault(x => x.GetMethod() == typeof(System.Windows.Window).GetMethod("Close")) != null;
+        if (!wasCodeClosed) // Closed by pressing x
+        {
+            var w = new ConfirmCancelWindow
+            {
+                Message = "Da li ste sigurni da želite da odustanete od izmene voza?",
+                ConfirmButtonText = "Odustani",
+                CancelButtonText = "Otakži",
+                ConfirmIsDanger = true,
+                Image = MessageBoxImage.Stop
+            };
+            w.ShowDialog();
+
+            if (!w.Confirmed) e.Cancel = true;
+        }
+        base.OnClosing(e);
     }
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
