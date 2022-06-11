@@ -55,6 +55,13 @@ public class Train : Entity
         TrainType.InterCity or _ => "Inter City"
     };
 
+    public double Speed => Type switch
+    {
+        TrainType.Falcon => 120,
+        TrainType.Regio => 80,
+        TrainType.InterCity or _ => 100
+    };
+
     public int NumberOfSeats => Seating.Select(sg => sg).SelectMany(s => s.Seats).Count();
 }
 
@@ -81,7 +88,9 @@ public class Stop : Entity
     public double Price { get; set; }
     public TimeSpan Duration { get; set; }
     public string FormattedDuration => Number > 1 ? $"{Duration:hh}h {Duration:mm}m od prethodne stanice" : "početna stanica";
+    public string FormattedDistance=> $"{Math.Round(80 * Duration.TotalMinutes / 60)} km od prethodne stanice";
     public string FormattedPrice => Number > 1 ? $"{Price} RSD" : "";
+    public TimeSpan CalculateDuration(Train train, Station station) => TimeSpan.FromHours(Station.DistanceTo(station) / train.Speed);
 }
 
 public class TrainLine : Entity
@@ -116,8 +125,12 @@ public class Departure : Entity
     public TimeOnly Time { get; set; }
     public TimeSpan TravelTime()
     {
-        TimeSpan totalDurations = Line.Stops.First().Duration;
-        Line.Stops.ForEach(s => totalDurations = totalDurations.Add(s.Duration));
+        TimeSpan totalDurations = Line.Stops.First().CalculateDuration(Train, Line.Stops.First().Station);
+        for(int i = 1; i < Line.Stops.Count; i++)
+        {
+            totalDurations = totalDurations.Add(Line.Stops[i].CalculateDuration(Train, Line.Stops[i - 1].Station));
+        }
+        totalDurations = totalDurations.Add(TimeSpan.FromMinutes(Line.Stops.Count - 2));
         return totalDurations;
     }
 

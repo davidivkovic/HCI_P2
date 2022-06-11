@@ -13,7 +13,7 @@ namespace P2.Windows;
 
 public partial class AddEditTimetable : P2.Primitives.Window
 {
-    public AddEditTimetable()
+    public AddEditTimetable(TrainLine trainLine, Departure departure = null)
     {
         using DbContext db = new();
         Trains = new(db.Trains
@@ -23,13 +23,10 @@ public partial class AddEditTimetable : P2.Primitives.Window
         );
         FilteredTrains = new(Trains.Take(3));
 
-        CurrentTrainLine = db.Lines.Take(1)
-            .Include(l => l.Source)
-            .Include(l => l.Destination)
-            .FirstOrDefault();
+        CurrentTrainLine = trainLine;
+        CurrentDeparture = departure;
 
-        //CurrentDeparture = db.Departures.Take(1).Include(d => d.Train).FirstOrDefault();
-        if(CurrentDeparture is not null)
+        if (CurrentDeparture is not null)
         {
             int hour = CurrentDeparture.Time.Hour;
             int minutes = CurrentDeparture.Time.Minute;
@@ -46,6 +43,12 @@ public partial class AddEditTimetable : P2.Primitives.Window
         }
 
         InitializeComponent();
+    }
+
+    public void SetData(TrainLine tl, Departure d = null)
+    {
+        CurrentTrainLine = tl;
+        CurrentDeparture = d;
     }
 
     public string HeadingText { get; set; }
@@ -76,6 +79,8 @@ public partial class AddEditTimetable : P2.Primitives.Window
     public bool IsTrainSelected => SelectedTrain is not null;
 
     public Visibility AreTrainDetailsVisible => IsTrainSelected ? Visibility.Visible : Visibility.Hidden;
+
+    public bool Saved { get; set; }
 
     public void OnFilterChanged()
     {
@@ -134,7 +139,8 @@ public partial class AddEditTimetable : P2.Primitives.Window
             db.Update(CurrentDeparture);
             db.SaveChanges();
 
-            //TODO close window
+            Saved = true;
+            Close();
         }
     }
 
@@ -150,7 +156,10 @@ public partial class AddEditTimetable : P2.Primitives.Window
         };
         w.ShowDialog();
 
-        //TODO close window
+        if(w.Confirmed)
+        {
+            Close();
+        }    
     }
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)

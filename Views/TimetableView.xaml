@@ -33,18 +33,22 @@
           </TextBlock>
           <WrapPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Template="{StaticResource DefaultButtonTemplate}"
+                    IsEnabled="{Binding IsLineSelected}"
+                    Command="{Binding AddNewDepartureCommand}"
                     Padding="15 5"
                     Cursor="Hand"
                     >Dodaj polazak
             </Button>
             <Button Name="EditButton"
                     IsEnabled="{Binding IsEditable}"
+                    Command="{Binding EditDepartureCommand}"
                     Template="{StaticResource DefaultButtonTemplate}" 
                     Margin="10 0 0 0"
                     Padding="15 5">
               Izmeni polazak
             </Button>
             <Button Name="DeleteButton"
+                    Command="{Binding DeleteDepartureCommand}"
                     Template="{StaticResource RedButtonTemplate}" 
                     IsEnabled="{Binding IsEditable}"
                     Margin="10 0 0 0" Padding="15 5">
@@ -54,44 +58,56 @@
         </Grid>
         <StackPanel Grid.Column="0" Grid.Row="1" Width="300" HorizontalAlignment="Left" >
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga linija</TextBlock>
-          <Grid>
-            <TextBox VerticalContentAlignment="Center" 
+          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 20 0 0">Polazište:</TextBlock>
+          <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
                      Padding="10 0 50 0"
                      Height="50"
-                     Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     Name="SearchInput">
-            </TextBox>
-            <TextBlock FontSize="26" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
-              <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding Text, ElementName=SearchInput}" Value="">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </TextBlock.Style>
-            </TextBlock>
-            <Button Width="50"
-                    Height="50" 
-                    Background="Transparent" 
-                    BorderBrush="Transparent" 
-                    Cursor="Hand" Margin="0 10 0 0" 
-                    HorizontalAlignment="Right"
-                    Visibility="{Binding IsInputClearable}"
-                    Command="{Binding ClearInputCommand}">
-              x
-            </Button>
-          </Grid>
-          <ListView ItemsSource="{Binding FilteredLines}"                     
+                     LostFocus="SourceInputLostFocus"
+                     Text="{Binding SourceInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="SourceInput">
+          </TextBox>
+          <ListBox x:Name="SourceSuggestionsListBox" Background="LightYellow" Visibility="Collapsed"
+                   SelectionChanged="SourceListBoxSelectionChanged"
+                   KeyDown="SourceListBoxKeyDown">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Cursor="Hand" Width="280" Margin="0 5">
+                  <TextBlock  Text="{Binding Name}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište:</TextBlock>
+          <TextBox VerticalContentAlignment="Center" 
+                     Margin="0 10 0 0" 
+                     Padding="10 0 50 0"
+                     Height="50"
+                     LostFocus="DestinationInputLostFocus"
+                     Text="{Binding DestinationInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="DestinationInput">
+          </TextBox>
+          <ListBox x:Name="DestinationSuggestionsListBox" Background="LightYellow" Visibility="Collapsed"
+                   SelectionChanged="DestinationListBoxSelectionChanged"
+                   KeyDown="SourceListBoxKeyDown">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Cursor="Hand" Width="280" Margin="0 5">
+                  <TextBlock  Text="{Binding Name}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <Button Template="{DynamicResource DefaultButtonTemplate}"
+                  Padding="0 5"
+                  Margin="0 20 0 0"
+                  Command="{Binding SearchLinesCommand}">Pretraži</Button>
+          <ListView Grid.Row="4" ItemsSource="{Binding FilteredLines}"                     
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     SelectionChanged="LinesListViewSelectionChanged"
-                    LostFocus="LinesListViewLostFocus"
                     Name="LinesListView"
-                    Height="500">
+                    Height="300">
             <ListView.ItemTemplate>
               <DataTemplate>
                 <TextBlock Margin="10 15" MaxWidth="280" Grid.Column="0" TextWrapping="Wrap" Text="{Binding FormattedLine}"/>
@@ -101,13 +117,80 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 0 0 0">
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Raspored vožnji</TextBlock>
-          <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}" AutoGenerateColumns="False">
+          <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}" 
+                    CanUserSortColumns="False"
+                    Name="TimetableDataGrid"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    SelectionChanged="TimetableGridSelectionChanged">
+            <DataGrid.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="Padding" Value="10 0"/>
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                      <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
-              <DataGridTextColumn Header="Voz" Binding="{Binding Train.Number}" IsReadOnly="True"/>
-              <DataGridTextColumn Header="Tip" Binding="{Binding Train.Name}" IsReadOnly="True"/>
-              <DataGridTextColumn Header="Polazak" Binding="{Binding TableTime}" IsReadOnly="True"/>
-              <DataGridTextColumn Header="Dolazak" Binding="{Binding ArrivalTableTime, Mode=OneTime}" IsReadOnly="True" />
-              <DataGridTextColumn Width="*" Header="Vreme putovanja" Binding="{Binding TravelTableTime, Mode=OneTime}" IsReadOnly="True" />
+              <DataGridTextColumn Header="Voz" Binding="{Binding Train.Number}" IsReadOnly="True">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTemplateColumn Header="Tip" IsReadOnly="True">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <WrapPanel VerticalAlignment="Center">
+                      <TextBlock Text="{Binding Train.Type}"/>
+                      <Image VerticalAlignment="Center" 
+                             HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" 
+                             Margin="10 0 0 0"
+                             Height="30" Source="{Binding Train.Image, Mode=OneWay}" />
+                    </WrapPanel>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTextColumn Header="Polazak" Binding="{Binding TableTime}" IsReadOnly="True">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn Header="Dolazak" Binding="{Binding ArrivalTableTime, Mode=OneTime}" IsReadOnly="True">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn Header="Vreme putovanja" Binding="{Binding TravelTableTime, Mode=OneTime}" IsReadOnly="True">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTemplateColumn Width="*">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate >
+                    <Button Margin="0 5" 
+                            Padding="10 0"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ShowDetailsCommand}"
+                            Template="{StaticResource NeutralButtonTemplate}">
+                      Detalji
+                    </Button>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
             </DataGrid.Columns>
           </DataGrid>
         </StackPanel>

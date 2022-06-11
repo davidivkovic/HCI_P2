@@ -1,0 +1,48 @@
+﻿<Primitives:Window  xmlns:Primitives="clr-namespace:P2.Primitives" x:Class="P2.Windows.DepartureDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2.Windows"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        FontSize="28"
+        Title="DepartureDetails" Height="450" Width="600">
+  <DataGrid Margin="20" ItemsSource="{Binding Data}"
+            CanUserSortColumns="False"
+            Name="TimetableDataGrid"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False">
+    <DataGrid.CellStyle>
+      <Style TargetType="DataGridCell">
+      <Setter Property="Padding" Value="10 0"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type DataGridCell}">
+            <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+              <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    </DataGrid.CellStyle>
+    <DataGrid.Columns>
+      <DataGridTextColumn Width="Auto" Header="Stanica" Binding="{Binding Station.Name}" IsReadOnly="True"/>
+      <DataGridTextColumn  Width="*" Header="Dolazak" Binding="{Binding ArrivalTableTime}" IsReadOnly="True">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn  Width="*" Header="Polazak" Binding="{Binding DepartureTableTime}" IsReadOnly="True">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+    </DataGrid.Columns>
+  </DataGrid>
+</Primitives:Window>
