@@ -21,6 +21,7 @@ namespace P2.Views
             using DbContext db = new();
 
             AvailableLines = db.Lines.Include(l => l.Stops)
+                                        .ThenInclude(s => s.Station)
                                      .Include(l => l.Source)
                                      .Include(l => l.Destination)
                                      .ToList();

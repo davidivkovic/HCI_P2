@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         FontSize="28"
-        Title="DepartureDetails" Height="450" Width="600">
+        Title="DepartureDetails" Height="450" Width="720">
   <DataGrid Margin="20" ItemsSource="{Binding Data}"
             CanUserSortColumns="False"
             Name="TimetableDataGrid"
@@ -40,6 +40,14 @@
         <DataGridTextColumn.ElementStyle>
           <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn Width="*" Header="Cena" Binding="{Binding PriceTable}" IsReadOnly="True">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>

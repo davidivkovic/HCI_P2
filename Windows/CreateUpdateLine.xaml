@@ -220,7 +220,7 @@
                     />
                     </Grid>
                     <TextBlock FontSize="26" Foreground="DimGray">
-                    <Run Text="{Binding FormattedDuration, Mode=OneWay}"/>
+                    <Run Text="{Binding FormattedDistance, Mode=OneWay}"/>
                     </TextBlock>
                   </StackPanel>
                 </DataTemplate>

@@ -14,10 +14,11 @@ public class GridModel
     public Station Station { get; set; }
     public TimeOnly DepartureTime { get; set; }
     public TimeOnly ArrivalTime { get; set; }
+    public double Price { get; set; }
 
     public string DepartureTableTime => DepartureTime != default ? DepartureTime.ToString("HH:mm") : "";
     public string ArrivalTableTime => ArrivalTime != default ? ArrivalTime.ToString("HH:mm") : "";
-
+    public string PriceTable => Price > 0 ? $"{Price} RSD" : "";
 
 }
 public partial class DepartureDetails : Window
@@ -44,7 +45,8 @@ public partial class DepartureDetails : Window
                 Data.Add(new()
                 {
                     Station = stops[i].Station,
-                    ArrivalTime = Data[i-1].DepartureTime.Add(stops[i].CalculateDuration(departure.Train, stops[i-1].Station))
+                    ArrivalTime = Data[i-1].DepartureTime.Add(stops[i].CalculateDuration(departure.Train, stops[i-1].Station)),
+                    Price = stops[i].Price
                 });
             }
             else
@@ -53,8 +55,9 @@ public partial class DepartureDetails : Window
                 {
                     Station = stops[i].Station,
                     ArrivalTime = Data[i-1].DepartureTime.Add(stops[i].CalculateDuration(departure.Train, stops[i - 1].Station)),
-                    DepartureTime = Data[i-1].DepartureTime.Add(stops[i].CalculateDuration(departure.Train, stops[i - 1].Station)).Add(TimeSpan.FromMinutes(1))
-            });
+                    DepartureTime = Data[i-1].DepartureTime.Add(stops[i].CalculateDuration(departure.Train, stops[i - 1].Station)).Add(TimeSpan.FromMinutes(1)),
+                    Price = stops[i].Price
+                });
             }
           
         }
