@@ -26,21 +26,21 @@
     </Grid.RowDefinitions>
     <Grid Margin="0 0" Visibility="{Binding NavbarVisible}">
       <Menu Background="Transparent" BorderThickness="1" FontSize="24">
-        <MenuItem Padding="20 5 12 5" Cursor="Hand" Header="_Linije">
+        <MenuItem Padding="20 5 18 5" Cursor="Hand" Header="_Linije">
           <MenuItem Command="{Binding ShowLinesCommand}" InputGestureText="Ctrl+L" Cursor="Hand" Header="Pregled Linija"/>
           <MenuItem Command="{Binding ShowTimetableCommand}" InputGestureText="Ctrl+R" Cursor="Hand" Header="Pregled Reda Vožnje"/>
         </MenuItem >
-        <MenuItem Padding="10 5" Cursor="Hand" Header="_Vozovi">
+        <MenuItem Padding="13 5 15 5" Cursor="Hand" Header="_Vozovi">
           <MenuItem Command="{Binding ShowTrainsCommand}" InputGestureText="Ctrl+Shift+V" Cursor="Hand" Header="Pregled Vozova"/>
         </MenuItem >
-        <MenuItem Padding="10 5" Cursor="Hand" Header="_Karte">
-          <MenuItem InputGestureText="Ctrl+K" Cursor="Hand" Header="Prodate Karte za Vožnju"/>
-          <MenuItem Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
+        <MenuItem Padding="15 5" Cursor="Hand" Header="_Karte">
+          <MenuItem Command="{Binding ShowDepartureTicketsCommand}"  InputGestureText="Ctrl+K" Cursor="Hand" Header="Prodate Karte za Vožnju"/>
+          <MenuItem Command="{Binding ShowMonthlyTicketsCommand}"  Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
         </MenuItem >
-        <MenuItem Padding="10 5" Cursor="Hand" Header="_Nalog">
+        <MenuItem Padding="15 5" Cursor="Hand" Header="_Nalog">
           <MenuItem Cursor="Hand" Header="Odjava" InputGestureText="Ctrl+O"  Command="{Binding LogOutCommand}"/>
         </MenuItem >
-        <MenuItem Padding="10 5" Cursor="Hand" Header="_Pomoć">
+        <MenuItem Padding="15 5" Cursor="Hand" Header="_Pomoć">
           <MenuItem InputGestureText="Ctrl+P" Cursor="Hand" Header="Prikaži Pomoć"/>
           <MenuItem InputGestureText="Ctrl+T" Cursor="Hand" Header="Pokreni Tutorijal"/>
         </MenuItem >

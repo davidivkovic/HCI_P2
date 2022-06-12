@@ -29,7 +29,7 @@ public partial class MainWindow : Primitives.Window
         UserStore.User = user;
         if (UserStore.User.Role == Role.Manager)
         {
-            CurrentView = new LinesView();
+            CurrentView = new TimetableView();
         }
         else
         {
@@ -51,6 +51,9 @@ public partial class MainWindow : Primitives.Window
     [ICommand] public void ShowTrains() => CurrentView = new TrainsView();
     [ICommand] public void ShowLines() => CurrentView = new LinesView();
     [ICommand] public void ShowTimetable() => CurrentView = new TimetableView();
+    [ICommand] public void ShowDepartureTickets() => CurrentView = new DepartureTicketsView();
+    [ICommand] public void ShowMonthlyTickets() => CurrentView = new MonthlyTicketsView();
+
 
     private void ShowHelp(object sender, ExecutedRoutedEventArgs e) => HelpProvider.ShowHelp(CurrentView.GetType().Name, this);
 }

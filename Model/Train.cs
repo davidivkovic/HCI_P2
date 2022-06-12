@@ -141,6 +141,7 @@ public class Departure : Entity
 
 public class Ticket : Entity
 {
+    public User Customer { get; set; }
     public Departure Departure { get; set; }
     public Station Source { get; set; }
     public Station Destination { get; set; }

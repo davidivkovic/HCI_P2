@@ -58,6 +58,19 @@ public partial class App : Application
                 Longitude = 21.889582
             });
 
+            db.Add(new Station
+            {
+                Name = "Pozarevac",
+                Latitude = 44.6210,
+                Longitude = 21.1845
+            });
+
+            db.Add(new Station
+            {
+                Name = "Kucevo",
+                Latitude = 44.4772,
+                Longitude = 21.6677
+            });
         }
 
         db.SaveChanges();

@@ -30,7 +30,7 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
     <TextBlock Margin="0 0 0 15" FontSize="32" FontWeight="Medium">Kupovina karte</TextBlock>
-    <Grid  Grid.Row="1">
+    <Grid Grid.Row="1">
       <StackPanel>
         <StackPanel>
           <TextBlock FontSize="24" FontWeight="Medium" Text="{Binding DepartureDate, StringFormat='{}{0:dd.MM.yyyy.}'}"/>

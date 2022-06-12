@@ -9,6 +9,7 @@
         FontSize="28"
         Title="DepartureDetails" Height="450" Width="720">
   <DataGrid Margin="20" ItemsSource="{Binding Data}"
+            HeadersVisibility="Column"
             CanUserSortColumns="False"
             Name="TimetableDataGrid"
             AutoGenerateColumns="False"

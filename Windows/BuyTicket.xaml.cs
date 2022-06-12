@@ -28,7 +28,7 @@ public partial class BuyTicket : Primitives.Window
     public string GetPrice()
     {
         var price = TakenSeats.Count * Departure?.Line?.Stops?.LastOrDefault()?.Price ?? 0;
-        if (IsReturnTicket) price = price * 1.5;
+        if (IsReturnTicket) price *= 1.5;
         var culture = (CultureInfo) new CultureInfo("sr-Latn-RS").Clone();
         culture.NumberFormat.CurrencyGroupSeparator = ",";
         culture.NumberFormat.CurrencyDecimalSeparator = ".";

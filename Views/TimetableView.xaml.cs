@@ -106,26 +106,14 @@ namespace P2.Views
         public void SourceInputGotFocus(object sender, RoutedEventArgs e)
         {
             SourceInputText = "";
-        }
-
-
-        public void DestinationInputGotFocus(object sender, RoutedEventArgs e)
-        {
-            DestinationInputText = "";
+            SourceHelpCharsLeft.Text = "2";
+            SourceHelpCharsNoun.Text = "karaktera";
+            SourceHelpPanel.Visibility = Visibility.Visible;
         }
 
         public void SourceInputLostFocus(object sender, RoutedEventArgs e)
         {
-            var element = FocusManager.GetFocusedElement(this);
-
-            if (element is ListBoxItem)
-            {
-                ListBoxItem item = element as ListBoxItem;
-                SourceSearch = item.DataContext as Station;
-                SourceInputText = SourceSearch.Name;
-            }
-
-            else if (!String.IsNullOrWhiteSpace(SourceInputText) && SourceSuggestions.Count != 0)
+            if (!string.IsNullOrWhiteSpace(SourceInputText) && SourceSuggestions.Count != 0 && SourceInputText.Length >= 2)
             {
                 SourceSearch = SourceSuggestions[0];
                 SourceSuggestionsListBox.SelectedItem = SelectedTrainLine;
@@ -137,20 +125,20 @@ namespace P2.Views
 
             }
             SourceSuggestionsListBox.Visibility = Visibility.Collapsed;
+            SourceHelpPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public void DestinationInputGotFocus(object sender, RoutedEventArgs e)
+        {
+            DestinationInputText = "";
+            DestinationHelpCharsLeft.Text = "2";
+            DestinationHelpCharsNoun.Text = "karaktera";
+            DestinationHelpPanel.Visibility = Visibility.Visible;
         }
 
         public void DestinationInputLostFocus(object sender, RoutedEventArgs e)
         {
-            var element = FocusManager.GetFocusedElement(this);
-
-            if(element is ListBoxItem)
-            {
-                ListBoxItem item = element as ListBoxItem;
-                DestinationSearch = item.DataContext as Station;
-                DestinationInputText = DestinationSearch.Name;
-            }
-
-            else if (!String.IsNullOrWhiteSpace(DestinationInputText) &&  DestinationSuggestions.Count != 0)
+            if (!string.IsNullOrWhiteSpace(DestinationInputText) &&  DestinationSuggestions.Count != 0 && DestinationInputText.Length >= 2)
             {
                 DestinationSearch = DestinationSuggestions[0];
                 DestinationSuggestionsListBox.SelectedItem = SelectedTrainLine;
@@ -162,44 +150,70 @@ namespace P2.Views
 
             }
             DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
-
-        }
-
-        public void SourceListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Station SelectedItem = (Station)SourceSuggestionsListBox.SelectedItem;
-            if (SelectedItem is not null)
-            {
-                SourceSearch = SelectedItem;
-                SourceInputText = SourceSearch.Name;
-                SourceInput.BorderBrush = Brushes.Black;
-                SourceSuggestionsListBox.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        public void DestinationListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Station SelectedItem = (Station)DestinationSuggestionsListBox.SelectedItem;
-            if (SelectedItem is not null)
-            {
-                DestinationSearch = SelectedItem;
-                DestinationInputText = DestinationSearch.Name;
-                DestinationInput.BorderBrush = Brushes.Black;
-                DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
-            }
+            DestinationHelpPanel.Visibility = Visibility.Collapsed;
         }
 
         public void SourceListBoxKeyDown(object sender, KeyEventArgs e)
         {
-            var list = sender as ListBox;
             if (e.Key == Key.Down)
             {
-                list.Items.MoveCurrentToNext();
+                if (SourceSuggestionsListBox.SelectedIndex < SourceSuggestionsListBox.Items.Count - 1)
+                {
+                    SourceSuggestionsListBox.SelectedIndex += 1;
+                }
+                e.Handled = true;
             }
             else if (e.Key == Key.Up)
             {
-                list.Items.MoveCurrentToPrevious();
+                if (SourceSuggestionsListBox.SelectedIndex > 0)
+                {
+                    SourceSuggestionsListBox.SelectedIndex -= 1;
+                }
+                e.Handled = true;
             }
+            else if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                if (SourceSuggestionsListBox.SelectedIndex > -1)
+                {
+                    SourceSearch = SourceSuggestions.ElementAt(SourceSuggestionsListBox.SelectedIndex);
+                    SourceInputText = SourceSearch.Name;
+                    SourceSuggestionsListBox.Visibility = Visibility.Collapsed;
+                    DestinationInput.Focus();
+                }
+                e.Handled = true;
+            }
+        }
+
+        public void DestinationListBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down)
+            {
+                if (DestinationSuggestionsListBox.SelectedIndex < DestinationSuggestionsListBox.Items.Count - 1)
+                {
+                    DestinationSuggestionsListBox.SelectedIndex += 1;
+                }
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Up)
+            {
+                if (DestinationSuggestionsListBox.SelectedIndex > 0)
+                {
+                    DestinationSuggestionsListBox.SelectedIndex -= 1;
+                }
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                if (DestinationSuggestionsListBox.SelectedIndex > -1)
+                {
+                    DestinationSearch = DestinationSuggestions.ElementAt(DestinationSuggestionsListBox.SelectedIndex);
+                    DestinationInputText = DestinationSearch.Name;
+                    DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
+                    SearchButton.Focus();
+                }
+                e.Handled = true;
+            }
+
         }
 
         private void SortDepartures()
@@ -209,6 +223,18 @@ namespace P2.Views
 
         private void OnSourceInputTextChanged()
         {
+            if (SourceInputText.Length < 2)
+            {
+                var charsLeft = 2 - SourceInputText.Length;
+                SourceHelpCharsLeft.Text = charsLeft.ToString();
+                SourceHelpCharsNoun.Text = charsLeft == 2 ? "karaktera" : "karakter";
+                SourceSuggestionsListBox.Visibility = Visibility.Collapsed;
+                SourceHelpPanel.Visibility = Visibility.Visible;
+                return;
+            }
+
+            SourceHelpPanel.Visibility = Visibility.Collapsed;
+
             List<Station> TempFiltered;
             TempFiltered = AvailableStations.Where(s => s.Name.Contains(SourceInputText, StringComparison.InvariantCultureIgnoreCase))
                                          .ToList();
@@ -246,6 +272,18 @@ namespace P2.Views
         }
         private void OnDestinationInputTextChanged()
         {
+            if (DestinationInputText.Length < 2)
+            {
+                var charsLeft = 2 - DestinationInputText.Length;
+                DestinationHelpCharsLeft.Text = charsLeft.ToString();
+                DestinationHelpCharsNoun.Text = charsLeft == 2 ? "karaktera" : "karakter";
+                DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
+                DestinationHelpPanel.Visibility = Visibility.Visible;
+                return;
+            }
+
+            DestinationHelpPanel.Visibility = Visibility.Collapsed;
+
             List<Station> TempFiltered;
             TempFiltered = AvailableStations.Where(s => s.Name.Contains(DestinationInputText, StringComparison.InvariantCultureIgnoreCase))
                                          .ToList();
@@ -318,9 +356,9 @@ namespace P2.Views
         public void Search()
         {
             List<TrainLine> TempFiltered;
-            TempFiltered = AvailableLines.Where(line => line.Source.Name == SourceInputText &&
-                                                        line.Destination.Name == DestinationInputText)
-                                          .ToList();
+            TempFiltered = AvailableLines.Where(line => line.Source.Name == SourceInputText)
+                                         .Where(line => line.Stops.Any(s => s.Station.Name == DestinationInputText))
+                                         .ToList();
 
             for (int i = FilteredLines.Count - 1; i >= 0; i--)
             {

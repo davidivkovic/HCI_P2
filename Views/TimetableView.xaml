@@ -90,22 +90,32 @@
                      Margin="0 10 0 0" 
                      Padding="10 0 10 0"
                      Height="50"
+                     PreviewKeyDown="SourceListBoxKeyDown"
                      GotFocus="SourceInputGotFocus"
                      LostFocus="SourceInputLostFocus"
                      Text="{Binding SourceInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SourceInput">
           </TextBox>
-          <ListBox x:Name="SourceSuggestionsListBox" Background="LightYellow" Visibility="Collapsed"
-                   SelectionChanged="SourceListBoxSelectionChanged"
-                   KeyDown="SourceListBoxKeyDown">
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <StackPanel Cursor="Hand" Width="280" Margin="0 5">
-                  <TextBlock  Text="{Binding Name}"/>
-                </StackPanel>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
+          <Canvas Panel.ZIndex="1">
+            <ListBox Name="SourceSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Cursor="Hand" Width="286" Margin="0 5">
+                    <TextBlock  Text="{Binding Name}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </Canvas>
+          <Canvas Panel.ZIndex="1" Visibility="Collapsed" Name="SourceHelpPanel">
+            <Border Padding="5" BorderThickness="1" BorderBrush="DimGray" Background="#feffed" Height="40" Width="300">
+              <TextBlock FontSize="22.5">
+                Unesite bar još
+                <Run Name="SourceHelpCharsLeft"/>
+                <Run Name="SourceHelpCharsNoun"/>
+              </TextBlock>
+            </Border>
+          </Canvas>
           <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište:</TextBlock>
           <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
@@ -116,17 +126,26 @@
                      Text="{Binding DestinationInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="DestinationInput">
           </TextBox>
-          <ListBox x:Name="DestinationSuggestionsListBox" Background="LightYellow" Visibility="Collapsed"
-                   SelectionChanged="DestinationListBoxSelectionChanged">
-            
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <StackPanel Cursor="Hand" Width="280" Margin="0 5">
-                  <TextBlock  Text="{Binding Name}"/>
-                </StackPanel>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
+          <Canvas Panel.ZIndex="100">
+            <ListBox Name="DestinationSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Cursor="Hand" Width="286" Margin="0 5">
+                    <TextBlock  Text="{Binding Name}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </Canvas>
+          <Canvas Panel.ZIndex="1" Visibility="Collapsed" Name="DestinationHelpPanel">
+            <Border Padding="5" BorderThickness="1" BorderBrush="DimGray" Background="#feffed" Height="40" Width="300">
+              <TextBlock FontSize="22.5">
+                Unesite bar još
+                <Run Name="DestinationHelpCharsLeft"/>
+                <Run Name="DestinationHelpCharsNoun"/>
+              </TextBlock>
+            </Border>
+          </Canvas>
           <StackPanel Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToCustomer}, Mode=OneWay}">
             <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Datum:</TextBlock>
             <DatePicker SelectedDateFormat="Short" x:Name="gDPickDate"
@@ -135,10 +154,12 @@
                         DisplayDateStart="{x:Static sys:DateTime.Today}"
                         CalendarStyle="{StaticResource resizedCalendarItem}"/>
           </StackPanel>
-          <Button Template="{DynamicResource DefaultButtonTemplate}"
-                  Padding="0 5"
-                  Margin="0 20 0 0"
-                  Command="{Binding SearchLinesCommand}">Pretraži</Button>
+          <Button
+            Name="SearchButton"
+            Template="{DynamicResource DefaultButtonTemplate}"
+            Padding="0 5"
+            Margin="0 20 0 0"
+            Command="{Binding SearchLinesCommand}">Pretraži</Button>
           <ListView Grid.Row="4" ItemsSource="{Binding FilteredLines}"  
                     Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToManager}, Mode=OneWay}"
                     HorizontalContentAlignment="Stretch"
@@ -159,6 +180,7 @@
                     Visibility="{Binding IsTableVisible}"
                     CanUserSortColumns="False"
                     Name="TimetableDataGrid"
+                    HeadersVisibility="Column"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     SelectionChanged="TimetableGridSelectionChanged">
@@ -188,7 +210,7 @@
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <WrapPanel VerticalAlignment="Center">
-                      <TextBlock Text="{Binding Train.Type}"/>
+                      <TextBlock Text="{Binding Train.Name}"/>
                       <Image VerticalAlignment="Center" 
                              HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" 
                              Margin="10 0 0 0"
