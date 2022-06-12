@@ -75,14 +75,22 @@
               Obriši polazak
             </Button>
           </WrapPanel>
+          <Button Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToCustomer}, Mode=OneWay}"
+                  HorizontalAlignment="Right" Padding="15 5"
+                  IsEnabled="{Binding IsEditable}"
+                  Command="{Binding BuyTicketCommand}"
+                  Template="{DynamicResource DefaultButtonTemplate}">
+            Kupi kartu
+          </Button>
         </Grid>
         <StackPanel Grid.Column="0" Grid.Row="1" Width="300" HorizontalAlignment="Left" >
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga linija</TextBlock>
           <TextBlock FontWeight="Medium" FontSize="24" Margin="0 20 0 0">Polazište:</TextBlock>
           <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
-                     Padding="10 0 50 0"
+                     Padding="10 0 10 0"
                      Height="50"
+                     GotFocus="SourceInputGotFocus"
                      LostFocus="SourceInputLostFocus"
                      Text="{Binding SourceInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SourceInput">
@@ -101,15 +109,16 @@
           <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište:</TextBlock>
           <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
-                     Padding="10 0 50 0"
+                     Padding="10 0 10 0"
                      Height="50"
+                     GotFocus="DestinationInputGotFocus"
                      LostFocus="DestinationInputLostFocus"
                      Text="{Binding DestinationInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="DestinationInput">
           </TextBox>
           <ListBox x:Name="DestinationSuggestionsListBox" Background="LightYellow" Visibility="Collapsed"
-                   SelectionChanged="DestinationListBoxSelectionChanged"
-                   KeyDown="SourceListBoxKeyDown">
+                   SelectionChanged="DestinationListBoxSelectionChanged">
+            
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel Cursor="Hand" Width="280" Margin="0 5">
@@ -122,6 +131,7 @@
             <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Datum:</TextBlock>
             <DatePicker SelectedDateFormat="Short" x:Name="gDPickDate"
                         Margin="0 10 0 0"
+                        SelectedDate="{Binding DateFrom, Mode=TwoWay}"
                         DisplayDateStart="{x:Static sys:DateTime.Today}"
                         CalendarStyle="{StaticResource resizedCalendarItem}"/>
           </StackPanel>
@@ -129,7 +139,8 @@
                   Padding="0 5"
                   Margin="0 20 0 0"
                   Command="{Binding SearchLinesCommand}">Pretraži</Button>
-          <ListView Grid.Row="4" ItemsSource="{Binding FilteredLines}"                     
+          <ListView Grid.Row="4" ItemsSource="{Binding FilteredLines}"  
+                    Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToManager}, Mode=OneWay}"
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     SelectionChanged="LinesListViewSelectionChanged"
@@ -144,7 +155,8 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 0 0 0">
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Raspored vožnji</TextBlock>
-          <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}" 
+          <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}"
+                    Visibility="{Binding IsTableVisible}"
                     CanUserSortColumns="False"
                     Name="TimetableDataGrid"
                     AutoGenerateColumns="False"
@@ -220,6 +232,8 @@
               </DataGridTemplateColumn>
             </DataGrid.Columns>
           </DataGrid>
+          <TextBlock Text="{Binding ErrorText}" Visibility="{Binding IsNoResultsTextVisible}" FontSize="26" Margin="0 10 0 0"/>
+
         </StackPanel>
       </Grid>
     </StackPanel>

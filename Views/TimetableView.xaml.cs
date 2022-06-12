@@ -11,6 +11,7 @@ using P2.Primitives;
 using CommunityToolkit.Mvvm.Input;
 using P2.Windows;
 using System.Windows.Media;
+using P2.Stores;
 
 namespace P2.Views
 {
@@ -63,6 +64,13 @@ namespace P2.Views
         public Station SourceSearch { get; set; }
         public Station DestinationSearch { get; set; }
 
+        public DateTime DateFrom { get; set; } = DateTime.Now;
+
+        public Visibility IsTableVisible => (Departures is not null && Departures.Count > 0) ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility IsNoResultsTextVisible => IsTableVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+        public string ErrorText { get; set; } = "Unesite parametre za pretragu";
+
         public void FindTimetable()
         {
             using DbContext db = new();
@@ -80,6 +88,8 @@ namespace P2.Views
                     .ThenInclude(l => l.Destination)
                 .OrderBy(d => d.Time)
                 .ToList());
+
+            if (Departures.Count == 0) ErrorText = "Ne postoje polasci za izabranu relaciju";
         }
 
         public void LinesListViewSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,46 +103,67 @@ namespace P2.Views
             }
         }
 
-            //public void LinesListViewLostFocus(object sender, RoutedEventArgs e)
-            //{
-            //    var element = FocusManager.GetFocusedElement(this);
-            //    if (element is Button or ListView) return;
+        public void SourceInputGotFocus(object sender, RoutedEventArgs e)
+        {
+            SourceInputText = "";
+        }
 
-            //    SelectedTrainLine = null;
-            //    LinesListView.SelectedItem = null;
-            //}
 
-            public void SourceInputLostFocus(object sender, RoutedEventArgs e)
+        public void DestinationInputGotFocus(object sender, RoutedEventArgs e)
+        {
+            DestinationInputText = "";
+        }
+
+        public void SourceInputLostFocus(object sender, RoutedEventArgs e)
         {
             var element = FocusManager.GetFocusedElement(this);
 
-            if (element is not ListBoxItem && SourceSuggestions.Count != 0)
+            if (element is ListBoxItem)
+            {
+                ListBoxItem item = element as ListBoxItem;
+                SourceSearch = item.DataContext as Station;
+                SourceInputText = SourceSearch.Name;
+            }
+
+            else if (!String.IsNullOrWhiteSpace(SourceInputText) && SourceSuggestions.Count != 0)
             {
                 SourceSearch = SourceSuggestions[0];
                 SourceSuggestionsListBox.SelectedItem = SelectedTrainLine;
                 SourceInputText = SourceSearch.Name;
-                SourceSuggestionsListBox.Visibility = Visibility.Collapsed;
             }
+            else if (SourceSearch is not null)
+            {
+                SourceInputText = SourceSearch.Name;
+
+            }
+            SourceSuggestionsListBox.Visibility = Visibility.Collapsed;
         }
 
         public void DestinationInputLostFocus(object sender, RoutedEventArgs e)
         {
             var element = FocusManager.GetFocusedElement(this);
 
-            if (element is not ListBoxItem && DestinationSuggestions.Count != 0)
+            if(element is ListBoxItem)
+            {
+                ListBoxItem item = element as ListBoxItem;
+                DestinationSearch = item.DataContext as Station;
+                DestinationInputText = DestinationSearch.Name;
+            }
+
+            else if (!String.IsNullOrWhiteSpace(DestinationInputText) &&  DestinationSuggestions.Count != 0)
             {
                 DestinationSearch = DestinationSuggestions[0];
                 DestinationSuggestionsListBox.SelectedItem = SelectedTrainLine;
                 DestinationInputText = DestinationSearch.Name;
-                DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
             }
+            else if(DestinationSearch is not null)
+            {
+                DestinationInputText = DestinationSearch.Name;
+
+            }
+            DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
+
         }
-
-        //[ICommand]
-        //public void ClearSourceInput() => SourceInput.Text = "";
-
-        //[ICommand]
-        //public void ClearDestionationInput() => DestinationInput.Text = "";
 
         public void SourceListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -253,46 +284,91 @@ namespace P2.Views
         [ICommand]
         public void SearchLines()
         {
-            if (SourceSearch is not null || DestinationSearch is not null)
+            if(!UserStore.IsManager)
             {
-                List<TrainLine> TempFiltered;
-                TempFiltered = AvailableLines.Where(line => line.Source.Name == SourceInputText &&
-                                                            line.Destination.Name == DestinationInputText)
-                                              .ToList();
-
-                for (int i = FilteredLines.Count - 1; i >= 0; i--)
+                if( SourceSearch is null || DestinationSearch is null)
                 {
-                    var item = FilteredLines[i];
-                    if (!TempFiltered.Contains(item))
-                    {
-                        FilteredLines.Remove(item);
-                    }
+                    List<string> errors = new();
+                    errors.Add("Polazište i odredište moraju biti odabrani");
+                    ShowSearchError(errors);
+
                 }
-
-                foreach (var item in TempFiltered)
+                else
                 {
-                    if (!FilteredLines.Contains(item))
-                    {
-                        FilteredLines.Add(item);
-                    }
+                    Search();
                 }
             }
             else
             {
-                SourceInput.BorderBrush = Brushes.Red;
-                DestinationInput.BorderBrush = Brushes.Red;
-
-                List<string> Errors = new();
-                Errors.Add("Polazište ili odredište ne smeju biti prazni");
-                var window = new ConfirmCancelWindow()
+                if (SourceSearch is not null || DestinationSearch is not null)
                 {
-                    Message = "Nije moguće pretražiti linije zbog sledećih grešaka:",
-                    ConfirmButtonText = "U redu",
-                    Errors = Errors,
-                    Image = MessageBoxImage.Question
-                };
-                window.ShowDialog();
+                    Search();
+                }
+                else
+                {
+                    List<string> errors = new();
+                    errors.Add("Bar jedno od polje 'Polazište' i 'Odredište' mora biti odabrano");
+                    ShowSearchError(errors);
+                }
             }
+
+            if (SelectedTrainLine is null && !UserStore.IsManager) ErrorText = "Ne postoji linija na izabranoj relaciji";
+        }
+
+        public void Search()
+        {
+            List<TrainLine> TempFiltered;
+            TempFiltered = AvailableLines.Where(line => line.Source.Name == SourceInputText &&
+                                                        line.Destination.Name == DestinationInputText)
+                                          .ToList();
+
+            for (int i = FilteredLines.Count - 1; i >= 0; i--)
+            {
+                var item = FilteredLines[i];
+                if (!TempFiltered.Contains(item))
+                {
+                    FilteredLines.Remove(item);
+                }
+            }
+
+            foreach (var item in TempFiltered)
+            {
+                if (!FilteredLines.Contains(item))
+                {
+                    FilteredLines.Add(item);
+                }
+            }
+
+            if(!UserStore.IsManager)
+            {
+                if(FilteredLines.Count > 0)
+                {
+                    SelectedTrainLine = FilteredLines.First();
+                    FindTimetable();
+                }
+                else
+                {
+                    SelectedTrainLine = null;
+                    Departures = new();
+                }
+
+            }
+
+        }
+
+        public void ShowSearchError(List<string> errors)
+        {
+            if (SourceSearch is null) SourceInput.BorderBrush = Brushes.Red;
+            if (DestinationSearch is null) DestinationInput.BorderBrush = Brushes.Red;
+
+            var window = new ConfirmCancelWindow()
+            {
+                Message = "Nije moguće pretražiti linije zbog sledećih grešaka:",
+                ConfirmButtonText = "U redu",
+                Errors = errors,
+                Image = MessageBoxImage.Question
+            };
+            window.ShowDialog();
         }
 
         public void TimetableGridSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -388,6 +464,12 @@ namespace P2.Views
                 };
                 successWindow.ShowDialog();
             }
+        }
+
+        [ICommand] 
+        public void BuyTicket()
+        {
+            // TODO kupi kartu
         }
     }
 }
