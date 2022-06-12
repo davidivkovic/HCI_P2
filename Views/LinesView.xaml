@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
              xmlns:local="clr-namespace:P2.Views"
+             xmlns:Stores="clr-namespace:P2.Stores"
              mc:Ignorable="d"
              xmlns:l="clr-namespace:P2"
              FocusManager.IsFocusScope="True"
@@ -46,7 +47,8 @@
             > 
               Pregled voznih linija
           </TextBlock>
-          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                      Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToManager}, Mode=OneWay}">
             <Button Template="{StaticResource DefaultButtonTemplate}" 
                     Padding="15 5"
                     Cursor="Hand"

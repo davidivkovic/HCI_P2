@@ -10,6 +10,8 @@ using System.Windows.Media;
 using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Mvvm.Input;
 using P2.Model;
+using P2.Stores;
+using System.Diagnostics;
 
 namespace P2.Windows;
 
@@ -17,59 +19,42 @@ public partial class BuyTicket : Primitives.Window
 {
     public Departure Departure { get; set; }
     public DateOnly DepartureDate { get; set; }
+    public Station StartStation { get; set; }
+    public Station EndStation { get; set; }
     public ObservableCollection<List<Slot>> Seats { get; set; }
     public ObservableCollection<Slot> TakenSeats { get; set; } = new();
     public string PleaseText { get; set; } = "Molimo Vas odaberite neko od sedišta";
     public string TotalPrice { get; set; } = "0.00 RSD";
     public bool IsReturnTicket { get; set; }
+    public bool Saved { get; set; }
 
     public void OnIsReturnTicketChanged() => TotalPrice = GetPrice();
 
     public string GetPrice()
     {
-        var price = TakenSeats.Count * Departure?.Line?.Stops?.LastOrDefault()?.Price ?? 0;
-        if (IsReturnTicket) price *= 1.5;
+        var price = CalculatePrice();
         var culture = (CultureInfo) new CultureInfo("sr-Latn-RS").Clone();
         culture.NumberFormat.CurrencyGroupSeparator = ",";
         culture.NumberFormat.CurrencyDecimalSeparator = ".";
         return price.ToString("C2", culture);
     }
 
-    public BuyTicket()
+    public double CalculatePrice()
+    {
+        double stopPrice = Departure?.Line?.Stops.Where(s => s.Station.Name == EndStation.Name).FirstOrDefault().Price ?? 0;
+        var price = TakenSeats.Count * stopPrice;
+        if (IsReturnTicket) price *= 1.5;
+        return price;
+    }
+
+    public BuyTicket(Departure departure, DateOnly departureDate, Station startStation, Station endStation)
     {
         InitializeComponent();
         using DbContext db = new();
-        Departure = new()
-        {
-            Time = TimeOnly.FromDateTime(DateTime.Now),
-            Train = db.Trains
-                .Include(t => t.Seating)
-                .ThenInclude(s => s.Seats)
-                .First(),
-            Line = new()
-            {
-                Source = db.Stations.First(),
-                Destination = db.Stations.Skip(1).First(),
-                Stops = new()
-                {
-                    new()
-                    {
-                        Number = 1,
-                        Price = 0,
-                        Station = db.Stations.First(),
-                        Duration = TimeSpan.FromMinutes(0)
-                    },
-                    new()
-                    {
-                        Number = 2,
-                        Price = 300,
-                        Station = db.Stations.Skip(1).First(),
-                        Duration = TimeSpan.FromMinutes(145)
-                    }
-                }
-            }
-        };
-        DepartureDate = DateOnly.FromDateTime(DateTime.Today);
+        Departure = departure;
+        DepartureDate = departureDate;
+        StartStation = startStation;
+        EndStation = endStation;
 
         Seats = new(GetSeats());
         var takenSeats = db.Tickets
@@ -84,6 +69,7 @@ public partial class BuyTicket : Primitives.Window
              .Where(s => takenSeats.Any(ts => ts.Row == s.Row && ts.Col == s.Col))
              .ToList()
              .ForEach(s => s.PreviewSeatType = SeatType.Taken);
+
     }
 
     public List<List<Slot>> GetSeats()
@@ -116,7 +102,7 @@ public partial class BuyTicket : Primitives.Window
     {
         if (sender is Border b && b.Tag is Slot s)
         {
-            if (s.SeatType == SeatType.None) return;
+            if (s.PreviewSeatType == SeatType.Taken || s.SeatType == SeatType.None) return;
             //var selectedSeat = Seats.SelectMany(s => s).FirstOrDefault(seat => seat.Row == s.Row && seat.Col == s.Col);
             var takenSeat = TakenSeats.FirstOrDefault(seat => seat.Row == s.Row && seat.Col == s.Col);
             if (takenSeat is null)
@@ -141,13 +127,90 @@ public partial class BuyTicket : Primitives.Window
     [ICommand]
     public void Buy()
     {
-        
+        List<string> errors = new();
+        if(TakenSeats.Count == 0)
+        {
+            errors.Add("Morate odabrati bar jedno sedište");
+        }
+
+        var w = new ConfirmCancelWindow
+        {
+            Message = errors.Count > 0 ? "Nije moguće kupiti kartu zbog sledećeg:" : "Da li ste sigurni da želite da kupite kartu?",
+            ConfirmButtonText = errors.Count > 0 ? "U redu" : "Kupi",
+            Errors = errors,
+            Image = errors.Count > 0 ? MessageBoxImage.Error : MessageBoxImage.Question
+        };
+        w.ShowDialog();
+
+        if(errors.Count == 0 && w.Confirmed)
+        {
+            List<Seat> seats = TakenSeats.Select(s => new Seat()
+            {
+                Col = s.Col,
+                Row = s.Row,
+                SeatNumber = s.SeatNumber,
+            }).ToList();
+
+            Ticket ticket = new()
+            {
+                Departure = Departure,
+                DepartureDate = DepartureDate,
+                Source = StartStation,
+                Destination = EndStation,
+                IsReturn = IsReturnTicket,
+                Price = CalculatePrice(),
+                Seats = seats,
+                Timestamp = DateTime.Now,
+                Customer = UserStore.User
+            };
+
+            using DbContext db = new();
+            db.Update(ticket);
+            db.SaveChanges();
+
+            Saved = true;
+            Close();
+            
+        }
     }
+
 
     [ICommand]
     public void Cancel()
     {
+        var w = new ConfirmCancelWindow
+        {
+            Message = "Da li ste sigurni da želite da odustanete od kupovine karte?",
+            ConfirmButtonText = "Odustani",
+            CancelButtonText = "Otkaži",
+            ConfirmIsDanger = true,
+            Image = MessageBoxImage.Stop
+        };
+        w.ShowDialog();
 
+        if (w.Confirmed) Close();
+    }
+
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        bool wasCodeClosed = new StackTrace()
+            .GetFrames()
+            .FirstOrDefault(x => x.GetMethod() == typeof(System.Windows.Window).GetMethod("Close")) != null;
+        if (!wasCodeClosed) // Closed by pressing x
+        {
+            var w = new ConfirmCancelWindow
+            {
+                Message = "Da li ste sigurni da želite da odustanete od kupovine karte?",
+                ConfirmButtonText = "Odustani",
+                CancelButtonText = "Otkaži",
+                ConfirmIsDanger = true,
+                Image = MessageBoxImage.Stop
+            };
+            w.ShowDialog();
+
+            if (!w.Confirmed) e.Cancel = true;
+        }
+        base.OnClosing(e);
     }
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)

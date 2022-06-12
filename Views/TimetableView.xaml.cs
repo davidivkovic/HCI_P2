@@ -356,9 +356,20 @@ namespace P2.Views
         public void Search()
         {
             List<TrainLine> TempFiltered;
-            TempFiltered = AvailableLines.Where(line => line.Source.Name == SourceInputText)
+            TempFiltered = AvailableLines.Where(line => line.Stops.Any(s => s.Station.Name == SourceInputText))
                                          .Where(line => line.Stops.Any(s => s.Station.Name == DestinationInputText))
                                          .ToList();
+
+            List<TrainLine> toDelete = new();
+            foreach(var line in TempFiltered)
+            {
+                int startNum = line.Stops.Where(s => s.Station.Name == SourceInputText).Select(stop => stop.Number).FirstOrDefault();
+                int endNum = line.Stops.Where(s => s.Station.Name == DestinationInputText).Select(stop => stop.Number).FirstOrDefault();
+                if (startNum > endNum) toDelete.Add(line);
+            }
+
+            toDelete.ForEach(l => TempFiltered.Remove(l));
+
 
             for (int i = FilteredLines.Count - 1; i >= 0; i--)
             {
@@ -507,7 +518,21 @@ namespace P2.Views
         [ICommand] 
         public void BuyTicket()
         {
-            // TODO kupi kartu
+            var window = new Windows.BuyTicket(SelectedDeparture, DateOnly.FromDateTime(DateFrom), SourceSearch, DestinationSearch);
+            window.ShowDialog();
+
+            if(window.Saved)
+            {
+                var successWindow = new ConfirmCancelWindow
+                {
+                    Title = "Uspeh",
+                    Message = "Uspešno ste kupili kartu",
+                    ConfirmButtonText = "U redu",
+                    CancelButtonText = "",
+                    Image = MessageBoxImage.Information
+                };
+                successWindow.ShowDialog();
+            }
         }
     }
 }
