@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace P2.Model;
@@ -150,4 +151,7 @@ public class Ticket : Entity
     public DateTime Timestamp { get; set; }
     public bool IsReturn { get; set; }
     public double Price { get; set; }
+
+    public string FormattedPrice => Price.ToString("C", new CultureInfo("sr-Latn-RS"));
+    public string FormattedPriceNoSymbol => Price.ToString("N0", new CultureInfo("sr-Latn-RS"));
 }

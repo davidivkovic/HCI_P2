@@ -79,6 +79,7 @@ public partial class AddEditTrain : Primitives.Window
     public string TrashImage { get; set; } = "/Assets/Images/trashcan.png";
     public double TrashOpacity { get; set; } = 0.6;
     public bool Confirmed { get; set; }
+    public bool Cancelled { get; set; }
 
     public void OnTrainNumberChanged() => TrainNumberTextBox.ClearValue(BorderBrushProperty);
 
@@ -534,10 +535,7 @@ public partial class AddEditTrain : Primitives.Window
 
     protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
     {
-        bool wasCodeClosed = new StackTrace()
-            .GetFrames()
-            .FirstOrDefault(x => x.GetMethod() == typeof(System.Windows.Window).GetMethod("Close")) != null;
-        if (!wasCodeClosed) // Closed by pressing x
+        if (!Cancelled && !Confirmed) // Closed by pressing x
         {
             var w = new ConfirmCancelWindow
             {

@@ -48,46 +48,19 @@ public partial class MonthlyTicketsView : Component
 
 
         using DbContext db = new();
-        Tickets = new();
-        Ticket t = new()
-        {
-            Customer = db.Users.First(),
-            Id = 4,
-            Source = db.Stations.First(),
-            Destination = db.Stations.Skip(1).First(),
-            Price = 300,
-            DepartureDate = DateOnly.FromDateTime(DateTime.Now),
-            Departure = new()
-            {
-                Train = db.Trains.First(),
-                Time = TimeOnly.FromDateTime(DateTime.Now),
-                Line = db.Lines.Include(l => l.Stops).ThenInclude(s => s.Station).First()
-            }
-        };
 
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
-        Tickets.Add(t);
+        Tickets = new(db.Tickets
+            .Include(t => t.Seats)
+            .Include(t => t.Source)
+            .Include(t => t.Destination)
+            .Include(t => t.Departure)
+                .ThenInclude(d => d.Train)
+            .Include(t => t.Departure)
+                .ThenInclude(d => d.Line)
+                    .ThenInclude(l => l.Stops)
+            .Where(t => t.Timestamp.Month == SelectedDate.Month)
+        );
+
     }
 
     private void CalendarDisplayChanged(object sender, CalendarModeChangedEventArgs e)

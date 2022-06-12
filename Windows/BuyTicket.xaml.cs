@@ -24,20 +24,12 @@ public partial class BuyTicket : Primitives.Window
     public ObservableCollection<List<Slot>> Seats { get; set; }
     public ObservableCollection<Slot> TakenSeats { get; set; } = new();
     public string PleaseText { get; set; } = "Molimo Vas odaberite neko od sedišta";
-    public string TotalPrice { get; set; } = "0.00 RSD";
+    public string TotalPrice { get; set; } = "0 RSD";
     public bool IsReturnTicket { get; set; }
     public bool Saved { get; set; }
+    public bool Cancelled { get; set; }
 
-    public void OnIsReturnTicketChanged() => TotalPrice = GetPrice();
-
-    public string GetPrice()
-    {
-        var price = CalculatePrice();
-        var culture = (CultureInfo) new CultureInfo("sr-Latn-RS").Clone();
-        culture.NumberFormat.CurrencyGroupSeparator = ",";
-        culture.NumberFormat.CurrencyDecimalSeparator = ".";
-        return price.ToString("C2", culture);
-    }
+    public void OnIsReturnTicketChanged() => TotalPrice = CalculatePrice().ToString("C", new CultureInfo("sr-Latn-RS"));
 
     public double CalculatePrice()
     {
@@ -120,7 +112,7 @@ public partial class BuyTicket : Primitives.Window
                 b.ClearValue(BorderBrushProperty);
             }
             PleaseText = TakenSeats.Count > 0 ? "" : "Molimo Vas odaberite neko od sedišta";
-            TotalPrice = GetPrice();
+            TotalPrice = CalculatePrice().ToString("C", new CultureInfo("sr-Latn-RS"));
         }
     }
 
@@ -188,15 +180,16 @@ public partial class BuyTicket : Primitives.Window
         };
         w.ShowDialog();
 
-        if (w.Confirmed) Close();
+        if (w.Confirmed)
+        {
+            Cancelled = true;
+            Close();
+        }
     }
 
     protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
     {
-        bool wasCodeClosed = new StackTrace()
-            .GetFrames()
-            .FirstOrDefault(x => x.GetMethod() == typeof(System.Windows.Window).GetMethod("Close")) != null;
-        if (!wasCodeClosed) // Closed by pressing x
+        if (!Cancelled && !Saved) // Closed by pressing x
         {
             var w = new ConfirmCancelWindow
             {

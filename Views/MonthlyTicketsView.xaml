@@ -38,6 +38,7 @@
       </Viewbox>
     </StackPanel>
     <DataGrid 
+      FontSize="22"
       Margin="20 20 0 0"
       Grid.Row="1" Grid.Column="1"
       HeadersVisibility="Column"
@@ -49,11 +50,11 @@
       CanUserResizeColumns="False"
       CanUserResizeRows="False"
     >
-      <DataGrid.RowStyle>
+      <!--<DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
           <Setter Property="IsHitTestVisible" Value="False"/>
         </Style>
-      </DataGrid.RowStyle>
+      </DataGrid.RowStyle>-->
       <DataGrid.CellStyle>
         <Style TargetType="DataGridCell">
           <Setter Property="Padding" Value="10 0"/>
@@ -69,6 +70,16 @@
         </Style>
       </DataGrid.CellStyle>
       <DataGrid.Columns>
+        
+        <DataGridTextColumn Header="Br. Karte" Binding="{Binding Id,StringFormat='{}{0:D6}'}" IsReadOnly="True">
+          <DataGridTextColumn.ElementStyle>
+            <Style TargetType="TextBlock">
+              <Setter Property="VerticalAlignment" Value="Center" />
+              <Setter Property="Padding" Value="5" />
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+        
         <DataGridTextColumn Header="Voz" Binding="{Binding Departure.Train.Number}" IsReadOnly="True">
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
@@ -76,11 +87,12 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
+        
         <DataGridTemplateColumn Header="Tip" IsReadOnly="True">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <WrapPanel VerticalAlignment="Center">
-                <TextBlock Text="{Binding Departure.Train.Type}"/>
+                <TextBlock Text="{Binding Departure.Train.Name}"/>
                 <Image VerticalAlignment="Center" 
                              HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" 
                              Margin="10 0 0 0"
@@ -89,6 +101,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
+        
         <DataGridTextColumn Header="Polazak" Binding="{Binding Departure.TableTime}" IsReadOnly="True">
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
@@ -96,20 +109,32 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-        <DataGridTextColumn Header="Dolazak" Binding="{Binding Departure.ArrivalTableTime, Mode=OneTime}" IsReadOnly="True">
+
+        <DataGridTextColumn Header="Odredište" Binding="{Binding Source.Name, Mode=OneTime}" IsReadOnly="True">
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
               <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-        <DataGridTextColumn Header="Vreme putovanja" Binding="{Binding Departure.TravelTableTime, Mode=OneTime}" IsReadOnly="True">
+
+        <DataGridTextColumn Header="Odredište" Binding="{Binding Destination.Name, Mode=OneTime}" IsReadOnly="True">
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
               <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
+
+        <DataGridTextColumn Header="Cena(RSD)" Binding="{Binding FormattedPriceNoSymbol, Mode=OneTime}" IsReadOnly="True">
+          <DataGridTextColumn.ElementStyle>
+            <Style TargetType="TextBlock">
+              <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+
+
       </DataGrid.Columns>
     </DataGrid>
   </Grid>
