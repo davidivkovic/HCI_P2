@@ -89,7 +89,7 @@ public class Stop : Entity
     public double Price { get; set; }
     public TimeSpan Duration { get; set; }
     public string FormattedDuration => Number > 1 ? $"{Duration:hh}h {Duration:mm}m od prethodne stanice" : "početna stanica";
-    public string FormattedDistance=> $"{Math.Round(80 * Duration.TotalMinutes / 60)} km od prethodne stanice";
+    public string FormattedDistance=> Number > 1 ? $"{Math.Round(80 * Duration.TotalMinutes / 60)} km od prethodne stanice" : "početna stanica";
     public string FormattedPrice => Number > 1 ? $"{Price} RSD" : "";
     public TimeSpan CalculateDuration(Train train, Station station) => TimeSpan.FromHours(Station.DistanceTo(station) / train.Speed);
 }

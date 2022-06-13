@@ -384,6 +384,7 @@ public partial class CreateUpdateLine : Primitives.Window
         StackPanel element = sender as StackPanel;
         if (element != null && e.LeftButton == MouseButtonState.Pressed && element.Tag is Station station)
         {
+            IsOverlayVisible = Visibility.Visible;
             DragDrop.DoDragDrop(element, station, DragDropEffects.Copy);
         }
     }

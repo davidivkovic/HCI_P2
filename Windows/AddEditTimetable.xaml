@@ -8,7 +8,10 @@
         FontFamily="/Fonts/#Inter"
         FontSize="28"
         mc:Ignorable="d"
+        MinWidth="680" 
+        SizeToContent="WidthAndHeight"
         Title="AddEditTimetable"
+        WindowStartupLocation="CenterScreen"
         FocusManager.IsFocusScope="True">
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
@@ -33,8 +36,9 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Column="1" Grid.Row="0" Name="TrainsListView" Height="360" Margin="0 10 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
+        <ListView Grid.Column="0" Grid.Row="0" Name="TrainsListView" Height="350" Margin="0 100 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
           <ListView.ItemTemplate>
             <DataTemplate>
               <Grid Margin="6">
@@ -59,18 +63,18 @@
             </DataTemplate>
           </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Margin="0 0 40 0" Grid.Column="0" >
+        <StackPanel Grid.Column="0" >
           <TextBlock FontWeight="Medium">
           Pretraga vozova:
           </TextBlock>
           <Grid>
             <TextBox 
-          Padding="5 0" Margin="0 10 0 0" 
-          Height="50"
-          Width="300"
-          Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          Name="FilterInput"
-          VerticalContentAlignment="Center"
+              Padding="5 0" Margin="0 10 0 0" 
+              Height="50"
+              Width="300"
+              Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+              Name="FilterInput"
+              VerticalContentAlignment="Center"
         >
             </TextBox>
             <TextBlock FontSize="24" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
@@ -97,29 +101,30 @@
               ×
             </Button>
           </Grid>
-          <StackPanel Margin="0 20 0 0" Grid.Column="0">
-            <TextBlock FontWeight="Medium">Izabrani voz:</TextBlock>
-            <Grid Visibility="{Binding AreTrainDetailsVisible}" Margin="6">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <StackPanel ToolTip="Podaci o vozu">
-                <TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="20 0 0 0">
+          <TextBlock FontWeight="Medium">Izabrani voz:</TextBlock>
+          <TextBlock Foreground="DimGray" FontSize="22" Text="{Binding PleaseText}"/>
+          <Grid Visibility="{Binding AreTrainDetailsVisible}" Margin="6 -20 6 6">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel ToolTip="Podaci o vozu">
+              <TextBlock>
                   Voz <Run Text="{Binding SelectedTrain.Number}"/>
-                </TextBlock>
-                <TextBlock FontSize="26">
+              </TextBlock>
+              <TextBlock FontSize="26">
                   Tip <Run Text="{Binding SelectedTrain.Name, Mode=OneWay}"/>
-                </TextBlock>
-                <TextBlock FontSize="24">
+              </TextBlock>
+              <TextBlock FontSize="24">
                   <Run Text="{Binding SelectedTrain.NumberOfSeats, Mode=OneWay}"/>
                   Sedišta
-                </TextBlock>
-              </StackPanel>
-              <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding SelectedTrain.Image, Mode=OneTime}" />
-            </Grid>
-          </StackPanel>
-          <StackPanel Margin="0 10 0 0" HorizontalAlignment="Left" >
+              </TextBlock>
+            </StackPanel>
+            <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding SelectedTrain.Image, Mode=OneTime}" />
+          </Grid>
+          <StackPanel Margin="0 10 0 0">
             <TextBlock FontWeight="Medium">
               Vreme polaska:
             </TextBlock>
@@ -160,8 +165,8 @@
             </WrapPanel>
           </StackPanel>
         </StackPanel>
-      </Grid>
-      <WrapPanel HorizontalAlignment="Center" Margin="0 40 0 10">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 40 0 0" 
+                  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
         <Button Template="{StaticResource DefaultButtonTemplate}" 
                 Padding="40 10"
                 Command="{Binding SaveChangesCommand}"
@@ -174,7 +179,9 @@
                 Padding="40 10"
                 ToolTip="Odustani od izmena">
           Odustani</Button>
-      </WrapPanel>
+      </StackPanel>
+      </Grid>
+
     </StackPanel>
   </ScrollViewer>
 

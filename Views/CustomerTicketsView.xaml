@@ -22,7 +22,7 @@
     <TextBlock 
       Margin="20 0"
       FontWeight="Medium" 
-      FontSize="42" 
+      FontSize="38" 
       TextWrapping="WrapWithOverflow"
       HorizontalAlignment="Left"
       VerticalAlignment="Center"

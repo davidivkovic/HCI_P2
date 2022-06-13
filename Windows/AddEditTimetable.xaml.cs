@@ -33,6 +33,7 @@ public partial class AddEditTimetable : P2.Primitives.Window
             SelectedHours = hour < 10 ? $"0{hour}" : hour.ToString();
             SelectedMinutes = minutes < 10 ? $"0{minutes}" : minutes.ToString();
             SelectedTrain = CurrentDeparture.Train;
+
             HeadingText = "Izmena polaska linije";
         }
         else
@@ -79,6 +80,8 @@ public partial class AddEditTimetable : P2.Primitives.Window
     public bool IsTrainSelected => SelectedTrain is not null;
 
     public Visibility AreTrainDetailsVisible => IsTrainSelected ? Visibility.Visible : Visibility.Hidden;
+
+    public string PleaseText => IsTrainSelected ? "" : "Molimo Vas izaberite voz";
 
     public bool Saved { get; set; }
 

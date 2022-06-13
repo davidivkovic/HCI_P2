@@ -55,9 +55,6 @@ namespace P2.Views
 
         public bool IsLineSelected => SelectedTrainLine is not null || IsEditable;
 
-        public Visibility IsSourceInputClearable => SourceInputText != null && SourceInputText != "" ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility IsDestinationInputClearable => DestinationInputText != null && DestinationInputText != "" ? Visibility.Visible : Visibility.Collapsed;
-
         public string SourceInputText { get; set; } = "";
         public string DestinationInputText { get; set; } = "";
 
@@ -103,6 +100,17 @@ namespace P2.Views
             }
         }
 
+        public void ListViewGotFocus(object sender, RoutedEventArgs e)
+        {
+            if(LinesListView.Items.Count > 0)
+            {
+                LinesListView.SelectedItem = LinesListView.Items[0];
+                SelectedTrainLine = (TrainLine)LinesListView.SelectedItem;
+                FindTimetable();
+            }
+
+        }
+
         public void SourceInputGotFocus(object sender, RoutedEventArgs e)
         {
             SourceInputText = "";
@@ -138,13 +146,13 @@ namespace P2.Views
 
         public void DestinationInputLostFocus(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(DestinationInputText) &&  DestinationSuggestions.Count != 0 && DestinationInputText.Length >= 2)
+            if (!string.IsNullOrWhiteSpace(DestinationInputText) && DestinationSuggestions.Count != 0 && DestinationInputText.Length >= 2)
             {
                 DestinationSearch = DestinationSuggestions[0];
                 DestinationSuggestionsListBox.SelectedItem = SelectedTrainLine;
                 DestinationInputText = DestinationSearch.Name;
             }
-            else if(DestinationSearch is not null)
+            else if (DestinationSearch is not null)
             {
                 DestinationInputText = DestinationSearch.Name;
 
@@ -209,7 +217,14 @@ namespace P2.Views
                     DestinationSearch = DestinationSuggestions.ElementAt(DestinationSuggestionsListBox.SelectedIndex);
                     DestinationInputText = DestinationSearch.Name;
                     DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
-                    SearchButton.Focus();
+                    if (UserStore.IsManager)
+                    {
+                        SearchButton.Focus();
+                    }
+                    else
+                    {
+                        gDPickDate.IsDropDownOpen = true;
+                    }
                 }
                 e.Handled = true;
             }
@@ -223,6 +238,8 @@ namespace P2.Views
 
         private void OnSourceInputTextChanged()
         {
+            DestinationInput.BorderBrush = Brushes.DimGray;
+
             if (SourceInputText.Length < 2)
             {
                 var charsLeft = 2 - SourceInputText.Length;
@@ -272,6 +289,8 @@ namespace P2.Views
         }
         private void OnDestinationInputTextChanged()
         {
+            DestinationInput.BorderBrush = Brushes.DimGray;
+
             if (DestinationInputText.Length < 2)
             {
                 var charsLeft = 2 - DestinationInputText.Length;
@@ -322,9 +341,9 @@ namespace P2.Views
         [ICommand]
         public void SearchLines()
         {
-            if(!UserStore.IsManager)
+            if (!UserStore.IsManager)
             {
-                if( SourceSearch is null || DestinationSearch is null)
+                if (SourceSearch is null || DestinationSearch is null)
                 {
                     List<string> errors = new();
                     errors.Add("Polazište i odredište moraju biti odabrani");
@@ -361,7 +380,7 @@ namespace P2.Views
                                          .ToList();
 
             List<TrainLine> toDelete = new();
-            foreach(var line in TempFiltered)
+            foreach (var line in TempFiltered)
             {
                 int startNum = line.Stops.Where(s => s.Station.Name == SourceInputText).Select(stop => stop.Number).FirstOrDefault();
                 int endNum = line.Stops.Where(s => s.Station.Name == DestinationInputText).Select(stop => stop.Number).FirstOrDefault();
@@ -369,7 +388,6 @@ namespace P2.Views
             }
 
             toDelete.ForEach(l => TempFiltered.Remove(l));
-
 
             for (int i = FilteredLines.Count - 1; i >= 0; i--)
             {
@@ -388,9 +406,9 @@ namespace P2.Views
                 }
             }
 
-            if(!UserStore.IsManager)
+            if (!UserStore.IsManager)
             {
-                if(FilteredLines.Count > 0)
+                if (FilteredLines.Count > 0)
                 {
                     SelectedTrainLine = FilteredLines.First();
                     FindTimetable();
@@ -400,8 +418,11 @@ namespace P2.Views
                     SelectedTrainLine = null;
                     Departures = new();
                 }
-
             }
+
+            Departures = new();
+            ErrorText = "Molimo Vas izaberite liniju";
+            LinesListView.Focus();
 
         }
 
@@ -515,13 +536,13 @@ namespace P2.Views
             }
         }
 
-        [ICommand] 
+        [ICommand]
         public void BuyTicket()
         {
             var window = new Windows.BuyTicket(SelectedDeparture, DateOnly.FromDateTime(DateFrom), SourceSearch, DestinationSearch);
             window.ShowDialog();
 
-            if(window.Saved)
+            if (window.Saved)
             {
                 var successWindow = new ConfirmCancelWindow
                 {
@@ -533,6 +554,16 @@ namespace P2.Views
                 };
                 successWindow.ShowDialog();
             }
+        }
+
+        private void DatePickerMouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {
+            gDPickDate.IsDropDownOpen = true;
+        }
+
+        private void DatePickerCalendarClosed(object sender, RoutedEventArgs e)
+        {
+            SearchButton.Focus();
         }
     }
 }

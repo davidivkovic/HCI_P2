@@ -6,11 +6,217 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   xmlns:local="clr-namespace:P2.Views"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+  xmlns:Stores="clr-namespace:P2.Stores"
   mc:Ignorable="d" 
+  Background="White"
   d:DesignHeight="450" d:DesignWidth="800"
+  FocusManager.IsFocusScope="True"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
-  <Grid>
-
-  </Grid>
+  <UserControl.Resources>
+    <Style x:Key="resizedCalendarItem" TargetType="{x:Type Calendar}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Calendar}">
+            <Viewbox Height="300"
+                     Width="300">
+              <CalendarItem x:Name="PART_CalendarItem"
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" />
+            </Viewbox>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <Grid Margin="20 10 15 10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock 
+      Grid.ColumnSpan="2"
+      FontWeight="Medium" 
+      FontSize="38" 
+      TextWrapping="WrapWithOverflow"
+      HorizontalAlignment="Left"
+      VerticalAlignment="Center"
+    >
+      Pregled prodatih karata vožnje
+      </TextBlock>
+      <StackPanel Margin="0 15 0 0" Grid.Column="0" Grid.Row="1" Width="300" HorizontalAlignment="Left" >
+        <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga vožnji</TextBlock>
+        <TextBlock FontWeight="Medium" FontSize="24" Margin="0 20 0 0">Polazište:</TextBlock>
+        <TextBox VerticalContentAlignment="Center" 
+                     Margin="0 10 0 0" 
+                     Padding="10 0 10 0"
+                     Height="50"
+                     PreviewKeyDown="SourceListBoxKeyDown"
+                     GotFocus="SourceInputGotFocus"
+                     LostFocus="SourceInputLostFocus"
+                     Text="{Binding SourceInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="SourceInput">
+        </TextBox>
+        <Canvas Panel.ZIndex="1">
+          <ListBox Name="SourceSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Cursor="Hand" Width="286" Margin="0 5">
+                  <TextBlock  Text="{Binding Name}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Canvas>
+        <Canvas Panel.ZIndex="1" Visibility="Collapsed" Name="SourceHelpPanel">
+          <Border Padding="5" BorderThickness="1" BorderBrush="DimGray" Background="#feffed" Height="40" Width="300">
+            <TextBlock FontSize="22.5">
+                Unesite bar još
+                <Run Name="SourceHelpCharsLeft"/>
+                <Run Name="SourceHelpCharsNoun"/>
+            </TextBlock>
+          </Border>
+        </Canvas>
+        <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište:</TextBlock>
+        <TextBox VerticalContentAlignment="Center" 
+                     Margin="0 10 0 0" 
+                     Padding="10 0 10 0"
+                     Height="50"
+                     GotFocus="DestinationInputGotFocus"
+                     LostFocus="DestinationInputLostFocus"
+                     PreviewKeyDown="DestinationListBoxKeyDown"
+                     Text="{Binding DestinationInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Name="DestinationInput">
+        </TextBox>
+        <Canvas Panel.ZIndex="100">
+          <ListBox Name="DestinationSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Cursor="Hand" Width="286" Margin="0 5">
+                  <TextBlock  Text="{Binding Name}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Canvas>
+        <Canvas Panel.ZIndex="1" Visibility="Collapsed" Name="DestinationHelpPanel">
+          <Border Padding="5" BorderThickness="1" BorderBrush="DimGray" Background="#feffed" Height="40" Width="300">
+            <TextBlock FontSize="22.5">
+                Unesite bar još
+                <Run Name="DestinationHelpCharsLeft"/>
+                <Run Name="DestinationHelpCharsNoun"/>
+            </TextBlock>
+          </Border>
+        </Canvas>
+        <StackPanel>
+          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Datum:</TextBlock>
+          <DatePicker SelectedDateFormat="Short" x:Name="gDPickDate"
+                      Focusable="False"
+                      Margin="0 10 0 0"
+                      SelectedDate="{Binding DateFrom, Mode=TwoWay}"
+                      CalendarClosed="DatePickerCalendarClosed"
+                      CalendarStyle="{StaticResource resizedCalendarItem}">
+            <DatePicker.Resources>
+              <Style TargetType="DatePickerTextBox">
+                <EventSetter Event="MouseLeftButtonUp" Handler="DatePickerMouseLeftButtonUp" />
+              </Style>
+            </DatePicker.Resources>
+          </DatePicker>
+        </StackPanel>
+        <Button
+            Name="SearchButton"
+            Template="{DynamicResource DefaultButtonTemplate}"
+            Padding="0 5"
+            Margin="0 20 0 0"
+            Command="{Binding SearchLinesCommand}">Pretraži</Button>
+      </StackPanel>
+      <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 15 0 0">
+        <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Vožnje</TextBlock>
+        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}"
+                    CanUserSortColumns="False"
+                    Name="TimetableDataGrid"
+                    HeadersVisibility="Column"
+                    AutoGenerateColumns="False"
+                    SelectionChanged="TimetableGridSelectionChanged"
+                    CanUserAddRows="False">
+          <DataGrid.CellStyle>
+            <Style TargetType="DataGridCell">
+              <Setter Property="Padding" Value="10 0"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                      <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </DataGrid.CellStyle>
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Voz" Binding="{Binding Train.Number}" IsReadOnly="True">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTemplateColumn Header="Tip" IsReadOnly="True">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <WrapPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Train.Name}"/>
+                    <Image VerticalAlignment="Center" 
+                             HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" 
+                             Margin="10 0 0 0"
+                             Height="30" Source="{Binding Train.Image, Mode=OneWay}" />
+                  </WrapPanel>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTextColumn Header="Polazak" Binding="{Binding TableTime}" IsReadOnly="True">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn Header="Dolazak" Binding="{Binding ArrivalTableTime, Mode=OneTime}" IsReadOnly="True">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn Header="Vreme putovanja" Binding="{Binding TravelTableTime, Mode=OneTime}" IsReadOnly="True">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTemplateColumn Width="*">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate >
+                  <Button Margin="0 5" 
+                            Padding="10 0"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ShowTicketsCommand}"
+                            Template="{StaticResource NeutralButtonTemplate}">
+                    Karte
+                  </Button>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+      </StackPanel>
+    </Grid>
+  </ScrollViewer>
 </Primitives:Component>

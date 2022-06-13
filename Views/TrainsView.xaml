@@ -23,7 +23,7 @@
         <ColumnDefinition Width="*"  />
       </Grid.ColumnDefinitions>
       <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-        <TextBlock FontWeight="Medium" VerticalAlignment="Center" FontSize="42">Pregled vozova</TextBlock>
+        <TextBlock FontWeight="Medium" VerticalAlignment="Center" FontSize="38">Pregled vozova</TextBlock>
         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
           <Button FontSize="28" Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Dodavanje novog voza">
             Dodaj voz

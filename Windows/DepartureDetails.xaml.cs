@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommunityToolkit.Mvvm.Input;
 using P2.Model;
 using P2.Primitives;
 
 namespace P2.Windows;
 
-/// <summary>
-/// Interaction logic for DepartureDetails.xaml
-/// </summary>
-/// 
 public class GridModel
 {
     public Station Station { get; set; }
@@ -62,9 +59,15 @@ public partial class DepartureDetails : Window
           
         }
         InitializeComponent();
+        CloseButton.Focus();
     }
 
     public Departure Departure { get; set; }
-
     public List<GridModel> Data { get; set; } = new();
+
+    [ICommand]
+    public void CloseDetails()
+    {
+        Close();
+    }
 }

@@ -38,6 +38,7 @@ public partial class CustomerTicketsView : Primitives.Component
             .Include(t => t.Departure)
                 .ThenInclude(d => d.Line)
                     .ThenInclude(l => l.Stops)
+                        .ThenInclude(s => s.Station)
             .Where(t => t.Customer.Id == UserStore.User.Id)
         );
     }

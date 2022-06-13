@@ -8,50 +8,70 @@
         WindowStartupLocation="CenterScreen"
         FontSize="28"
         Title="DepartureDetails" Height="450" Width="720">
-  <DataGrid Margin="20" ItemsSource="{Binding Data}"
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="20">
+      <DataGrid  ItemsSource="{Binding Data}"
             HeadersVisibility="Column"
             CanUserSortColumns="False"
             Name="TimetableDataGrid"
+            IsTabStop="False"
             AutoGenerateColumns="False"
             CanUserAddRows="False">
-    <DataGrid.CellStyle>
-      <Style TargetType="DataGridCell">
-      <Setter Property="Padding" Value="10 0"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="{x:Type DataGridCell}">
-            <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-              <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-            </Border>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-    </DataGrid.CellStyle>
-    <DataGrid.Columns>
-      <DataGridTextColumn Width="Auto" Header="Stanica" Binding="{Binding Station.Name}" IsReadOnly="True"/>
-      <DataGridTextColumn  Width="*" Header="Dolazak" Binding="{Binding ArrivalTableTime}" IsReadOnly="True">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
+        <DataGrid.RowStyle>
+          <Style TargetType="DataGridRow">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
           </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
-      <DataGridTextColumn  Width="*" Header="Polazak" Binding="{Binding DepartureTableTime}" IsReadOnly="True">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
+        </DataGrid.RowStyle>
+        <DataGrid.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Padding" Value="10 0"/>
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                  <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                  </Border>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
           </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
-      <DataGridTextColumn Width="*" Header="Cena" Binding="{Binding PriceTable}" IsReadOnly="True">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalAlignment" Value="Right" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
-    </DataGrid.Columns>
-  </DataGrid>
+        </DataGrid.CellStyle>
+        <DataGrid.Columns>
+          <DataGridTextColumn Width="Auto" Header="Stanica" Binding="{Binding Station.Name}" IsReadOnly="True"/>
+          <DataGridTextColumn  Width="*" Header="Dolazak" Binding="{Binding ArrivalTableTime}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn  Width="*" Header="Polazak" Binding="{Binding DepartureTableTime}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="*" Header="Cena" Binding="{Binding PriceTable}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+      <Button HorizontalAlignment="Right" 
+              Padding="15 5" Margin="0 20 0 0"
+              Name="CloseButton"
+              Template="{DynamicResource NeutralButtonTemplate}"
+              Command="{Binding CloseDetailsCommand}">
+        Zatvori
+      </Button>
+    </StackPanel>
+  </ScrollViewer>
 </Primitives:Window>

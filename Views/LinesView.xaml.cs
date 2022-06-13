@@ -216,6 +216,17 @@ public partial class LinesView : Component
             db.SaveChanges();
 
             UpdateMap();
+
+            var successWindow = new ConfirmCancelWindow
+            {
+                Title = "Uspeh",
+                Message = "Vaše izmene su uspešno sačuvane",
+                ConfirmButtonText = "U redu",
+                CancelButtonText = "",
+                Image = MessageBoxImage.Information
+            };
+            successWindow.ShowDialog();
+            UpdateMap();
         }
         LinesListView.Focus();
     }
