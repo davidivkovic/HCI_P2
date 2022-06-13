@@ -581,7 +581,7 @@ public partial class AddEditTrain : Primitives.Window
         TextLocalization.DoIt = "Uradi korak za mene";
         var tour = new Tour()
         {
-            Name = "My Demo Tour",
+            Name = "Tutorijal za vozove",
             ShowNextButtonDefault = true,
             Steps = new []
             {

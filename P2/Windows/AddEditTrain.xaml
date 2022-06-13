@@ -34,7 +34,7 @@
     <StackPanel Margin="-20 20 20 20" HorizontalAlignment="Center">
       <Grid Margin="0 0 0 20">
         <TextBlock Text="{Binding HeaderText}" Margin="40 0 0 10" FontSize="32" FontWeight="Medium"/>
-        <Button Command="{Binding StartTutorialCommand}" FontSize="18" FontWeight="Medium" Padding="10 0" HorizontalAlignment="Right" Template="{StaticResource NeutralButtonTemplate}">Pokreni Tutorijal</Button>
+        <Button Command="{Binding StartTutorialCommand}" FontSize="18" Padding="10 0" HorizontalAlignment="Right" Template="{StaticResource NeutralButtonTemplate}">Pokreni Tutorijal</Button>
       </Grid>
       <WrapPanel HorizontalAlignment="Left">
         <StackPanel Margin="40 30 40 0">

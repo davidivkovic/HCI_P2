@@ -15,8 +15,7 @@
   <Primitives:Component.Resources>
     <BooleanToVisibilityConverter x:Key="BoolToVis" />
   </Primitives:Component.Resources>
-  <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <Grid Margin="0 10">
+    <Grid Margin="0 10 0 0">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
@@ -33,7 +32,7 @@
       </TextBlock>
 
       <ScrollViewer Margin="0 20 0 0" Grid.Row="1"  VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding Tickets}">
+        <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Tickets}">
           <ItemsControl.ItemContainerStyle>
             <Style>
               <Setter Property="FrameworkElement.Margin" Value="0 15"/>
@@ -41,84 +40,88 @@
           </ItemsControl.ItemContainerStyle>
           <ItemsControl.ItemTemplate>
             <DataTemplate>
-              <Border HorizontalAlignment="Center" Padding="15" BorderThickness="1" BorderBrush="DimGray" VerticalAlignment="Top">
-                <StackPanel Orientation="Horizontal">
-                  <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                      <TextBlock FontSize="24" FontWeight="Medium" Text="{Binding DepartureDate, StringFormat='{}{0:dd.MM.yyyy.}'}"/>
-                    </StackPanel>
-                    <StackPanel Name="DepartureArrivalPanel" HorizontalAlignment="Left" Orientation="Horizontal">
-                      <StackPanel>
-                        <TextBlock FontWeight="Medium" FontSize="26" Text="{Binding Departure.Line.Source.Name}"/>
-                        <TextBlock FontSize="22">
-                        Polazi u <Run Text="{Binding Departure.TableTime, Mode=OneWay}"/>
-                        </TextBlock>
+              <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="ColumnSize" />
+                </Grid.ColumnDefinitions>
+                <Border Padding="15" BorderThickness="1" BorderBrush="DimGray" >
+                  <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="24" FontWeight="Medium" Text="{Binding DepartureDate, StringFormat='{}{0:dd.MM.yyyy.}'}"/>
                       </StackPanel>
-                      <TextBlock VerticalAlignment="Center" Margin="10 0" FontSize="28" FontWeight="Medium">→</TextBlock>
-                      <StackPanel>
-                        <TextBlock FontWeight="Medium" FontSize="26" Text="{Binding Departure.Line.Destination.Name}"/>
-                        <TextBlock FontSize="22">
-                        Stiže u <Run Text="{Binding Departure.ArrivalTableTime, Mode=OneWay}"/>
-                        </TextBlock>
+                      <StackPanel Name="DepartureArrivalPanel" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <StackPanel>
+                          <TextBlock FontWeight="Medium" FontSize="26" Text="{Binding Departure.Line.Source.Name}"/>
+                          <TextBlock FontSize="22">
+                          Polazi u <Run Text="{Binding Departure.TableTime, Mode=OneWay}"/>
+                          </TextBlock>
+                        </StackPanel>
+                        <TextBlock VerticalAlignment="Center" Margin="10 0" FontSize="28" FontWeight="Medium">→</TextBlock>
+                        <StackPanel>
+                          <TextBlock FontWeight="Medium" FontSize="26" Text="{Binding Departure.Line.Destination.Name}"/>
+                          <TextBlock FontSize="22">
+                          Stiže u <Run Text="{Binding Departure.ArrivalTableTime, Mode=OneWay}"/>
+                          </TextBlock>
+                        </StackPanel>
                       </StackPanel>
+                      <TextBlock Margin="0 10 0 0" FontWeight="Medium" FontSize="22">
+                      Broj karte:
+                      <Run Text="{Binding Id, StringFormat='{}{0:D6}'}"/>
+                      </TextBlock>
                     </StackPanel>
-                    <TextBlock Margin="0 10 0 0" FontWeight="Medium" FontSize="22">
-                    Broj karte:
-                    <Run Text="{Binding Id, StringFormat='{}{0:D6}'}"/>
+                    <StackPanel Margin="20 0 0 0">
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                          <TextBlock FontSize="26">
+                          Voz <Run Text="{Binding Departure.Train.Number}"/>
+                          </TextBlock>
+                          <TextBlock FontSize="24">
+                          Tip <Run Text="{Binding Departure.Train.Name, Mode=OneWay}"/>
+                          </TextBlock>
+                        </StackPanel>
+                        <Image Grid.Column="1" Margin="12 5 10 0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Width="60" Source="{Binding Departure.Train.Image, Mode=OneWay}" />
+                      </Grid>
+                      <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
+                        <TextBlock FontSize="24" Margin="0 0 5 0" FontWeight="Medium">Sedišta:</TextBlock>
+                        <ItemsControl MaxWidth="{Binding ActualWidth, ElementName=DepartureArrivalPanel}" ItemsSource="{Binding Seats}"  AlternationCount="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}">
+                          <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                              <WrapPanel></WrapPanel>
+                            </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                              <StackPanel Orientation="Horizontal">
+                                <TextBlock  FontSize="24" x:Name="SeparatorTextBlock" Text=", "/>
+                                <TextBlock  FontSize="24" FontWeight="Medium" Text="{Binding SeatNumber}"/>
+                              </StackPanel>
+                              <DataTemplate.Triggers>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                  <Setter Property="Visibility" TargetName="SeparatorTextBlock" Value="Collapsed" />
+                                </Trigger>
+                              </DataTemplate.Triggers>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                      </StackPanel>
+                      <TextBlock Visibility="{Binding IsReturn, Converter={StaticResource BoolToVis}}" Margin="0 2 0 0" FontSize="22" Text="Povratna karta"/>
+
+                    </StackPanel>
+                    <TextBlock Margin="10 0 0 0" FontSize="22" VerticalAlignment="Bottom">
+                    Cena:
+                    <Run FontWeight="Medium" Text="{Binding FormattedPrice, Mode=OneWay}"/>
                     </TextBlock>
                   </StackPanel>
-                  <StackPanel Margin="20 0 0 0">
-                    <Grid>
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                      </Grid.ColumnDefinitions>
-                      <StackPanel>
-                        <TextBlock FontSize="26">
-                        Voz <Run Text="{Binding Departure.Train.Number}"/>
-                        </TextBlock>
-                        <TextBlock FontSize="24">
-                        Tip <Run Text="{Binding Departure.Train.Name, Mode=OneWay}"/>
-                        </TextBlock>
-                      </StackPanel>
-                      <Image Grid.Column="1" Margin="12 5 10 0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Width="60" Source="{Binding Departure.Train.Image, Mode=OneWay}" />
-                    </Grid>
-                    <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
-                      <TextBlock FontSize="24" Margin="0 0 5 0" FontWeight="Medium">Sedišta:</TextBlock>
-                      <ItemsControl MaxWidth="{Binding ActualWidth, ElementName=DepartureArrivalPanel}" ItemsSource="{Binding Seats}"  AlternationCount="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}">
-                        <ItemsControl.ItemsPanel>
-                          <ItemsPanelTemplate>
-                            <WrapPanel></WrapPanel>
-                          </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                          <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                              <TextBlock  FontSize="24" x:Name="SeparatorTextBlock" Text=", "/>
-                              <TextBlock  FontSize="24" FontWeight="Medium" Text="{Binding SeatNumber}"/>
-                            </StackPanel>
-                            <DataTemplate.Triggers>
-                              <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Visibility" TargetName="SeparatorTextBlock" Value="Collapsed" />
-                              </Trigger>
-                            </DataTemplate.Triggers>
-                          </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                      </ItemsControl>
-                    </StackPanel>
-                    <TextBlock Visibility="{Binding IsReturn, Converter={StaticResource BoolToVis}}" Margin="0 2 0 0" FontSize="22" Text="Povratna karta"/>
-
-                  </StackPanel>
-                  <TextBlock Margin="10 0 0 0" FontSize="22" VerticalAlignment="Bottom">
-                  Cena:
-                  <Run FontWeight="Medium" Text="{Binding FormattedPrice, Mode=OneWay}"/>
-                  </TextBlock>
-                </StackPanel>
-              </Border>
+                </Border>
+              </Grid>
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
       </ScrollViewer>
     </Grid>
-  </ScrollViewer>
 </Primitives:Component>

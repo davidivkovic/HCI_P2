@@ -6,6 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:P2.Windows"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:Tour="clr-namespace:ThinkSharp.FeatureTouring;assembly=ThinkSharp.FeatureTour"
+        xmlns:TourControls="clr-namespace:ThinkSharp.FeatureTouring.Controls;assembly=ThinkSharp.FeatureTour"
         mc:Ignorable="d"
         FontSize="28" FontFamily="/Fonts/#Inter"
         WindowStartupLocation="CenterScreen"
@@ -31,6 +33,14 @@
         <Image Width="40" Height="40" RenderOptions.BitmapScalingMode="HighQuality" Source="/Assets/icon.png"/>
       </StackPanel>
     </ControlTemplate>
+    <Style TargetType="TourControls:TourControl">
+      <Setter Property="Background" Value="White"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="BorderBrush" Value="#040404" />
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontFamily" Value="/Fonts/#Inter"/>
+    </Style>
   </Window.Resources>
   <Window.InputBindings>
     <KeyBinding Modifiers="Control"
@@ -51,13 +61,16 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
-            FontWeight="Medium" 
-            FontSize="42" 
-            TextWrapping="WrapWithOverflow"
-            HorizontalAlignment="Left"
-            Text="{Binding Header}"
-          />
+          <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+            <TextBlock 
+              FontWeight="Medium" 
+              FontSize="38" 
+              TextWrapping="WrapWithOverflow"
+              HorizontalAlignment="Left"
+              Text="{Binding Header}"
+            />
+            <Button Command="{Binding StartTutorialCommand}" FontSize="18" Padding="10 0" HorizontalAlignment="Right" Template="{StaticResource NeutralButtonTemplate}">Pokreni Tutorijal</Button>
+          </Grid>
           <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 20 0 0" Width="250" HorizontalAlignment="Left" >
             <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga stanica</TextBlock>
             <Grid>
@@ -95,8 +108,9 @@
               </Button>
             </Grid>
             <Grid>
-
               <ListView ItemsSource="{Binding FilteredStations}"                     
+                    Tour:TourHelper.ElementID="StationsList" 
+                    Tour:TourHelper.Placement="TopLeft"
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     Name="FilteredStationsListView"
@@ -139,6 +153,8 @@
           <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mreža linija</TextBlock>
           <Grid Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="590">
             <m:Map Name="StationMap"
+              Tour:TourHelper.ElementID="Map"
+              Tour:TourHelper.Placement="RightCenter"
               DragEnter="MapDropEnter"
               MinWidth="540"
               AllowDrop="True"
@@ -173,6 +189,7 @@
                       Command="{Binding ChangePriceCommand}"
                       Padding="12 5"
                       Margin="0 10 0 0"
+                      Tour:TourHelper.ElementID="EditPrice" Tour:TourHelper.Placement="LeftCenter"
                       ToolTip="Izmeni cenu putovanja do selektovane stanice">
                 Izmeni cenu
               </Button>
@@ -182,6 +199,7 @@
                       Name="BringUpButton"
                       Padding="12 5" 
                       IsEnabled="{Binding IsStopSelected}"
+                      Tour:TourHelper.ElementID="MoveUp" Tour:TourHelper.Placement="LeftCenter"
                       ToolTip="Pomeri selektovanu stanicu iznad (Ctrl + UpArrow)">
                   &#8593; Pomeri iznad
                 </Button>
@@ -191,12 +209,15 @@
                       Margin="0 8 0 0"
                       Padding="12 5"
                       IsEnabled="{Binding IsStopSelected}"
+                      Tour:TourHelper.ElementID="MoveDown" Tour:TourHelper.Placement="LeftCenter"
                       ToolTip="Pomeri selektovanu stanicu ispod (Ctrl + DownArrow)">
                   &#8595; Pomeri ispod
                 </Button>
               </StackPanel>
             </WrapPanel>
             <ListView ItemsSource="{Binding CurrentStops}" 
+                    Tour:TourHelper.ElementID="StopsList" 
+                    Tour:TourHelper.Placement="LeftCenter"
                     SelectionChanged="ListViewSelectionChanged"
                     Name="CurrentStationsListView"
                     LostFocus="ListViewLostFocus"
@@ -211,27 +232,29 @@
               </ListView.InputBindings>
               <ListView.ItemTemplate>
                 <DataTemplate>
-                  <StackPanel Margin="8 12 10 12" Cursor="Hand" Background="Transparent">
-                    <Grid>
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                      </Grid.ColumnDefinitions>
-                      <TextBlock Grid.Column="0">
-                      <Run Text="{Binding Number}"/>.
-                      <Run Text="{Binding Station.Name}" />
+                  <Border Padding="8 12 10 12" Cursor="Hand" Background="Transparent">
+                    <StackPanel>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0">
+                        <Run Text="{Binding Number}"/>.
+                        <Run Text="{Binding Station.Name}" />
+                        </TextBlock>
+                        <TextBlock 
+                        Grid.Column="1"
+                        Text="{Binding FormattedPrice, Mode=OneWay}"
+                        FontSize="26" VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                      />
+                      </Grid>
+                      <TextBlock FontSize="26" Foreground="DimGray">
+                        <Run Text="{Binding FormattedDistance, Mode=OneWay}"/>
                       </TextBlock>
-                      <TextBlock 
-                      Grid.Column="1"
-                      Text="{Binding FormattedPrice, Mode=OneWay}"
-                      FontSize="26" VerticalAlignment="Bottom"
-                      HorizontalAlignment="Right"
-                    />
-                    </Grid>
-                    <TextBlock FontSize="26" Foreground="DimGray">
-                    <Run Text="{Binding FormattedDistance, Mode=OneWay}"/>
-                    </TextBlock>
-                  </StackPanel>
+                    </StackPanel>
+                  </Border>
                 </DataTemplate>
               </ListView.ItemTemplate>
             </ListView>
@@ -246,6 +269,7 @@
           </StackPanel>
           <Button Template="{StaticResource DefaultButtonTemplate}"
                   Command="{Binding SaveChangesCommand}"
+                  Tour:TourHelper.ElementID="ConfirmButton" Tour:TourHelper.Placement="TopCenter"
                   Grid.Row="2"  
                   Grid.Column="1"
                   Width="430"

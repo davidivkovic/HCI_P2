@@ -73,9 +73,9 @@
             </Grid>
           </Border>
           <TextBlock FontSize="24" FontWeight="Medium" Margin="0 20 0 0">Odabrana sedišta:</TextBlock>
-          <Grid Margin="0 5 0 0">
-            <TextBlock Foreground="DimGray" Height="40" FontSize="22" Text="{Binding PleaseText}"/>
-            <ItemsControl MaxWidth="{Binding ActualWidth, ElementName=DepartureArrivalPanel}" ItemsSource="{Binding TakenSeats}"  AlternationCount="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}">
+          <Grid Height="50" Margin="0 5 0 0" MaxWidth="{Binding ActualWidth, ElementName=DepartureArrivalPanel}">
+            <TextBlock TextWrapping="WrapWithOverflow" Foreground="DimGray" FontSize="22" Text="{Binding PleaseText}"/>
+            <ItemsControl ItemsSource="{Binding TakenSeats}"  AlternationCount="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}">
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                   <WrapPanel></WrapPanel>

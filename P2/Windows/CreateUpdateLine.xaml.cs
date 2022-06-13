@@ -12,6 +12,9 @@ using Microsoft.Maps.MapControl.WPF;
 using P2.Model;
 using P2.Primitives;
 using P2.Views;
+using ThinkSharp.FeatureTouring;
+using ThinkSharp.FeatureTouring.Models;
+using ThinkSharp.FeatureTouring.Navigation;
 
 namespace P2.Windows;
 
@@ -167,8 +170,8 @@ public partial class CreateUpdateLine : Primitives.Window
         UpdateRoute();
         GeneratePins();
 
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step6").GoNext();
         CurrentStationsListView.Focus();
-
     }
 
     [ICommand] public void BringDown()
@@ -190,6 +193,7 @@ public partial class CreateUpdateLine : Primitives.Window
         UpdateRoute();
         GeneratePins();
 
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step7").GoNext();
         CurrentStationsListView.Focus();
     }
 
@@ -347,8 +351,7 @@ public partial class CreateUpdateLine : Primitives.Window
             }
         };
         window.ShowDialog();
-
-        
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step8").GoNext();
     }
 
     [ICommand] public void ClearInput() => SearchInput.Text = "";
@@ -359,7 +362,10 @@ public partial class CreateUpdateLine : Primitives.Window
         Stop SelectedItem = (Stop)CurrentStationsListView.SelectedItem;
 
         if (SelectedItem != null)
+        {
             SelectedStop = SelectedItem;
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step5").GoNext();
+        }
     }
 
     private void ListViewLostFocus(object sender, RoutedEventArgs e)
@@ -423,7 +429,11 @@ public partial class CreateUpdateLine : Primitives.Window
         if (element != null && e.LeftButton == MouseButtonState.Pressed && element.Tag is Station station)
         {
             IsOverlayVisible = Visibility.Visible;
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step1").GoNext();
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step3").GoNext();
             DragDrop.DoDragDrop(element, station, DragDropEffects.Copy);
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step2").GoPrevious();
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step4").GoNext();
             IsOverlayVisible = Visibility.Collapsed;
         }
     }
@@ -433,6 +443,8 @@ public partial class CreateUpdateLine : Primitives.Window
         Station station = (Station)e.Data.GetData(typeof(Station));
         AddStationToRoute(station);
         IsOverlayVisible = Visibility.Collapsed;
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step2").GoNext();
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step4").GoNext();
     }
 
     private void MapDropEnter(object sender, DragEventArgs e)
@@ -446,5 +458,30 @@ public partial class CreateUpdateLine : Primitives.Window
         HelpProvider.ShowHelp("CreateUpdateLineHelp", this);
     }
 
+    [ICommand]
+    public void StartTutorial()
+    {
+        TextLocalization.Next = "Dalje";
+        TextLocalization.Close = "Završi";
+        TextLocalization.DoIt = "Uradi korak za mene";
+        var tour = new Tour()
+        {
+            Name = "Tutorijal za linije",
+            ShowNextButtonDefault = true,
+            Steps = new[]
+            {
+                new Step("StationsList", "Header 01", "Kliknite levim tasterom i započnite prevlačenje stanice ka mapi za dodavanje prve stanice", "Step1"),
+                new Step("Map", "Header 01", "Spustite stanicu na mapu", "Step2"),
+                new Step("StationsList", "Header 01", "Kliknite levim tasterom i započnite prevlačenje stanice ka mapi za dodavanje druge stanice", "Step3"),
+                new Step("Map", "Header 01", "Spustite stanicu na mapu", "Step4"),
+                new Step("StopsList", "Header 01", "Izaberite neku od stanica levim klikom na nju", "Step5"),
+                new Step("MoveUp", "Header 01", "Pomerite izabranu stanicu jedno mesto iznad klikom na dugme \"Pomeri iznad\"", "Step6"),
+                new Step("MoveDown", "Header 01", "Pomerite izabranu stanicu jedno mesto ispod klikom na dugme \"Pomeri ispod\"", "Step7"),
+                new Step("EditPrice", "Header 01", "Izmenite cenu za izabranu stanicu klikom na dugme desno", "Step8"),
+                new Step("ConfirmButton", "Header 01", "Sačuvajte izmene klikom na taster ispod", "Step9")
+            }
+        };
 
+        tour.Start();
+    }
 }
