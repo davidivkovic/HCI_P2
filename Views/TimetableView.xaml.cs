@@ -92,12 +92,13 @@ namespace P2.Views
         public void OnDateFromChanged(DateTime oldDate, DateTime newDate)
         {
             if (oldDate.Date == newDate.Date) return;
-            if(TimetableDataGrid is not null)
+            if (TimetableDataGrid is not null)
             {
                 TimetableDataGrid.Visibility = Visibility.Collapsed;
             }
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+            FilteredLines.Clear();
         }
 
         public void OnSourceSearchChanged(Station oldStation, Station newStation)
@@ -109,6 +110,7 @@ namespace P2.Views
             }
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+            FilteredLines.Clear();
         }
 
         public void OnDestinationSearchChanged(Station oldStation, Station newStation)
@@ -120,6 +122,7 @@ namespace P2.Views
             }
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+            FilteredLines.Clear();
         }
 
 
@@ -379,7 +382,7 @@ namespace P2.Views
         [ICommand]
         public void SearchLines()
         {
-            if(!UserStore.Store.IsManager)
+            if (!UserStore.Store.IsManager)
             {
                 if (SourceSearch is null || DestinationSearch is null)
                 {
@@ -444,7 +447,7 @@ namespace P2.Views
                 }
             }
 
-            if(!UserStore.Store.IsManager)
+            if (!UserStore.Store.IsManager)
             {
                 if (FilteredLines.Count > 0)
                 {
@@ -454,6 +457,7 @@ namespace P2.Views
                 else
                 {
                     SelectedTrainLine = null;
+                    LinesListView.SelectedItem = null;
                     Departures = new();
                 }
             }
@@ -461,8 +465,22 @@ namespace P2.Views
             Departures = new();
             if (UserStore.Store.IsManager)
             {
-                ErrorText = "Molimo Vas izaberite liniju";
+                
+                SelectedTrainLine = null;
+                LinesListView.SelectedItem = null;
                 LinesListView.Focus();
+                if (FilteredLines.Count > 0)
+                {
+                    LinesListView.Visibility = Visibility.Visible;
+                    NoLinesErrorTextBlock.Visibility = Visibility.Collapsed;
+                    ErrorText = "Molimo Vas izaberite liniju";
+                }
+                else
+                {
+                    LinesListView.Visibility = Visibility.Collapsed;
+                    NoLinesErrorTextBlock.Visibility = Visibility.Visible;
+                    ErrorText = "Nema polazaka, izaberite druge parametre";
+                }
             }
             else
             {
@@ -470,7 +488,6 @@ namespace P2.Views
                 ErrorTextBlock.Visibility = Visibility.Collapsed;
                 FindTimetable();
             }
-
 
         }
 
@@ -481,6 +498,7 @@ namespace P2.Views
 
             var window = new ConfirmCancelWindow()
             {
+                Title = "Greška",
                 Message = "Nije moguće pretražiti linije zbog sledećih grešaka:",
                 ConfirmButtonText = "U redu",
                 Errors = errors,
@@ -502,6 +520,8 @@ namespace P2.Views
         [ICommand]
         public void AddNewDeparture()
         {
+            if (!IsLineSelected) return;
+
             var window = new AddEditTimetable(SelectedTrainLine);
 
             window.ShowDialog();
@@ -533,6 +553,9 @@ namespace P2.Views
         [ICommand]
         public void DeleteDeparture()
         {
+
+            if (!IsEditable) return;
+
             ConfirmCancelWindow w = new()
             {
                 Title = "Brisanje polaska",
@@ -565,6 +588,8 @@ namespace P2.Views
         [ICommand]
         public void EditDeparture()
         {
+            if (!IsEditable) return;
+
             var window = new AddEditTimetable(SelectedTrainLine, SelectedDeparture);
             window.ShowDialog();
 

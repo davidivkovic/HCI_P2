@@ -35,12 +35,14 @@ public partial class AddEditTimetable : P2.Primitives.Window
             SelectedTrain = CurrentDeparture.Train;
 
             HeadingText = "Izmena polaska linije";
+            Title = "Izmena polaska linije";
         }
         else
         {
             SelectedHours = "12";
             SelectedMinutes = "00";
             HeadingText = "Dodavanje novog polaska linije";
+            Title = "Dodavanje novog polaska linije";
         }
 
         InitializeComponent();
@@ -85,6 +87,8 @@ public partial class AddEditTimetable : P2.Primitives.Window
 
     public bool Saved { get; set; }
 
+    public bool Cancelled { get; set; }
+
     public void OnFilterChanged()
     {
         List<Train> TempFiltered = Trains.Where(t =>
@@ -122,7 +126,7 @@ public partial class AddEditTimetable : P2.Primitives.Window
 
         var window = new ConfirmCancelWindow()
         {
-            Title = "Čuvanje promena",
+            Title = Errors.Count > 0 ? "Greška" : "Čuvanje izmena",
             Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate izmene polaska?",
             Errors = Errors,
             ConfirmButtonText = Errors.Count > 0 ? "U redu" : "Sačuvaj izmene",
@@ -151,8 +155,9 @@ public partial class AddEditTimetable : P2.Primitives.Window
     {
         var w = new ConfirmCancelWindow
         {
+            Title = "Odustajanje",
             Message = "Da li ste sigurni da želite da odustanete od izmene polaska?",
-            ConfirmButtonText = "Odustani od promena",
+            ConfirmButtonText = "Odustani od izmena",
             CancelButtonText = "Otkaži",
             ConfirmIsDanger = true,
             Image = MessageBoxImage.Stop
@@ -161,8 +166,29 @@ public partial class AddEditTimetable : P2.Primitives.Window
 
         if(w.Confirmed)
         {
+            Cancelled = true;
             Close();
         }    
+    }
+
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        if (!Cancelled && !Saved) // Closed by pressing x
+        {
+            var w = new ConfirmCancelWindow
+            {
+                Title = "Odustajanje",
+                Message = "Da li ste sigurni da želite da odustanete od izmene polaska?",
+                ConfirmButtonText = "Odustani od izmena",
+                CancelButtonText = "Otkaži",
+                ConfirmIsDanger = true,
+                Image = MessageBoxImage.Stop
+            };
+            w.ShowDialog();
+
+            if (!w.Confirmed) e.Cancel = true;
+        }
+        base.OnClosing(e);
     }
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)

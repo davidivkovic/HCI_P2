@@ -65,4 +65,54 @@ public partial class MainWindow : Primitives.Window
         else
             HelpProvider.ShowHelp(CurrentView.GetType().Name + (UserStore.Store.User.Role == Role.Customer ? "Customer" : "Manager"), this);
     }
+
+    [ICommand] public void Add()
+    {
+        if(CurrentView is TimetableView)
+        {
+            ((TimetableView)CurrentView).AddNewDeparture();
+        }
+        else if(CurrentView is TrainsView)
+        {
+            ((TrainsView)CurrentView).AddTrain();
+        }
+        else if(CurrentView is LinesView)
+        {
+            ((LinesView)CurrentView).CreateNewLine();
+        }
+    }
+
+    [ICommand]
+    public void Edit()
+    {
+        if (CurrentView is TimetableView)
+        {
+            ((TimetableView)CurrentView).EditDeparture();
+        }
+        else if (CurrentView is TrainsView)
+        {
+            ((TrainsView)CurrentView).EditTrain();
+        }
+        else if (CurrentView is LinesView)
+        {
+            ((LinesView)CurrentView).EditLine();
+        }
+    }
+
+    [ICommand]
+    public void Delete()
+    {
+        if (CurrentView is TimetableView)
+        {
+            ((TimetableView)CurrentView).DeleteDeparture();
+        }
+        else if (CurrentView is TrainsView)
+        {
+            ((TrainsView)CurrentView).DeleteTrain();
+        }
+        else if (CurrentView is LinesView)
+        {
+            ((LinesView)CurrentView).DeleteLine();
+        }
+    }
 }

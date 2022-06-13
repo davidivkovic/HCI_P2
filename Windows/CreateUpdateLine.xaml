@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:P2.Windows"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="CreateUpdateLine" FontSize="28" FontFamily="/Fonts/#Inter"
+        FontSize="28" FontFamily="/Fonts/#Inter"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -62,12 +62,14 @@
             <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga stanica</TextBlock>
             <Grid>
               <TextBox VerticalContentAlignment="Center" 
-                     Padding="5 0" Margin="0 10 0 0" 
+                     Padding="45 0 50 0" Margin="0 10 0 0" 
                      Height="50" TextChanged="SearchTextChanged"
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SearchInput">
               </TextBox>
-              <TextBlock FontSize="26" IsHitTestVisible="False" Text="Ime stanice" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+              <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/magnifier.png"/>
+
+              <TextBlock FontSize="26" IsHitTestVisible="False" Text="Ime stanice" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
                 <TextBlock.Style>
                   <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -244,7 +246,7 @@
                   Margin="0 0 15 0"
                   Padding="5 20"
                   ToolTip="Sačuvaj izmene">
-            Sacuvaj izmene</Button>
+            Sačuvaj izmene</Button>
           <Button Template="{StaticResource NeutralButtonTemplate}"
                   Command="{Binding DiscardChangesCommand}"
                   Grid.Row="2"  

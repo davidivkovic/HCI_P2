@@ -106,6 +106,7 @@ public partial class AddEditTrain : Primitives.Window
         SelectedTrainType = TrainTypes.Find(t => t.Type == train.Type);
         TrainNumber = train.Number;
         CanDeleteSeats = TakenSlots.Count > 0;
+        Title = "Izmena voza";
     }
 
     public AddEditTrain()
@@ -122,6 +123,7 @@ public partial class AddEditTrain : Primitives.Window
             .Chunk(4)
             .Select(c => c.ToList())
         );
+        Title = "Dodavanje novog voza";
     }
 
     public void InitializeFocus()
@@ -478,6 +480,7 @@ public partial class AddEditTrain : Primitives.Window
 
         var w = new ConfirmCancelWindow
         {
+            Title = Errors.Count > 0 ? "Greška" : "Čuvanje izmena",
             Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate izmene voza?",
             ConfirmButtonText = Errors.Count > 0 ? "U redu" : "Sačuvaj izmene",
             Errors = Errors,
@@ -523,14 +526,18 @@ public partial class AddEditTrain : Primitives.Window
         var w = new ConfirmCancelWindow
         {
             Message = "Da li ste sigurni da želite da odustanete od izmene voza?",
-            ConfirmButtonText = "Odustani",
-            CancelButtonText = "Otakži",
+            ConfirmButtonText = "Odustani od izmena",
+            CancelButtonText = "Otkaži",
             ConfirmIsDanger = true,
             Image = MessageBoxImage.Stop
         };
         w.ShowDialog();
 
-        if (w.Confirmed) Close();
+        if (w.Confirmed)
+        {
+            Cancelled = true;
+            Close();
+        }
     }
 
     protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -539,9 +546,10 @@ public partial class AddEditTrain : Primitives.Window
         {
             var w = new ConfirmCancelWindow
             {
+                Title = "Odustajanje",
                 Message = "Da li ste sigurni da želite da odustanete od izmene voza?",
                 ConfirmButtonText = "Odustani",
-                CancelButtonText = "Otakži",
+                CancelButtonText = "Otkaži",
                 ConfirmIsDanger = true,
                 Image = MessageBoxImage.Stop
             };

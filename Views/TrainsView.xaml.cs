@@ -126,6 +126,8 @@ public partial class TrainsView : Component
     [ICommand]
     public void DeleteTrain()
     {
+        if (!IsEditable) return;
+
         ConfirmCancelWindow w = new()
         {
             Title = "Brisanje voza",
@@ -160,6 +162,8 @@ public partial class TrainsView : Component
     [ICommand]
     public void EditTrain()
     {
+        if (!IsEditable) return;
+
         AddEditTrain w = new(SelectedTrain, Seats);
         w.ShowDialog();
         if (w.Confirmed)

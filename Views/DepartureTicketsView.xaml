@@ -11,6 +11,7 @@
   mc:Ignorable="d" 
   Background="White"
   d:DesignHeight="450" d:DesignWidth="800"
+  MinWidth="900"
   FocusManager.IsFocusScope="True"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
@@ -54,16 +55,31 @@
       <StackPanel Margin="0 15 0 0" Grid.Column="0" Grid.Row="1" Width="300" HorizontalAlignment="Left" >
         <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga vožnji</TextBlock>
         <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Polazište</TextBlock>
-        <TextBox VerticalContentAlignment="Center" 
+        <Grid>
+          <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
-                     Padding="10 0 10 0"
+                     Padding="45 0 10 0"
                      Height="50"
                      PreviewKeyDown="SourceListBoxKeyDown"
                      GotFocus="SourceInputGotFocus"
                      LostFocus="SourceInputLostFocus"
                      Text="{Binding SourceInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SourceInput">
-        </TextBox>
+          </TextBox>
+          <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/pin.png"/>
+          <TextBlock FontSize="24" IsHitTestVisible="False" Text="Polazna stanica" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
+            <TextBlock.Style>
+              <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding Text, ElementName=SourceInput}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </Grid>
         <Canvas Panel.ZIndex="1">
           <ListBox Name="SourceSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
             <ListBox.ItemTemplate>
@@ -85,16 +101,31 @@
           </Border>
         </Canvas>
         <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište</TextBlock>
-        <TextBox VerticalContentAlignment="Center" 
+        <Grid>
+          <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
-                     Padding="10 0 10 0"
+                     Padding="45 0 10 0"
                      Height="50"
                      GotFocus="DestinationInputGotFocus"
                      LostFocus="DestinationInputLostFocus"
                      PreviewKeyDown="DestinationListBoxKeyDown"
                      Text="{Binding DestinationInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="DestinationInput">
-        </TextBox>
+          </TextBox>
+          <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="30" Height="30" Opacity="0.4" Source="/Assets/flag.png"/>
+          <TextBlock FontSize="24" IsHitTestVisible="False" Text="Odredištna stanica" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
+            <TextBlock.Style>
+              <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding Text, ElementName=DestinationInput}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </Grid>
         <Canvas Panel.ZIndex="100">
           <ListBox Name="DestinationSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
             <ListBox.ItemTemplate>
@@ -161,6 +192,11 @@
               </Setter>
             </Style>
           </DataGrid.CellStyle>
+          <DataGrid.RowStyle>
+            <Style TargetType="DataGridRow">
+              <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+          </DataGrid.RowStyle>
           <DataGrid.Columns>
             <DataGridTextColumn Header="Voz" Binding="{Binding Train.Number}" IsReadOnly="True">
               <DataGridTextColumn.ElementStyle>
@@ -203,7 +239,7 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn>
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate >
                   <Button Margin="0 5" 

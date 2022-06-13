@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\flag.png" />
     <None Remove="Assets\icon.png" />
     <None Remove="Assets\Cursors\grab.cur" />
     <None Remove="Assets\Cursors\grabbing.cur" />
@@ -23,6 +24,8 @@
     <None Remove="Assets\Images\trashcan.png" />
     <None Remove="Assets\Images\trashcan_open.png" />
     <None Remove="Assets\logo.png" />
+    <None Remove="Assets\magnifier.png" />
+    <None Remove="Assets\pin.png" />
     <None Remove="Fonts\Inter.ttf" />
     <None Remove="Help\AddEditTimetable.htm" />
     <None Remove="Help\AddEditTrain.htm" />
@@ -58,7 +61,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\flag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\magnifier.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\CustomerTicketsViewCustomer.htm">
