@@ -178,7 +178,7 @@
                       Name="BringUpButton"
                       Padding="12 5" 
                       IsEnabled="{Binding IsStopSelected}"
-                      ToolTip="Pomeri selektovanu stanicu iznad">
+                      ToolTip="Pomeri selektovanu stanicu iznad (Ctrl + UpArrow)">
                   &#8593; Pomeri iznad
                 </Button>
                 <Button Template="{StaticResource DefaultButtonTemplate}"
@@ -187,7 +187,7 @@
                       Margin="0 8 0 0"
                       Padding="12 5"
                       IsEnabled="{Binding IsStopSelected}"
-                      ToolTip="Pomeri selektovanu stanicu ispod">
+                      ToolTip="Pomeri selektovanu stanicu ispod (Ctrl + DownArrow)">
                   &#8595; Pomeri ispod
                 </Button>
               </StackPanel>

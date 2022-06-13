@@ -213,15 +213,16 @@ public partial class AddEditTrain : Primitives.Window
         {
             if (element.Tag is string type)
             {
-                var tutorialNav = FeatureTour.GetNavigator();
-                var b = tutorialNav.IfCurrentStepEquals("Step1");
-                var t = b.GoNext();
+                FeatureTour.GetNavigator().IfCurrentStepEquals("Step1").GoNext();
                 SeatType seatType = Enum.Parse<SeatType>(type);
                 DragDrop.DoDragDrop(element, seatType, DragDropEffects.Copy);
+                FeatureTour.GetNavigator().IfCurrentStepEquals("Step2").GoPrevious();
             }
             else if (element.Tag is Slot slot && slot.SeatType != SeatType.None)
             {
+                FeatureTour.GetNavigator().IfCurrentStepEquals("Step3").GoNext();
                 DragDrop.DoDragDrop(element, element.Tag, DragDropEffects.Move);
+                FeatureTour.GetNavigator().IfCurrentStepEquals("Step4").GoPrevious();
             }
             Slots.SelectMany(s => s).ToList().ForEach(s => s.PreviewSeatType = SeatType.None);
         }
@@ -320,6 +321,7 @@ public partial class AddEditTrain : Primitives.Window
         Slot sourceSlot = null;
         if (e.Effects == DragDropEffects.Copy)
         {
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step2").GoNext();
             seatType = (SeatType)e.Data.GetData(typeof(SeatType));
         }
         else if (e.Effects == DragDropEffects.Move)
@@ -431,6 +433,7 @@ public partial class AddEditTrain : Primitives.Window
             ReorderSeatNumbers();
         }
         CanDeleteSeats = TakenSlots.Count > 0;
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step4").GoNext();
         LeaveTrash(sender, e);
     }
 
@@ -582,15 +585,28 @@ public partial class AddEditTrain : Primitives.Window
             ShowNextButtonDefault = true,
             Steps = new []
             {
-                new Step("DobuleSeatBorder", "Header 01", "Content 01", "Step1"),
-                new Step("SlotsPanel", "Header 01", "Content 01", "Step2"),
-                new Step("Trashcan", "Header 01", "Content 01", "Step3"),
-                new Step("TrainTypeComboBox", "Header 01", "Content 01", "Step4"),
-                new Step("TrainNameTextBox", "Header 01", "Content 01", "Step5"),
-                new Step("ConfirmButton", "Header 01", "Content 01", "Step6")
+                new Step("DobuleSeatBorder", "Header 01", "Kliknite levim tasterom i započnite prevlačenje sedišta ka rasporedu", "Step1"),
+                new Step("SlotsPanel", "Header 01", "Spustite sedište na mrežu rasporeda", "Step2"),
+                new Step("SlotsPanel", "Header 01", "Kliknite levim tasterom i započnite prevlačenje sedišta ka kanti za brisanje", "Step3"),
+                new Step("Trashcan", "Header 01", "Spustite sedište na kantu za brisanje", "Step4"),
+                new Step("TrainTypeComboBox", "Header 01", "Odaberite tip voza", "Step5"),
+                new Step("TrainNameTextBox", "Header 01", "Izmenite broj voza klikom na dugme \"Izmeni\", unosom teksta u polje i klikom na dugme \"Gotovo\"", "Step6"),
+                new Step("ConfirmButton", "Header 01", "Sačuvajte izmene klikom na taster ispod", "Step7")
             }
         };
 
         tour.Start();
+    }
+
+    private void WrapPanelMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        FeatureTour.GetNavigator().IfCurrentStepEquals("Step5").GoNext();
+    }
+    public void OnTrainNumberEditTextChanged(string oldText, string newText)
+    {
+        if (oldText == "Gotovo" && newText == "Izmeni")
+        {
+            FeatureTour.GetNavigator().IfCurrentStepEquals("Step6").GoNext();
+        }
     }
 }
