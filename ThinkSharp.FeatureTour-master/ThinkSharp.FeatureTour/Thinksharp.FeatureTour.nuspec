@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Thinksharp.FeatureTour</id>
+        <version>#VERSION#</version> <!-- will be replaced by build script -->
+        <title>FeatureTour - Enhance your WPF applications with interactive Tutorials!</title>
+        <authors>Jan-Niklas Schäfer</authors>
+        <projectUrl>https://github.com/JanDotNet/ThinkSharp.FeatureTour</projectUrl>
+        <iconUrl>http://images.thinksharp.de/nuget/feature_tour.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Component for creating interactive tours for WPF applications</description>
+        <licenseUrl>https://github.com/JanDotNet/ThinkSharp.FeatureTour/blob/master/LICENSE.TXT</licenseUrl>
+        <copyright>Copyright (c) 2017 Jan-Niklas Schäfer</copyright>
+        <language>en-US</language>
+        <tags>WPF tutorial tour learning explanation</tags>
+    </metadata>
+    <files>
+        <file src="bin\Release\ThinkSharp.FeatureTour.dll" target="lib\net40\ThinkSharp.FeatureTour.dll" />
+        <file src="bin\Release\ThinkSharp.FeatureTour.xml" target="lib\net40\ThinkSharp.FeatureTour.xml" />
+		    <file src="bin\Release\ThinkSharp.FeatureTour.pdb" target="lib\net40\ThinkSharp.FeatureTour.pdb" />
+    </files>
+</package>

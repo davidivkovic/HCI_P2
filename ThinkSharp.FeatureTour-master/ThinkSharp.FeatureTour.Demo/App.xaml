@@ -1,0 +1,33 @@
+<Application x:Class="ThinkSharp.FeatureTouring.ExampleApplication.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="MainWindow.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:featureTouringControls="clr-namespace:ThinkSharp.FeatureTouring.Controls;assembly=ThinkSharp.FeatureTour"
+             xmlns:featureTouring="clr-namespace:ThinkSharp.FeatureTouring">
+  <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Touring\TourViews.xaml"/>
+                <!--
+                    The following exclusive configurations are available.
+                -->
+                
+                <!-- Option 1. Use a theme that styles the TourControl and sets a custom control template
+                               NOTE: Custom control templates are supported in licensed version only -->
+                <!--<ResourceDictionary Source="Themes\ExampleTheme.xaml" />-->
+                <!--<ResourceDictionary Source="Themes\OrginalTheme.xaml" />-->
+
+                <!-- Option 2. Style the popup using supported properties
+                               The properties below are bound to the UI. Usually the values are constant. -->
+                <ResourceDictionary>
+                    <Style TargetType="{x:Type featureTouringControls:TourControl}">
+                        <Setter Property="Background" Value="{Binding PopupStyle.Background, Source={x:Static featureTouring:MainWindowViewModel.Instance}}"/>
+                        <Setter Property="BorderBrush" Value="{Binding PopupStyle.BorderBrush, Source={x:Static featureTouring:MainWindowViewModel.Instance}}"/>
+                        <Setter Property="Foreground" Value="{Binding PopupStyle.Foreground, Source={x:Static featureTouring:MainWindowViewModel.Instance}}" />
+                        <Setter Property="FontSize" Value="{Binding PopupStyle.FontSize, Source={x:Static featureTouring:MainWindowViewModel.Instance}}" />
+                        <Setter Property="CornerRadius" Value="{Binding PopupStyle.CornerRadius, Source={x:Static featureTouring:MainWindowViewModel.Instance}}"/>
+                        <Setter Property="BorderThickness" Value="{Binding PopupStyle.BorderThickness, Source={x:Static featureTouring:MainWindowViewModel.Instance}}"/>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+  </Application.Resources>
+</Application>
