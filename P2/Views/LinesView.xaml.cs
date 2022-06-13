@@ -26,6 +26,7 @@ public partial class LinesView : Component
 
         AvailableLines = db.Lines
                            .AsNoTrackingWithIdentityResolution()
+                           .Where(l => !l.IsDeleted)
                            .Include(l => l.Stops)
                                .ThenInclude(s => s.Station)
                            .Include(l => l.Source)
@@ -140,7 +141,8 @@ public partial class LinesView : Component
         if (window.Confirmed)
         {
             using DbContext db = new();
-            db.Remove(SelectedTrainLine);
+            SelectedTrainLine.IsDeleted = true;
+            db.Update(SelectedTrainLine);
             db.SaveChanges();
 
             AvailableLines.Remove(SelectedTrainLine);

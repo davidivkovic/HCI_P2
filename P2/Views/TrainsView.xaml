@@ -25,13 +25,13 @@
       <Grid Margin="0 0 0 20" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
         <TextBlock FontWeight="Medium" VerticalAlignment="Center" FontSize="38">Pregled vozova</TextBlock>
         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-          <Button FontSize="28" Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Dodavanje novog voza">
+          <Button FontSize="28" Command="{Binding AddTrainCommand}" Cursor="Hand" Margin="0 0 10 0" Padding="15 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Dodaj novi voz (Ctrl+D)">
             Dodaj voz
           </Button>
-          <Button FontSize="28" Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Izmena odabranog voza">
+          <Button FontSize="28" Command="{Binding EditTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand" Margin="0 0 10 0" Padding="10 5" Template="{StaticResource DefaultButtonTemplate}" ToolTip="Izmeni izabran voz (Ctrl+I)">
             Izmeni voz
           </Button>
-          <Button FontSize="28" Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}" ToolTip="Brisanje odabranog voza">
+          <Button FontSize="28" Command="{Binding DeleteTrainCommand}" IsEnabled="{Binding IsEditable}" Cursor="Hand"  Padding="15 5" Template="{StaticResource RedButtonTemplate}" ToolTip="Obriši izabran voz (Ctrl+O)">
             Obriši voz
           </Button>
         </WrapPanel>
@@ -49,7 +49,7 @@
             Name="FilterInput"
           >
           </TextBox>
-          <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/magnifier.png"/>
+          <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
           <TextBlock FontSize="22" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
             <TextBlock.Style>
               <Style TargetType="{x:Type TextBlock}">

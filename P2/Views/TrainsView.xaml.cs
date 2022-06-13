@@ -142,7 +142,8 @@ public partial class TrainsView : Component
         if (w.Confirmed)
         {
             using DbContext db = new();
-            db.Remove(SelectedTrain);
+            SelectedTrain.IsDeleted = true;
+            db.Update(SelectedTrain);
             db.SaveChanges();
 
             Trains.Remove(SelectedTrain);

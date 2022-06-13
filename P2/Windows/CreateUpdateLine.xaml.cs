@@ -112,6 +112,7 @@ public partial class CreateUpdateLine : Primitives.Window
         childrenToDelete.ForEach(c => StationMap.Children.Remove(c));
                 
         List<Location> locations = new();
+        List<Pushpin> pins = new();
         foreach(var stop in CurrentStops)
         {
             TextBlock tb = new ()
@@ -126,9 +127,10 @@ public partial class CreateUpdateLine : Primitives.Window
                 Background = Brushes.Transparent,
                 Height = 70,
                 Width = 35,
-                ToolTip = stop.Station.Name
+                ToolTip = stop.Station.Name,
             };
-            StationMap.Children.Add(pin);
+            //StationMap.Children.Add(pin);
+            pins.Add(pin);
             locations.Add(pin.Location);
         }
 
@@ -141,6 +143,8 @@ public partial class CreateUpdateLine : Primitives.Window
         polyline.Opacity = 0.7;
 
         StationMap.Children.Add(polyline);
+        pins.ForEach(p => StationMap.Children.Add(p));
+        
     }
 
 
@@ -411,6 +415,7 @@ public partial class CreateUpdateLine : Primitives.Window
         {
             IsOverlayVisible = Visibility.Visible;
             DragDrop.DoDragDrop(element, station, DragDropEffects.Copy);
+            IsOverlayVisible = Visibility.Collapsed;
         }
     }
 
@@ -425,11 +430,6 @@ public partial class CreateUpdateLine : Primitives.Window
     {
         Mouse.SetCursor(Cursors.Hand);
         IsOverlayVisible = Visibility.Visible;
-    }
-
-    private void MapDropLeave(object sender, DragEventArgs e)
-    {
-        IsOverlayVisible = Visibility.Collapsed;
     }
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)

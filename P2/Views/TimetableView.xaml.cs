@@ -25,6 +25,7 @@ namespace P2.Views
                                         .ThenInclude(s => s.Station)
                                      .Include(l => l.Source)
                                      .Include(l => l.Destination)
+                                     .Where(l => !l.IsDeleted)
                                      .ToList();
             foreach (TrainLine line in AvailableLines) { line.UpdateRoute(); }
 
@@ -73,6 +74,7 @@ namespace P2.Views
             using DbContext db = new();
             Departures = new(db.Departures
                 .Where(d => d.Line.Id == SelectedTrainLine.Id)
+                .Where(d => !d.IsDeleted)
                 .Include(d => d.Train)
                     .ThenInclude(t => t.Seating)
                         .ThenInclude(s => s.Seats)
@@ -558,7 +560,8 @@ namespace P2.Views
             if (w.Confirmed)
             {
                 using DbContext db = new();
-                db.Remove(SelectedDeparture);
+                SelectedDeparture.IsDeleted = true;
+                db.Update(SelectedDeparture);
                 db.SaveChanges();
 
                 Departures.Remove(SelectedDeparture);
