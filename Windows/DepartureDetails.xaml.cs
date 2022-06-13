@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using P2.Model;
 using P2.Primitives;
@@ -70,4 +71,10 @@ public partial class DepartureDetails : Window
     {
         Close();
     }
+
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("DepartureDetails", this);
+    }
+
 }

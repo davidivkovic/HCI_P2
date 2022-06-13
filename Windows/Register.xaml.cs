@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 
 namespace P2.Windows;
@@ -63,4 +64,9 @@ public partial class Register : Primitives.Window
 
     [ICommand]
     public void Cancel() => Close();
+
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("Registration", this);
+    }
 }

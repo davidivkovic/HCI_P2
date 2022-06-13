@@ -51,7 +51,7 @@
         </MenuItem >
         
         <MenuItem Padding="15 5" Cursor="Hand" Header="_Pomoć">
-          <MenuItem InputGestureText="Ctrl+P" Cursor="Hand" Header="Prikaži Pomoć"/>
+          <MenuItem InputGestureText="Ctrl+P" Cursor="Hand" Header="Prikaži Pomoć" Command="{Binding ShowGeneralHelpCommand}"/>
           <MenuItem InputGestureText="Ctrl+T" Cursor="Hand" Header="Pokreni Tutorijal"/>
         </MenuItem >
       </Menu>

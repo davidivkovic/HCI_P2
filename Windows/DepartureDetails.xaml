@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         FontSize="28"
-        Title="DepartureDetails" Height="450" Width="720">
+        Title="DepartureDetails" Height="450" Width="720"
+        FocusManager.IsFocusScope="True">
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Window.CommandBindings>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="20">
       <TextBlock FontSize="38">
@@ -72,7 +76,8 @@
               Padding="15 5" Margin="0 20 0 0"
               Name="CloseButton"
               Template="{DynamicResource NeutralButtonTemplate}"
-              Command="{Binding CloseDetailsCommand}">
+              Command="{Binding CloseDetailsCommand}"
+              ToolTip="Zatvori detaljan prikaz">
         Zatvori
       </Button>
     </StackPanel>

@@ -70,7 +70,19 @@ namespace P2
             hh.Show();
         }
 
+        internal static void ShowHelp(string key, Register originator)
+        {
+            HelpViewer hh = new HelpViewer(key, originator);
+            hh.Show();
+        }
+
         internal static void ShowHelp(string key, TimetableView originator)
+        {
+            HelpViewer hh = new HelpViewer(key, originator);
+            hh.Show();
+        }
+
+        internal static void ShowHelp(string key, DepartureDetails originator)
         {
             HelpViewer hh = new HelpViewer(key, originator);
             hh.Show();

@@ -55,6 +55,14 @@ public partial class MainWindow : Primitives.Window
     [ICommand] public void ShowDepartureTickets() => CurrentView = new DepartureTicketsView();
     [ICommand] public void ShowMonthlyTickets() => CurrentView = new MonthlyTicketsView();
     [ICommand] public void ShowCustomerTickets() => CurrentView = new CustomerTicketsView();
+    [ICommand] public void ShowGeneralHelp() => HelpProvider.ShowHelp("GeneralHelp" + (UserStore.Store.User.Role == Role.Customer ? "Customer" : "Manager"), this);
+    
 
-    private void ShowHelp(object sender, ExecutedRoutedEventArgs e) => HelpProvider.ShowHelp(CurrentView.GetType().Name, this);
+    private void ShowHelp(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (CurrentView.GetType().Name.Equals("LoginView"))
+            HelpProvider.ShowHelp(CurrentView.GetType().Name, this);
+        else
+            HelpProvider.ShowHelp(CurrentView.GetType().Name + (UserStore.Store.User.Role == Role.Customer ? "Customer" : "Manager"), this);
+    }
 }

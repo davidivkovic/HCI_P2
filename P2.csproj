@@ -28,7 +28,14 @@
     <None Remove="Help\AddEditTrain.htm" />
     <None Remove="Help\BuyTicket.htm" />
     <None Remove="Help\CreateUpdateLineHelp.htm" />
-    <None Remove="Help\LinesView.htm" />
+    <None Remove="Help\CustomerTicketsViewCustomer.htm" />
+    <None Remove="Help\DepartureDetails.htm" />
+    <None Remove="Help\GeneralHelpCustomer.htm" />
+    <None Remove="Help\LinesViewCustomer.htm" />
+    <None Remove="Help\LinesViewManager.htm" />
+    <None Remove="Help\LoginView.htm" />
+    <None Remove="Help\Registration.htm" />
+    <None Remove="Help\TimetableViewCustomer.htm" />
     <None Remove="Help\TrainsView.htm" />
   </ItemGroup>
 
@@ -48,6 +55,27 @@
   <ItemGroup>
     <Content Include="Assets\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CustomerTicketsViewCustomer.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\DepartureDetails.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\GeneralHelpCustomer.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LinesViewCustomer.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LoginView.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Registration.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TimetableViewCustomer.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\Icons\danger.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -111,7 +139,7 @@
     <Content Include="Help\CreateUpdateLineHelp.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\LinesView.htm">
+    <Content Include="Help\LinesViewManager.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\TrainsView.htm">
