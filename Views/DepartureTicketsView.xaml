@@ -141,6 +141,7 @@
         <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Vožnje</TextBlock>
         <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}"
                     CanUserSortColumns="False"
+                    Visibility="Collapsed"
                     Name="TimetableDataGrid"
                     HeadersVisibility="Column"
                     AutoGenerateColumns="False"
@@ -216,6 +217,7 @@
             </DataGridTemplateColumn>
           </DataGrid.Columns>
         </DataGrid>
+        <TextBlock Name="ErrorTextBlock" Text="{Binding ErrorText}" FontSize="26" Margin="0 10 0 0"/>
       </StackPanel>
     </Grid>
   </ScrollViewer>

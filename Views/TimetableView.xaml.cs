@@ -89,6 +89,40 @@ namespace P2.Views
             if (Departures.Count == 0) ErrorText = "Ne postoje polasci za izabranu relaciju";
         }
 
+        public void OnDateFromChanged(DateTime oldDate, DateTime newDate)
+        {
+            if (oldDate.Date == newDate.Date) return;
+            if(TimetableDataGrid is not null)
+            {
+                TimetableDataGrid.Visibility = Visibility.Collapsed;
+            }
+            ErrorTextBlock.Visibility = Visibility.Visible;
+            ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+        }
+
+        public void OnSourceSearchChanged(Station oldStation, Station newStation)
+        {
+            if (oldStation is null) return;
+            if (TimetableDataGrid is not null)
+            {
+                TimetableDataGrid.Visibility = Visibility.Collapsed;
+            }
+            ErrorTextBlock.Visibility = Visibility.Visible;
+            ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+        }
+
+        public void OnDestinationSearchChanged(Station oldStation, Station newStation)
+        {
+            if (oldStation is null) return;
+            if (TimetableDataGrid is not null)
+            {
+                TimetableDataGrid.Visibility = Visibility.Collapsed;
+            }
+            ErrorTextBlock.Visibility = Visibility.Visible;
+            ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+        }
+
+
         public void LinesListViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TrainLine SelectedItem = (TrainLine)LinesListView.SelectedItem;
@@ -96,13 +130,15 @@ namespace P2.Views
             if (SelectedItem != null)
             {
                 SelectedTrainLine = SelectedItem;
+                ErrorTextBlock.Visibility = Visibility.Collapsed;
+                TimetableDataGrid.Visibility = Visibility.Visible;
                 FindTimetable();
             }
         }
 
         public void ListViewGotFocus(object sender, RoutedEventArgs e)
         {
-            if(LinesListView.Items.Count > 0)
+            if (LinesListView.Items.Count > 0)
             {
                 LinesListView.SelectedItem = LinesListView.Items[0];
                 SelectedTrainLine = (TrainLine)LinesListView.SelectedItem;
@@ -421,8 +457,18 @@ namespace P2.Views
             }
 
             Departures = new();
-            ErrorText = "Molimo Vas izaberite liniju";
-            LinesListView.Focus();
+            if (UserStore.IsManager)
+            {
+                ErrorText = "Molimo Vas izaberite liniju";
+                LinesListView.Focus();
+            }
+            else
+            {
+                TimetableDataGrid.Visibility = Visibility.Visible;
+                ErrorTextBlock.Visibility = Visibility.Collapsed;
+                FindTimetable();
+            }
+
 
         }
 

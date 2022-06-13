@@ -10,7 +10,10 @@
         Title="DepartureDetails" Height="450" Width="720">
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="20">
-      <DataGrid  ItemsSource="{Binding Data}"
+      <TextBlock FontSize="38">
+        Detalji linije <Run Text="{Binding Departure.Line.Source.Name}"/> &#x2192; <Run Text="{Binding Departure.Line.Destination.Name}"/>
+      </TextBlock>
+      <DataGrid Margin="0 20 0 0" ItemsSource="{Binding Data}"
             HeadersVisibility="Column"
             CanUserSortColumns="False"
             Name="TimetableDataGrid"

@@ -79,7 +79,7 @@
                         Tip <Run Text="{Binding Departure.Train.Name, Mode=OneWay}"/>
                       </TextBlock>
                     </StackPanel>
-                    <Image Grid.Column="1" Margin="10 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding Departure.Train.Image, Mode=OneWay}" />
+                    <Image Grid.Column="1" Margin="12 5 10 0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Width="60" Source="{Binding Departure.Train.Image, Mode=OneWay}" />
                   </Grid>
                   <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                     <TextBlock FontSize="24" Margin="0 0 5 0" FontWeight="Medium">Sedišta:</TextBlock>

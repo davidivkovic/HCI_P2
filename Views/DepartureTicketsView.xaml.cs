@@ -49,6 +49,40 @@ public partial class DepartureTicketsView : Component
     public Station SourceSearch { get; set; }
     public Station DestinationSearch { get; set; }
     public DateTime DateFrom { get; set; } = DateTime.Now;
+    public string ErrorText { get; set; } = "Unesite parametre za pretragu";
+
+    public void OnDateFromChanged(DateTime oldDate, DateTime newDate)
+    {
+        if (oldDate.Date == newDate.Date) return;
+        if (TimetableDataGrid is not null)
+        {
+            TimetableDataGrid.Visibility = Visibility.Collapsed;
+        }
+        ErrorTextBlock.Visibility = Visibility.Visible;
+        ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+    }
+
+    public void OnSourceSearchChanged(Station oldStation, Station newStation)
+    {
+        if (oldStation is null) return;
+        if (TimetableDataGrid is not null)
+        {
+            TimetableDataGrid.Visibility = Visibility.Collapsed;
+        }
+        ErrorTextBlock.Visibility = Visibility.Visible;
+        ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+    }
+
+    public void OnDestinationSearchChanged(Station oldStation, Station newStation)
+    {
+        if (oldStation is null) return;
+        if (TimetableDataGrid is not null)
+        {
+            TimetableDataGrid.Visibility = Visibility.Collapsed;
+        }
+        ErrorTextBlock.Visibility = Visibility.Visible;
+        ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+    }
 
     public void SourceInputGotFocus(object sender, RoutedEventArgs e)
     {
@@ -313,9 +347,19 @@ public partial class DepartureTicketsView : Component
     public void Search()
     {
         List<TrainLine> TempFiltered;
-        TempFiltered = AvailableLines.Where(line => line.Source.Name == SourceInputText)
-                                     .Where(line => line.Destination.Name == DestinationInputText)
+        TempFiltered = AvailableLines.Where(line => line.Stops.Any(s => s.Station.Name == SourceInputText))
+                                     .Where(line => line.Stops.Any(s => s.Station.Name == DestinationInputText))
                                      .ToList();
+
+        List<TrainLine> toDelete = new();
+        foreach (var line in TempFiltered)
+        {
+            int startNum = line.Stops.Where(s => s.Station.Name == SourceInputText).Select(stop => stop.Number).FirstOrDefault();
+            int endNum = line.Stops.Where(s => s.Station.Name == DestinationInputText).Select(stop => stop.Number).FirstOrDefault();
+            if (startNum > endNum) toDelete.Add(line);
+        }
+
+        toDelete.ForEach(l => TempFiltered.Remove(l));
 
         for (int i = FilteredLines.Count - 1; i >= 0; i--)
         {
@@ -333,6 +377,9 @@ public partial class DepartureTicketsView : Component
                 FilteredLines.Add(item);
             }
         }
+
+        TimetableDataGrid.Visibility = Visibility.Visible;
+        ErrorTextBlock.Visibility = Visibility.Collapsed;
 
         SearchTimetable();
     }

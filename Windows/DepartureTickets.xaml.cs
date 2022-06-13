@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using P2.Model;
 using P2.Primitives;
@@ -16,10 +17,10 @@ public partial class DepartureTickets : Window
         SearchTickets();
 
         InitializeComponent();
+        CloseButton.Focus();
     }
 
     public Departure Departure { get; set; }
-    public DateTime Date { get; set; }
     public List<Ticket> Tickets { get; set; }
     public DateTime SelectedDate { get; private set; }
     public void SearchTickets()
@@ -34,7 +35,14 @@ public partial class DepartureTickets : Window
             .Include(t => t.Departure)
                 .ThenInclude(d => d.Line)
                     .ThenInclude(l => l.Stops)
-            .Where(t => t.Timestamp.Date == SelectedDate)
+            .Where(t => t.Timestamp.Date.Date == SelectedDate)
+            .Where(t => t.Departure == Departure)
         );
+    }
+
+    [ICommand] 
+    public void CloseDetails()
+    {
+        Close();
     }
 }

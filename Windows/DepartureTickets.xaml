@@ -6,8 +6,114 @@
         xmlns:local="clr-namespace:P2.Windows"
         mc:Ignorable="d"
         FontSize="28"
-        Title="DepartureTickets" Height="450" Width="800">
-    <Grid>
-    <TextBlock>Test</TextBlock>
-    </Grid>
+        Title="DepartureTickets" Height="450" Width="1200">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="20">
+      <TextBlock FontSize="38">
+        Prodate karte za vožnju <Run Text="{Binding Departure.Line.Source.Name}"/> &#x2192; <Run Text="{Binding Departure.Line.Destination.Name}"/>
+      </TextBlock>
+      <DataGrid Margin="0 20 0 0" ItemsSource="{Binding Tickets}"
+            HeadersVisibility="Column"
+            Name="TimetableDataGrid"
+            IsTabStop="False"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False">
+        <DataGrid.RowStyle>
+          <Style TargetType="DataGridRow">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+          </Style>
+        </DataGrid.RowStyle>
+        <DataGrid.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Padding" Value="10 0"/>
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                  <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                  </Border>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </DataGrid.CellStyle>
+        <DataGrid.Columns>
+
+          <DataGridTextColumn Header="Br. Karte" Binding="{Binding Id,StringFormat='{}{0:D6}'}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="5" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+
+          <DataGridTextColumn Header="Voz" Binding="{Binding Departure.Train.Number}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+
+          <DataGridTemplateColumn Header="Tip" IsReadOnly="True">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <WrapPanel VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Departure.Train.Name}"/>
+                  <Image VerticalAlignment="Center" 
+                             HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" 
+                             Margin="10 0 0 0"
+                             Height="30" Source="{Binding Departure.Train.Image, Mode=OneWay}" />
+                </WrapPanel>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTextColumn Header="Polazak" Binding="{Binding Departure.TableTime}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+
+          <DataGridTextColumn Header="Odredište" Binding="{Binding Source.Name, Mode=OneTime}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+
+          <DataGridTextColumn Header="Odredište" Binding="{Binding Destination.Name, Mode=OneTime}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+
+          <DataGridTextColumn Header="Cena(RSD)" Width="*" Binding="{Binding FormattedPriceNoSymbol, Mode=OneTime}" IsReadOnly="True">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          
+        </DataGrid.Columns>
+      </DataGrid>
+      <Button HorizontalAlignment="Right" 
+              Padding="15 5" Margin="0 20 0 0"
+              Name="CloseButton"
+              Template="{DynamicResource NeutralButtonTemplate}"
+              Command="{Binding CloseDetailsCommand}">
+        Zatvori
+      </Button>
+    </StackPanel>
+  </ScrollViewer>
 </Primitives:Window>

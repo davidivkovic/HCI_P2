@@ -262,7 +262,7 @@
               </DataGridTemplateColumn>
             </DataGrid.Columns>
           </DataGrid>
-          <TextBlock Text="{Binding ErrorText}" Visibility="{Binding IsNoResultsTextVisible}" FontSize="26" Margin="0 10 0 0"/>
+          <TextBlock Name="ErrorTextBlock" Text="{Binding ErrorText}" Visibility="{Binding IsNoResultsTextVisible}" FontSize="26" Margin="0 10 0 0"/>
         </StackPanel>
       </Grid>
     </StackPanel>
