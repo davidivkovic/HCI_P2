@@ -7,7 +7,6 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:P2.Windows"
   mc:Ignorable="d"
-  Title="ConfirmCancelWindow"
   SizeToContent="Height"
   WindowStartupLocation="CenterScreen"
   FontFamily="/Fonts/#Inter"

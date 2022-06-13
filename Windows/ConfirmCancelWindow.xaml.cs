@@ -17,7 +17,7 @@ public partial class ConfirmCancelWindow : Primitives.Window
     [DllImport("user32.dll")]
     private static extern IntPtr GetActiveWindow();
 
-    public ConfirmCancelWindow() : base(hideCaption: true)
+    public ConfirmCancelWindow() : base(hideCaption: false)
     {
         IntPtr active = GetActiveWindow();
         Owner = Application.Current.Windows

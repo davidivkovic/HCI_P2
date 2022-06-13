@@ -7,43 +7,59 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
   xmlns:local="clr-namespace:P2.Views"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
   mc:Ignorable="d" 
   d:DesignHeight="450" d:DesignWidth="800"
   Background="White"
+  FocusManager.IsFocusScope="True"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
-  <Grid Margin="20 10 15 10">
+  <Grid Margin="20 10 15 10" Background="Transparent" PreviewMouseDown="PreviewGridMouseDown">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
+
     <TextBlock 
       Grid.ColumnSpan="2"
       FontWeight="Medium" 
-      FontSize="42" 
+      FontSize="38" 
       TextWrapping="WrapWithOverflow"
       HorizontalAlignment="Left"
       VerticalAlignment="Center"
     >
       Pregled prodatih karata u toku meseca
     </TextBlock>
-    <StackPanel Margin="0 15 0 0" Grid.Row="1">
-      <TextBlock Text="{Binding FormattedDate}"/>
-      <Viewbox HorizontalAlignment="Left" Height="220" Width="220" Stretch="Fill" >
-        <Calendar HorizontalContentAlignment="Left" HorizontalAlignment="Left" Name="Calendar" DisplayModeChanged="CalendarDisplayChanged" />
-      </Viewbox>
-    </StackPanel>
+    <Grid Panel.ZIndex="1" Margin="0 15 0 0" Grid.Row="1">
+      <Border Name="CalendarBorder" KeyboardNavigation.IsTabStop="True" KeyDown="BorderKeyDown" Focusable="True" Width="260" MouseDown="BorderMouseDown" Cursor="Hand" Padding="15 5" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="Gray">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Background" Value="#E9E9E9"/>
+            <Style.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#CBE8F6"/>
+              </Trigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <Grid IsHitTestVisible="False">
+          <TextBlock Margin="-25 0 0 0" HorizontalAlignment="Center" Text="{Binding FormattedDate, Mode=OneWay}"/>
+          <TextBlock Margin="0 0 -5 0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16">▼</TextBlock>
+        </Grid>
+      </Border>
+      <Canvas Visibility="{Binding CanvasVisibility}" Margin="0 42 0 0">
+        <Viewbox HorizontalAlignment="Left" Height="260" Width="260" Stretch="Fill" >
+          <Calendar DisplayDateEnd="{x:Static sys:DateTime.Today}" Focusable="True" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Name="Calendar" DisplayModeChanged="CalendarDisplayChanged" />
+        </Viewbox>
+      </Canvas>
+    </Grid>
     <DataGrid 
       FontSize="22"
-      Margin="20 20 0 0"
-      Grid.Row="1" Grid.Column="1"
+      Margin="0 20 0 0"
+      Grid.Row="2"
       HeadersVisibility="Column"
       ItemsSource="{Binding Tickets}" 
-      CanUserSortColumns="False"
       Name="TimetableDataGrid"
       AutoGenerateColumns="False"
       CanUserAddRows="False"
@@ -102,6 +118,14 @@
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
         
+        <DataGridTextColumn Header="Datum" Binding="{Binding DepartureDate, StringFormat='{}{0:dd.MM.yyyy.}'}" IsReadOnly="True">
+          <DataGridTextColumn.ElementStyle>
+            <Style TargetType="TextBlock">
+              <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+
         <DataGridTextColumn Header="Polazak" Binding="{Binding Departure.TableTime}" IsReadOnly="True">
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
@@ -110,7 +134,7 @@
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
 
-        <DataGridTextColumn Header="Odredište" Binding="{Binding Source.Name, Mode=OneTime}" IsReadOnly="True">
+        <DataGridTextColumn Header="Polazište" Binding="{Binding Source.Name, Mode=OneTime}" IsReadOnly="True">
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
               <Setter Property="VerticalAlignment" Value="Center" />
@@ -130,10 +154,10 @@
           <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
               <Setter Property="VerticalAlignment" Value="Center" />
+              <Setter Property="HorizontalAlignment" Value="Right" />
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-
 
       </DataGrid.Columns>
     </DataGrid>

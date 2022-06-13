@@ -1,48 +1,51 @@
-﻿<Primitives:Component 
-  xmlns:Primitives="clr-namespace:P2.Primitives"
-  x:Class="P2.Views.LoginView"
+﻿<Primitives:Window  
+  xmlns:Primitives="clr-namespace:P2.Primitives" x:Class="P2.Windows.Register"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  xmlns:local="clr-namespace:P2.Views"
-  mc:Ignorable="d" 
-  MinWidth="400"
-  Background="White"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:local="clr-namespace:P2.Windows"
+  mc:Ignorable="d"
+  FontSize="28"
+  FontFamily="/Fonts/#Inter"
+  WindowStartupLocation="CenterScreen"
+  Title="Registracija" Height="830" Width="800"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
 >
   <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <StackPanel Margin="20 60 20 20">
-      <StackPanel HorizontalAlignment="Center">
-        <WrapPanel>
-          <Image 
-            VerticalAlignment="Center" 
-            Margin="0 0 20 0"
-            Width="120"
-            RenderOptions.BitmapScalingMode="HighQuality" 
-            Source="/Assets/logo.png" 
-          />
-          <TextBlock
-            FontWeight="Medium" 
-            FontSize="68" 
-            TextWrapping="WrapWithOverflow" 
-          > 
-            Železnice Srbije
-          </TextBlock>
-        </WrapPanel>
+    <Grid Margin="20">
+      <StackPanel Margin="0 20 0 0" MaxWidth="650" MinWidth="200">
+        <TextBlock FontWeight="Medium" FontSize="32">Registracija novog kupca</TextBlock>
         <TextBlock 
-          TextWrapping="WrapWithOverflow" 
-          FontSize="33.5" 
-          Foreground="DimGray"
-          HorizontalAlignment="Left"
+          Margin="0 30 0 10"  
+          FontWeight="Medium" 
+          TextWrapping="NoWrap"
         >
-          Železnički sektor Srbije na jednom mestu
+          Ime:
         </TextBlock>
-      </StackPanel>
-
-      <StackPanel MaxWidth="650" MinWidth="200">
+        <TextBox 
+          Height="50"  
+          VerticalContentAlignment="Center"
+          Padding="5 0"
+          MaxLength="26"
+          Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+        />
         <TextBlock 
-          Margin="0 60 0 10"  
+          Margin="0 30 0 10"  
+          FontWeight="Medium" 
+          TextWrapping="NoWrap"
+        >
+          Prezime:
+        </TextBlock>
+        <TextBox 
+          Height="50"  
+          VerticalContentAlignment="Center"
+          Padding="5 0"
+          MaxLength="26"
+          Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+        />
+        <TextBlock 
+          Margin="0 30 0 10"  
           FontWeight="Medium" 
           TextWrapping="NoWrap"
         >
@@ -59,7 +62,7 @@
         <TextBlock Visibility="{Binding UsernameErrorVisible}" Margin="0 20 0 0" Text="{Binding UsernameError}" Foreground="Red"/>
 
         <TextBlock
-          Margin="0 20 0 6"  
+          Margin="0 30 0 6"  
           FontWeight="Medium"  
           TextWrapping="NoWrap"
         >
@@ -81,27 +84,26 @@
           Margin="0 60 0 0"
           Padding="0 10" 
           Cursor="Hand"
-          Command="{Binding LoginCommand}" 
+          Command="{Binding SubmitCommand}" 
           IsTabStop="False"
           IsDefault="True"
           IsEnabled="{Binding IsButtonEnabled}"
         >
-          Prijava
+          Registruj se
         </Button>
-      </StackPanel>
-      <StackPanel  Margin="0 30 0 0" MaxWidth="650" MinWidth="200">
-        <TextBlock HorizontalAlignment="Center">Nemate nalog? Registrujte se ispod.</TextBlock>
+
         <Button 
           Template="{StaticResource NeutralButtonTemplate}"
-          Margin="0 20 0 0"
-          Padding="0 10" 
+          Margin="0 25 0 0"
+          Padding="0 10"
           Cursor="Hand"
-          Command="{Binding RegisterCommand}" 
+          Command="{Binding CancelCommand}" 
           IsTabStop="False"
+          IsDefault="False"
         >
-          Registracija
+          Otkaži
         </Button>
       </StackPanel>
-    </StackPanel>
+    </Grid>
   </ScrollViewer>
-</Primitives:Component>
+</Primitives:Window>

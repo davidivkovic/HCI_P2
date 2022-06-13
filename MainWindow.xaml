@@ -12,6 +12,7 @@
   Height="800" Width="1300" FontSize="28"
   FontFamily="/Fonts/#Inter"
   Title="Železnice Srbije"
+  xmlns:Stores="clr-namespace:P2.Stores"
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
   MinWidth="{Binding ViewMinWidth, Mode=OneWay}"
   MinHeight="{Binding ViewMinHeight, Mode=OneWay}"
@@ -26,26 +27,35 @@
     </Grid.RowDefinitions>
     <Grid Margin="0 0" Visibility="{Binding NavbarVisible}">
       <Menu Background="Transparent" BorderThickness="1" FontSize="24">
+        
         <MenuItem Padding="20 5 18 5" Cursor="Hand" Header="_Linije">
+          <MenuItem Command="{Binding ShowTimetableCommand}" InputGestureText="Ctrl+P" Cursor="Hand" Header="Pregled Polazaka"/>
           <MenuItem Command="{Binding ShowLinesCommand}" InputGestureText="Ctrl+L" Cursor="Hand" Header="Pregled Linija"/>
-          <MenuItem Command="{Binding ShowTimetableCommand}" InputGestureText="Ctrl+R" Cursor="Hand" Header="Pregled Reda Vožnje"/>
         </MenuItem >
-        <MenuItem Padding="13 5 15 5" Cursor="Hand" Header="_Vozovi">
+        
+        <MenuItem Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}" Padding="13 5 15 5" Cursor="Hand" Header="_Vozovi">
           <MenuItem Command="{Binding ShowTrainsCommand}" InputGestureText="Ctrl+Shift+V" Cursor="Hand" Header="Pregled Vozova"/>
         </MenuItem >
-        <MenuItem Padding="15 5" Cursor="Hand" Header="_Karte">
-          <MenuItem Command="{Binding ShowDepartureTicketsCommand}"  InputGestureText="Ctrl+K" Cursor="Hand" Header="Prodate Karte za Vožnju"/>
-          <MenuItem Command="{Binding ShowMonthlyTicketsCommand}"  Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
+
+        <MenuItem Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}"  Padding="15 5" Cursor="Hand" Header="_Karte">
+          <MenuItem Command="{Binding ShowDepartureTicketsCommand}" InputGestureText="Ctrl+K" Cursor="Hand" Header="Prodate Karte za Vožnju"/>
+          <MenuItem Command="{Binding ShowMonthlyTicketsCommand}" Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
+        </MenuItem>
+
+        <MenuItem Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToCustomer, Mode=OneWay}"  Padding="15 5" Cursor="Hand" Header="_Karte">
+          <MenuItem Command="{Binding ShowCustomerTicketsCommand}" InputGestureText="Ctrl+K" Cursor="Hand" Header="Vaše karte"/>
         </MenuItem >
+        
         <MenuItem Padding="15 5" Cursor="Hand" Header="_Nalog">
           <MenuItem Cursor="Hand" Header="Odjava" InputGestureText="Ctrl+O"  Command="{Binding LogOutCommand}"/>
         </MenuItem >
+        
         <MenuItem Padding="15 5" Cursor="Hand" Header="_Pomoć">
           <MenuItem InputGestureText="Ctrl+P" Cursor="Hand" Header="Prikaži Pomoć"/>
           <MenuItem InputGestureText="Ctrl+T" Cursor="Hand" Header="Pokreni Tutorijal"/>
         </MenuItem >
       </Menu>
     </Grid>
-    <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
+    <ContentControl Focusable="False" Grid.Row="1" Content="{Binding CurrentView}"/>
   </Grid>
 </Primitives:Window>

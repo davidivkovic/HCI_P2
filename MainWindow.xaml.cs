@@ -26,21 +26,22 @@ public partial class MainWindow : Primitives.Window
 
     public void OnLogin(User user)
     {
-        UserStore.User = user;
-        if (UserStore.User.Role == Role.Manager)
-        {
-            CurrentView = new TimetableView();
-        }
-        else
-        {
-            CurrentView = new CustomerTicketsView();
-        }
+        UserStore.Store.User = user;
+        //if (UserStore.User.Role == Role.Manager)
+        //{
+        //    CurrentView = new TimetableView();
+        //}
+        //else
+        //{
+        //    CurrentView = new TimetableView();
+        //}
+        CurrentView = new TimetableView();
     }
 
     [ICommand]
     public void LogOut()
     {
-        UserStore.User = null;
+        UserStore.Store.User = null;
         CurrentView = new LoginView();
         if (CurrentView is LoginView lv)
         {
@@ -53,7 +54,7 @@ public partial class MainWindow : Primitives.Window
     [ICommand] public void ShowTimetable() => CurrentView = new TimetableView();
     [ICommand] public void ShowDepartureTickets() => CurrentView = new DepartureTicketsView();
     [ICommand] public void ShowMonthlyTickets() => CurrentView = new MonthlyTicketsView();
-
+    [ICommand] public void ShowCustomerTickets() => CurrentView = new CustomerTicketsView();
 
     private void ShowHelp(object sender, ExecutedRoutedEventArgs e) => HelpProvider.ShowHelp(CurrentView.GetType().Name, this);
 }

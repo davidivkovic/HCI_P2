@@ -3,9 +3,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
 using P2.Model;
 using P2.Primitives;
+using P2.Windows;
 
 namespace P2.Views
 {
@@ -14,6 +16,10 @@ namespace P2.Views
         public LoginView()
         {
             InitializeComponent();
+            Dispatcher.BeginInvoke(() =>
+            {
+                username.Focus();
+            }, DispatcherPriority.Loaded);
         }
 
         public delegate void LoginSuccess(User user);
@@ -46,6 +52,27 @@ namespace P2.Views
         }
 
         private void PasswordChanged(object sender, RoutedEventArgs e) => Password = ((PasswordBox)sender).Password;
+
+        [ICommand]
+        public static void Register()
+        {
+            Register w = new();
+
+            w.ShowDialog();
+
+            if (w.Confirmed)
+            {
+                ConfirmCancelWindow cw = new()
+                {
+                    Title = "Uspeh",
+                    Message = $"Uspešno ste registrovani.\nVaše korisničko ime je {w.Username}.",
+                    ConfirmButtonText = "U redu",
+                    CancelButtonText = "",
+                    Image = MessageBoxImage.Information
+                };
+                cw.ShowDialog();
+            }
+        }
 
     }
 }

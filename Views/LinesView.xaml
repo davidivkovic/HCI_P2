@@ -48,7 +48,7 @@
               Pregled voznih linija
           </TextBlock>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
-                      Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToManager}, Mode=OneWay}">
+                      Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}">
             <Button Template="{StaticResource DefaultButtonTemplate}" 
                     Padding="15 5"
                     Cursor="Hand"

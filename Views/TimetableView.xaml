@@ -51,7 +51,7 @@
               Pregled polazaka
           </TextBlock>
           <WrapPanel HorizontalAlignment="Right" Orientation="Horizontal"
-                     Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToManager}, Mode=OneWay}">
+                     Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}">
             <Button Template="{StaticResource DefaultButtonTemplate}"
                     IsEnabled="{Binding IsLineSelected}"
                     Command="{Binding AddNewDepartureCommand}"
@@ -75,7 +75,7 @@
               Obriši polazak
             </Button>
           </WrapPanel>
-          <Button Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToCustomer}, Mode=OneWay}"
+          <Button Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToCustomer, Mode=OneWay}"
                   HorizontalAlignment="Right" Padding="15 5"
                   IsEnabled="{Binding IsEditable}"
                   Command="{Binding BuyTicketCommand}"
@@ -84,7 +84,7 @@
           </Button>
         </Grid>
         <StackPanel Grid.Column="0" Grid.Row="1" Width="300" HorizontalAlignment="Left" >
-          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Polazište:</TextBlock>
+          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 5 0 0">Polazište</TextBlock>
           <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
                      Padding="10 0 10 0"
@@ -115,7 +115,7 @@
               </TextBlock>
             </Border>
           </Canvas>
-          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište:</TextBlock>
+          <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Odredište</TextBlock>
           <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
                      Padding="10 0 10 0"
@@ -146,7 +146,7 @@
               </TextBlock>
             </Border>
           </Canvas>
-          <StackPanel Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToCustomer}, Mode=OneWay}">
+          <StackPanel Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToCustomer, Mode=OneWay}">
             <TextBlock FontWeight="Medium" FontSize="24" Margin="0 10 0 0">Datum:</TextBlock>
             <DatePicker SelectedDateFormat="Short" x:Name="gDPickDate"
                         Margin="0 10 0 0"
@@ -168,7 +168,7 @@
             Margin="0 20 0 0"
             Command="{Binding SearchLinesCommand}">Pretraži</Button>
           <ListView Grid.Row="4" ItemsSource="{Binding FilteredLines}"  
-                    Visibility="{Binding Source={x:Static Stores:UserStore.VisibleOnlyToManager}, Mode=OneWay}"
+                    Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}"
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     SelectionChanged="LinesListViewSelectionChanged"

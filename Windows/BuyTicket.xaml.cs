@@ -153,7 +153,7 @@ public partial class BuyTicket : Primitives.Window
                 Price = CalculatePrice(),
                 Seats = seats,
                 Timestamp = DateTime.Now,
-                Customer = UserStore.User
+                Customer = UserStore.Store.User
             };
 
             using DbContext db = new();

@@ -253,7 +253,7 @@ namespace P2.Views
                     DestinationSearch = DestinationSuggestions.ElementAt(DestinationSuggestionsListBox.SelectedIndex);
                     DestinationInputText = DestinationSearch.Name;
                     DestinationSuggestionsListBox.Visibility = Visibility.Collapsed;
-                    if (UserStore.IsManager)
+                    if (UserStore.Store.IsManager)
                     {
                         SearchButton.Focus();
                     }
@@ -377,7 +377,7 @@ namespace P2.Views
         [ICommand]
         public void SearchLines()
         {
-            if (!UserStore.IsManager)
+            if(!UserStore.Store.IsManager)
             {
                 if (SourceSearch is null || DestinationSearch is null)
                 {
@@ -405,7 +405,7 @@ namespace P2.Views
                 }
             }
 
-            if (SelectedTrainLine is null && !UserStore.IsManager) ErrorText = "Ne postoji linija na izabranoj relaciji";
+            if (SelectedTrainLine is null && !UserStore.Store.IsManager) ErrorText = "Ne postoji linija na izabranoj relaciji";
         }
 
         public void Search()
@@ -442,7 +442,7 @@ namespace P2.Views
                 }
             }
 
-            if (!UserStore.IsManager)
+            if(!UserStore.Store.IsManager)
             {
                 if (FilteredLines.Count > 0)
                 {
@@ -457,7 +457,7 @@ namespace P2.Views
             }
 
             Departures = new();
-            if (UserStore.IsManager)
+            if (UserStore.Store.IsManager)
             {
                 ErrorText = "Molimo Vas izaberite liniju";
                 LinesListView.Focus();
