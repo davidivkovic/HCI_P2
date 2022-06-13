@@ -27,14 +27,6 @@ public partial class MainWindow : Primitives.Window
     public void OnLogin(User user)
     {
         UserStore.Store.User = user;
-        //if (UserStore.User.Role == Role.Manager)
-        //{
-        //    CurrentView = new TimetableView();
-        //}
-        //else
-        //{
-        //    CurrentView = new TimetableView();
-        //}
         CurrentView = new TimetableView();
     }
 

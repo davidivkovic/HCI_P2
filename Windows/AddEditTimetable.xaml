@@ -117,7 +117,7 @@
           <TextBlock Foreground="DimGray" FontSize="22" Text="{Binding PleaseText}"/>
           <Grid Visibility="{Binding AreTrainDetailsVisible}" Margin="6 -20 6 6">
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel ToolTip="Podaci o vozu">
@@ -132,7 +132,7 @@
                   Sedišta
               </TextBlock>
             </StackPanel>
-            <Image Grid.Column="1" Margin="0 10 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding SelectedTrain.Image, Mode=OneTime}" />
+            <Image Grid.Column="1" Margin="20 5 10 0" VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding SelectedTrain.Image, Mode=OneWay}" />
           </Grid>
           <StackPanel Margin="0 10 0 0">
             <TextBlock FontWeight="Medium">

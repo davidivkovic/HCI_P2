@@ -6,6 +6,8 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:P2.Windows"
+  xmlns:Tour="clr-namespace:ThinkSharp.FeatureTouring;assembly=ThinkSharp.FeatureTour"
+  xmlns:TourControls="clr-namespace:ThinkSharp.FeatureTouring.Controls;assembly=ThinkSharp.FeatureTour"
   mc:Ignorable="d"
   Height="800" Width="1200"
   FontFamily="/Fonts/#Inter"
@@ -15,15 +17,28 @@
   DataContext="{Binding RelativeSource={RelativeSource Self}}"
   FocusManager.IsFocusScope="True"
 >
+  <Window.Resources>
+    <Style TargetType="TourControls:TourControl">
+      <Setter Property="Background" Value="White"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="BorderBrush" Value="#040404" />
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontFamily" Value="/Fonts/#Inter"/>
+    </Style>
+  </Window.Resources>
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
   </Window.CommandBindings>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="-20 20 20 20" HorizontalAlignment="Center">
-      <TextBlock Text="{Binding HeaderText}" Margin="40 0 0 10" FontSize="32" FontWeight="Medium"/>
+      <Grid Margin="0 0 0 20">
+        <TextBlock Text="{Binding HeaderText}" Margin="40 0 0 10" FontSize="32" FontWeight="Medium"/>
+        <Button Command="{Binding StartTutorialCommand}" FontSize="18" FontWeight="Medium" Padding="10 0" HorizontalAlignment="Right" Template="{StaticResource NeutralButtonTemplate}">Pokreni Tutorijal</Button>
+      </Grid>
       <WrapPanel HorizontalAlignment="Left">
         <StackPanel Margin="40 30 40 0">
-          <TextBlock Margin="0 -30 0 0" FontSize="22">Sedišta</TextBlock>
+          <TextBlock Margin="0 -35 0 0" FontWeight="Medium" FontSize="24">Odabir Sedišta</TextBlock>
           <StackPanel>
             <TextBlock FontSize="24">Jedno sedište</TextBlock>
             <Border Tag="Single" Cursor="Hand" MouseMove="SeatDrag" Margin="0 10 0 10" HorizontalAlignment="Left" Height="50" Width="50" Background="LightSkyBlue" BorderBrush="SteelBlue" BorderThickness="1"/>
@@ -31,7 +46,7 @@
 
           <StackPanel>
             <TextBlock FontSize="24">Duplo sedište</TextBlock>
-            <Border Tag="Double" Cursor="Hand" MouseMove="SeatDrag" Margin="0 10 0 0" Height="50" Width="100" HorizontalAlignment="Left" Background="LawnGreen" BorderBrush="Green" BorderThickness="1"/>
+            <Border Tour:TourHelper.ElementID="DobuleSeatBorder" Tour:TourHelper.Placement="TopLeft" Tag="Double" Cursor="Hand" MouseMove="SeatDrag" Margin="0 10 0 0" Height="50" Width="100" HorizontalAlignment="Left" Background="LawnGreen" BorderBrush="Green" BorderThickness="1"/>
           </StackPanel>
 
           <StackPanel Margin="0 10 0 0">
@@ -42,36 +57,39 @@
         <StackPanel Orientation="Horizontal">
           <StackPanel Margin="0 0 0 0" >
             <TextBlock Margin="0 -5 0 0" FontSize="22">Raspored</TextBlock>
-            <ItemsControl Name="SlotsPanel" BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Slots}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <WrapPanel>
+            <Grid>
+              <Grid Tour:TourHelper.ElementID="SlotsPanel" Tour:TourHelper.Placement="RightCenter" HorizontalAlignment="Left" Width="90"></Grid>
+              <ItemsControl Name="SlotsPanel" BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Slots}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
                     <WrapPanel>
-                      <Border Cursor="{Binding [0].Cursor}" MouseMove="SeatDrag" Tag="{Binding [0]}" Drop="SeatDrop" Background="{Binding [0].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
-                        <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                      </Border>
-                      <Border Cursor="{Binding [1].Cursor}" MouseMove="SeatDrag" Tag="{Binding [1]}" Drop="SeatDrop" Background="{Binding [1].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
-                        <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                      </Border>
+                      <WrapPanel>
+                        <Border Cursor="{Binding [0].Cursor}" MouseMove="SeatDrag" Tag="{Binding [0]}" Drop="SeatDrop" Background="{Binding [0].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
+                          <TextBlock FontSize="28" Text="{Binding [0].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <Border Cursor="{Binding [1].Cursor}" MouseMove="SeatDrag" Tag="{Binding [1]}" Drop="SeatDrop" Background="{Binding [1].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
+                          <TextBlock FontSize="28" Text="{Binding [1].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                      </WrapPanel>
+                      <WrapPanel Margin="60 0 0 0">
+                        <Border Cursor="{Binding [2].Cursor}" MouseMove="SeatDrag" Tag="{Binding [2]}" Drop="SeatDrop" Background="{Binding [2].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
+                          <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <Border Cursor="{Binding [3].Cursor}" MouseMove="SeatDrag" Tag="{Binding [3]}" Drop="SeatDrop" Background="{Binding [3].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
+                          <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                      </WrapPanel>
                     </WrapPanel>
-                    <WrapPanel Margin="60 0 0 0">
-                      <Border Cursor="{Binding [2].Cursor}" MouseMove="SeatDrag" Tag="{Binding [2]}" Drop="SeatDrop" Background="{Binding [2].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
-                        <TextBlock FontSize="28" Text="{Binding [2].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                      </Border>
-                      <Border Cursor="{Binding [3].Cursor}" MouseMove="SeatDrag" Tag="{Binding [3]}" Drop="SeatDrop" Background="{Binding [3].Background}" DragEnter="SeatDragEnter" DragLeave="SeatDragLeave" AllowDrop="True" Margin="-1 0 0 0" Height="45" Width="45" BorderBrush="Gray" BorderThickness="1">
-                        <TextBlock FontSize="28" Text="{Binding [3].FormattedSeatNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                      </Border>
-                    </WrapPanel>
-                  </WrapPanel>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </Grid>
           </StackPanel>
           <Grid VerticalAlignment="Stretch" Margin="30 0 0 0">
             <StackPanel x:Name="RightStackPanel">
               <TextBlock FontSize="22">Podaci o vozu</TextBlock>
               <TextBlock FontSize="24" Margin="0 0 0 5">Tip voza</TextBlock>
-              <ComboBox Style="{DynamicResource ComboBoxStyle}" Cursor="Hand" ItemsSource="{Binding TrainTypes}" SelectedItem="{Binding SelectedTrainType}" >
+              <ComboBox Tour:TourHelper.ElementID="TrainTypeComboBox" Tour:TourHelper.Placement="LeftCenter" Style="{DynamicResource ComboBoxStyle}" Cursor="Hand" ItemsSource="{Binding TrainTypes}" SelectedItem="{Binding SelectedTrainType}" >
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <WrapPanel Background="Transparent" Cursor="Hand" >
@@ -88,13 +106,14 @@
               </ComboBox>
               <TextBlock Margin="0 20 0 5" FontSize="24">Broj voza</TextBlock>
               <Grid>
-                <TextBox MaxLength="7" Name="TrainNumberTextBox" IsEnabled="{Binding AllowTrainNumberEdit}" Text="{Binding TrainNumber}" Padding="5 5 110 5" VerticalContentAlignment="Center" FontSize="28" MaxWidth="{Binding ActualWidth, ElementName=RightStackPanel}"/>
+                <TextBox Tour:TourHelper.ElementID="TrainNameTextBox" Tour:TourHelper.Placement="LeftCenter" MaxLength="7" Name="TrainNumberTextBox" IsEnabled="{Binding AllowTrainNumberEdit}" Text="{Binding TrainNumber}" Padding="5 5 110 5" VerticalContentAlignment="Center" FontSize="28" MaxWidth="{Binding ActualWidth, ElementName=RightStackPanel}"/>
                 <Button Name="TrainNumberButton" ToolTip="Izmeni jedinstveni broj voza"  Command="{Binding EditTrainNumberCommand}" Content="{Binding TrainNumberEditText}" Cursor="Hand" Margin="0 0 5 0" FontSize="26" Padding="5 0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
               </Grid>
               <TextBlock Margin="0 4 0 0" FontSize="22" Foreground="DimGray">Polje je obavezno</TextBlock>
             </StackPanel>
             <StackPanel VerticalAlignment="Bottom">
-              <Border Tag="Trash" Drop="DeleteSeats" DragEnter="EnterTrash" DragLeave="LeaveTrash" DragOver="TrashOver" AllowDrop="True" Height="160" Width="250" BorderBrush="{Binding TrashBorder}" BorderThickness="1" Background="#f5f5f5">
+              <Border Tour:TourHelper.ElementID="Trashcan" Tour:TourHelper.Placement="TopCenter"
+                Tag="Trash" Drop="DeleteSeats" DragEnter="EnterTrash" DragLeave="LeaveTrash" DragOver="TrashOver" AllowDrop="True" Height="160" Width="250" BorderBrush="{Binding TrashBorder}" BorderThickness="1" Background="#f5f5f5">
                 <StackPanel>
                   <TextBlock Foreground="{Binding TrashForeground}" TextAlignment="Center" FontSize="30" Margin="0 10 0 0">
                     Prevuci sedište<LineBreak/> ovde za brisanje
@@ -116,7 +135,8 @@
           Padding="25 20"
           IsDefault="True"
           Command="{Binding ConfrimCommand}"
-          ToolTip="Sačuvaj novi voz"
+          ToolTip="Sačuvaj promene voza"
+          Tour:TourHelper.ElementID="ConfirmButton" Tour:TourHelper.Placement="TopCenter"
         >
           Sačuvaj izmene
         </Button>
@@ -126,7 +146,7 @@
           Cursor="Hand"
           Padding="65 20"
           Command="{Binding CancelCommand}"
-          ToolTip="Odustani od dodavanja voza"
+          ToolTip="Odustani od promena voza"
         >
           Odustani
         </Button>

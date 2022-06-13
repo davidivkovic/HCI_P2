@@ -34,6 +34,7 @@ public partial class TrainsView : Component
     public Visibility ClearFilterVisible => string.IsNullOrEmpty(Filter) ? Visibility.Collapsed : Visibility.Visible;
     public List<List<Slot>> Seats => GetSeats();
     public bool IsEditable => SelectedTrain is not null;
+    public string PleaseText => IsEditable ? "" : "Molimo Vas izaberite voz";
     public Visibility DetailsVisible => SelectedTrain is null ? Visibility.Collapsed : Visibility.Visible;
 
     public List<List<Slot>> GetSeats()
@@ -64,13 +65,13 @@ public partial class TrainsView : Component
 
     private void ListViewLostFocus(object sender, RoutedEventArgs e)
     {
-        var element = FocusManager.GetFocusedElement(this);
-        if (element is Button or ListView)
-        {
-            return;
-        }
-        SelectedTrain = null;
-        TrainsListView.SelectedItem = null;
+        //var element = FocusManager.GetFocusedElement(this);
+        //if (element is Button or ListView)
+        //{
+        //    return;
+        //}
+        //SelectedTrain = null;
+        //TrainsListView.SelectedItem = null;
     }
 
     public void OnFilterChanged()

@@ -111,8 +111,33 @@
         </ListView>
       </StackPanel>
       <StackPanel Grid.Row="1" Grid.Column="1" >
-        <StackPanel Visibility="{Binding DetailsVisible}" Margin="30 2 0 0" Orientation="Horizontal">
-          <StackPanel>
+        <StackPanel Margin="30 2 0 0" Orientation="Horizontal">
+          <StackPanel Margin="0 0 20 0">
+            <TextBlock FontWeight="Medium">Izabrani voz</TextBlock>
+            <Grid>
+              <TextBlock Foreground="Gray" FontSize="26" Text="{Binding PleaseText}"/>
+              <Grid Visibility="{Binding DetailsVisible}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel ToolTip="Podaci o vozu">
+                  <TextBlock>
+                      Voz <Run Text="{Binding SelectedTrain.Number}"/>
+                  </TextBlock>
+                  <TextBlock FontSize="26">
+                      Tip <Run Text="{Binding SelectedTrain.Name, Mode=OneWay}"/>
+                  </TextBlock>
+                  <TextBlock FontSize="24">
+                      <Run Text="{Binding SelectedTrain.NumberOfSeats, Mode=OneWay}"/>
+                      Sedišta
+                  </TextBlock>
+                </StackPanel>
+                <Image Grid.Column="1" Margin="20 5 10 0" VerticalAlignment="Top" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="HighQuality" Height="30" Source="{Binding SelectedTrain.Image, Mode=OneWay}" />
+              </Grid>
+            </Grid>
+          </StackPanel>
+          <StackPanel Visibility="{Binding DetailsVisible}" Margin="0 30 0 0">
             <TextBlock FontSize="26">Raspored sedišta</TextBlock>
             <ItemsControl BorderThickness="1" Margin="0 10 0 0" ItemsSource="{Binding Seats}">
               <ItemsControl.ItemTemplate>
@@ -139,7 +164,7 @@
               </ItemsControl.ItemTemplate>
             </ItemsControl>
           </StackPanel>
-          <StackPanel Margin="20 43 0 0">
+          <StackPanel Visibility="{Binding DetailsVisible}" Margin="20 73 0 0">
             <StackPanel Orientation="Horizontal">
               <Border Width="40" Height="40" Background="LightSkyBlue" BorderBrush="Gray" BorderThickness="1" />
               <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" FontSize="24">Jedno sedište</TextBlock>

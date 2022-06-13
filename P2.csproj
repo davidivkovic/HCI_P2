@@ -179,4 +179,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ThinkSharp.FeatureTour-master\ThinkSharp.FeatureTour\ThinkSharp.FeatureTour.csproj" />
+  </ItemGroup>
+
 </Project>

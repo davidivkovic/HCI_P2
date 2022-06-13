@@ -11,6 +11,9 @@ using CommunityToolkit.Mvvm.Input;
 using P2.Extensions;
 using P2.Model;
 using P2.Primitives;
+using ThinkSharp.FeatureTouring;
+using ThinkSharp.FeatureTouring.Models;
+using ThinkSharp.FeatureTouring.Navigation;
 
 namespace P2.Windows;
 
@@ -210,6 +213,9 @@ public partial class AddEditTrain : Primitives.Window
         {
             if (element.Tag is string type)
             {
+                var tutorialNav = FeatureTour.GetNavigator();
+                var b = tutorialNav.IfCurrentStepEquals("Step1");
+                var t = b.GoNext();
                 SeatType seatType = Enum.Parse<SeatType>(type);
                 DragDrop.DoDragDrop(element, seatType, DragDropEffects.Copy);
             }
@@ -563,5 +569,29 @@ public partial class AddEditTrain : Primitives.Window
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
         HelpProvider.ShowHelp("AddEditTrain", this);
+    }
+
+    [ICommand]
+    public void StartTutorial()
+    {
+        TextLocalization.Next = "Dalje";
+        TextLocalization.Close = "Završi";
+        TextLocalization.DoIt = "Uradi korak za mene";
+        var tour = new Tour()
+        {
+            Name = "My Demo Tour",
+            ShowNextButtonDefault = true,
+            Steps = new []
+            {
+                new Step("DobuleSeatBorder", "Header 01", "Content 01", "Step1"),
+                new Step("SlotsPanel", "Header 01", "Content 01", "Step2"),
+                new Step("Trashcan", "Header 01", "Content 01", "Step3"),
+                new Step("TrainTypeComboBox", "Header 01", "Content 01", "Step4"),
+                new Step("TrainNameTextBox", "Header 01", "Content 01", "Step5"),
+                new Step("ConfirmButton", "Header 01", "Content 01", "Step6")
+            }
+        };
+
+        tour.Start();
     }
 }

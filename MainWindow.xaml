@@ -85,6 +85,7 @@
         </MenuItem >
       </Menu>
     </Grid>
+    <!--Router-->
     <ContentControl Focusable="False" Grid.Row="1" Content="{Binding CurrentView}"/>
   </Grid>
 </Primitives:Window>
