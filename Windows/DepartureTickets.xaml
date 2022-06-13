@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:P2.Windows"
         mc:Ignorable="d"
         FontSize="28"
-        Title="DepartureTickets" Height="450" Width="1200">
+        Title="DepartureTickets" Height="450" Width="1200"
+        FocusManager.IsFocusScope="True">
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+  </Window.CommandBindings>
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="20">
       <TextBlock FontSize="38">

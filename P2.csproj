@@ -30,13 +30,18 @@
     <None Remove="Help\CreateUpdateLineHelp.htm" />
     <None Remove="Help\CustomerTicketsViewCustomer.htm" />
     <None Remove="Help\DepartureDetails.htm" />
+    <None Remove="Help\DepartureTickets.htm" />
+    <None Remove="Help\DepartureTicketsViewManager.htm" />
     <None Remove="Help\GeneralHelpCustomer.htm" />
+    <None Remove="Help\GeneralHelpManager.htm" />
     <None Remove="Help\LinesViewCustomer.htm" />
     <None Remove="Help\LinesViewManager.htm" />
     <None Remove="Help\LoginView.htm" />
+    <None Remove="Help\MonthlyTicketsViewManager.htm" />
     <None Remove="Help\Registration.htm" />
     <None Remove="Help\TimetableViewCustomer.htm" />
-    <None Remove="Help\TrainsView.htm" />
+    <None Remove="Help\TimetableViewManager.htm" />
+    <None Remove="Help\TrainsViewManager.htm" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,7 +67,16 @@
     <Content Include="Help\DepartureDetails.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\DepartureTickets.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\DepartureTicketsViewManager.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\GeneralHelpCustomer.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\GeneralHelpManager.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\LinesViewCustomer.htm">
@@ -71,10 +85,16 @@
     <Content Include="Help\LoginView.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\MonthlyTicketsViewManager.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Registration.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\TimetableViewCustomer.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TimetableViewManager.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\Icons\danger.png">
@@ -142,7 +162,7 @@
     <Content Include="Help\LinesViewManager.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\TrainsView.htm">
+    <Content Include="Help\TrainsViewManager.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

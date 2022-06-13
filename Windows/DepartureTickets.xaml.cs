@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using P2.Model;
@@ -44,5 +45,10 @@ public partial class DepartureTickets : Window
     public void CloseDetails()
     {
         Close();
+    }
+
+    private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        HelpProvider.ShowHelp("DepartureTickets", this);
     }
 }

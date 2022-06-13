@@ -87,6 +87,12 @@ namespace P2
             HelpViewer hh = new HelpViewer(key, originator);
             hh.Show();
         }
+
+        internal static void ShowHelp(string key, DepartureTickets originator)
+        {
+            HelpViewer hh = new HelpViewer(key, originator);
+            hh.Show();
+        }
     }
     
 }
