@@ -30,6 +30,24 @@
     <KeyBinding Modifiers="Control"
                     Key="O"
                     Command="{Binding DeleteCommand}" />
+    <KeyBinding Modifiers="Control"
+                    Key="P"
+                    Command="{Binding ShowTimetableCommand}" />
+    <KeyBinding Modifiers="Control"
+                    Key="L"
+                    Command="{Binding ShowLinesCommand}" />
+    <KeyBinding Modifiers="Control"
+                    Key="K"
+                    Command="{Binding ShowTicketsCommand}" />
+    <KeyBinding Modifiers="Control+Shift"
+                    Key="K"
+                    Command="{Binding ShowMonthlyTicketsCommand}" />
+    <KeyBinding Modifiers="Control"
+                    Key="H"
+                    Command="{Binding ShowGeneralHelpCommand}" />
+    <KeyBinding Modifiers="Control+Shift"
+                    Key="V"
+                    Command="{Binding ShowTrainsCommand}" />
   </Primitives:Window.InputBindings>
   <Grid>
     <Grid.RowDefinitions>
@@ -50,7 +68,7 @@
 
         <MenuItem Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}"  Padding="15 5" Cursor="Hand" Header="_Karte">
           <MenuItem Command="{Binding ShowDepartureTicketsCommand}" InputGestureText="Ctrl+K" Cursor="Hand" Header="Prodate Karte za Vožnju"/>
-          <MenuItem Command="{Binding ShowMonthlyTicketsCommand}" Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
+          <MenuItem Command="{Binding ShowMonthlyTicketsCommand}" InputGestureText="Ctrl+Shift+K" Cursor="Hand" Header="Prodate Karte u Toku Meseca"/>
         </MenuItem>
 
         <MenuItem Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToCustomer, Mode=OneWay}"  Padding="15 5" Cursor="Hand" Header="_Karte">
@@ -62,7 +80,7 @@
         </MenuItem >
         
         <MenuItem Padding="15 5" Cursor="Hand" Header="_Pomoć">
-          <MenuItem InputGestureText="Ctrl+P" Cursor="Hand" Header="Prikaži Pomoć" Command="{Binding ShowGeneralHelpCommand}"/>
+          <MenuItem InputGestureText="Ctrl+H" Cursor="Hand" Header="Prikaži Pomoć" Command="{Binding ShowGeneralHelpCommand}"/>
           <MenuItem InputGestureText="Ctrl+T" Cursor="Hand" Header="Pokreni Tutorijal"/>
         </MenuItem >
       </Menu>

@@ -38,6 +38,15 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ListView Grid.Column="0" Grid.Row="0" Name="TrainsListView" Height="350" Margin="0 100 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
+          <ListView.ItemContainerStyle>
+            <Style TargetType="{x:Type ListViewItem}">
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </ListView.ItemContainerStyle>
           <ListView.ItemTemplate>
             <DataTemplate>
               <Grid Margin="6">
@@ -71,6 +80,7 @@
               Padding="45 0 50 0" Margin="0 10 0 0" 
               Height="50"
               Width="300"
+              MaxLength="20"
               Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
               Name="FilterInput"
               VerticalContentAlignment="Center"
@@ -133,7 +143,7 @@
                     Style="{DynamicResource ComboBoxStyle}" 
                     ItemsSource="{Binding Hours}"
                     SelectedItem="{Binding SelectedHours}" 
-                    ToolTip="Promeni sate">
+                    ToolTip="Izmeni sate">
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Margin="0 0 15 0" FontSize="28" Text="{Binding Path=.}" />
@@ -150,7 +160,7 @@
                     Style="{DynamicResource ComboBoxStyle}" 
                     Margin="10 0 0 0" ItemsSource="{Binding Minutes}" 
                     SelectedItem="{Binding SelectedMinutes}"
-                    ToolTip="Promeni minute">
+                    ToolTip="Izmeni minute">
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Margin="0 0 15 0" FontSize="28" Text="{Binding Path=.}" />

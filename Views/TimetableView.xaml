@@ -94,6 +94,7 @@
             <TextBox VerticalContentAlignment="Center" 
                      Margin="0 10 0 0" 
                      Padding="45 0 10 0"
+                     MaxLength="30"
                      Height="50"
                      PreviewKeyDown="SourceListBoxKeyDown"
                      GotFocus="SourceInputGotFocus"
@@ -141,6 +142,7 @@
                      Margin="0 10 0 0" 
                      Padding="45 0 10 0"
                      Height="50"
+                     MaxLength="30"
                      GotFocus="DestinationInputGotFocus"
                      LostFocus="DestinationInputLostFocus"
                      PreviewKeyDown="DestinationListBoxKeyDown"
@@ -214,6 +216,15 @@
                     GotFocus="ListViewGotFocus"
                     Name="LinesListView"
                     Height="350">
+                <ListView.ItemContainerStyle>
+                  <Style TargetType="{x:Type ListViewItem}">
+                    <Style.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand" />
+                      </Trigger>
+                    </Style.Triggers>
+                  </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Margin="10 15" MaxWidth="280" Grid.Column="0" TextWrapping="Wrap" Text="{Binding FormattedLine}"/>
@@ -221,7 +232,6 @@
                 </ListView.ItemTemplate>
               </ListView>
             </StackPanel>
-
           </Grid>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 0 0 0">

@@ -49,14 +49,34 @@ public partial class MainWindow : Primitives.Window
         }
     }
 
-    [ICommand] public void ShowTrains() => CurrentView = new TrainsView();
+    [ICommand]
+    public void ShowTrains()
+    {
+         if (UserStore.Store.User.Role == Role.Manager) CurrentView = new TrainsView();
+    }
     [ICommand] public void ShowLines() => CurrentView = new LinesView();
     [ICommand] public void ShowTimetable() => CurrentView = new TimetableView();
     [ICommand] public void ShowDepartureTickets() => CurrentView = new DepartureTicketsView();
-    [ICommand] public void ShowMonthlyTickets() => CurrentView = new MonthlyTicketsView();
+    [ICommand]
+    public void ShowMonthlyTickets()
+    {
+        if (UserStore.Store.User.Role == Role.Manager) CurrentView = new MonthlyTicketsView();
+    }
     [ICommand] public void ShowCustomerTickets() => CurrentView = new CustomerTicketsView();
     [ICommand] public void ShowGeneralHelp() => HelpProvider.ShowHelp("GeneralHelp" + (UserStore.Store.User.Role == Role.Customer ? "Customer" : "Manager"), this);
-    
+
+    [ICommand]
+    public void ShowTickets()
+    {
+        if (UserStore.Store.User.Role == Role.Customer)
+        {
+            ShowCustomerTickets();
+        }
+        else
+        {
+            ShowDepartureTickets();
+        }
+    }
 
     private void ShowHelp(object sender, ExecutedRoutedEventArgs e)
     {
@@ -66,17 +86,18 @@ public partial class MainWindow : Primitives.Window
             HelpProvider.ShowHelp(CurrentView.GetType().Name + (UserStore.Store.User.Role == Role.Customer ? "Customer" : "Manager"), this);
     }
 
-    [ICommand] public void Add()
+    [ICommand]
+    public void Add()
     {
-        if(CurrentView is TimetableView)
+        if (CurrentView is TimetableView)
         {
             ((TimetableView)CurrentView).AddNewDeparture();
         }
-        else if(CurrentView is TrainsView)
+        else if (CurrentView is TrainsView)
         {
             ((TrainsView)CurrentView).AddTrain();
         }
-        else if(CurrentView is LinesView)
+        else if (CurrentView is LinesView)
         {
             ((LinesView)CurrentView).CreateNewLine();
         }

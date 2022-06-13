@@ -382,32 +382,19 @@ namespace P2.Views
         [ICommand]
         public void SearchLines()
         {
-            if (!UserStore.Store.IsManager)
-            {
-                if (SourceSearch is null || DestinationSearch is null)
-                {
-                    List<string> errors = new();
-                    errors.Add("Polazište i odredište moraju biti odabrani");
-                    ShowSearchError(errors);
 
-                }
-                else
-                {
-                    Search();
-                }
+            if (SourceSearch is null || DestinationSearch is null)
+            {
+                List<string> errors = new();
+                errors.Add("Polazište i odredište moraju biti odabrani");
+                ShowSearchError(errors);
+
             }
             else
             {
-                if (SourceSearch is not null || DestinationSearch is not null)
-                {
-                    Search();
-                }
-                else
-                {
-                    List<string> errors = new();
-                    errors.Add("Bar jedno od polje 'Polazište' i 'Odredište' mora biti odabrano");
-                    ShowSearchError(errors);
-                }
+                SourceInput.BorderBrush = Brushes.DarkGray;
+                DestinationInput.BorderBrush = Brushes.DarkGray;
+                Search();
             }
 
             if (SelectedTrainLine is null && !UserStore.Store.IsManager) ErrorText = "Ne postoji linija na izabranoj relaciji";
@@ -465,7 +452,7 @@ namespace P2.Views
             Departures = new();
             if (UserStore.Store.IsManager)
             {
-                
+
                 SelectedTrainLine = null;
                 LinesListView.SelectedItem = null;
                 LinesListView.Focus();
@@ -493,6 +480,8 @@ namespace P2.Views
 
         public void ShowSearchError(List<string> errors)
         {
+            SourceInput.BorderBrush = Brushes.DarkGray;
+            DestinationInput.BorderBrush = Brushes.DarkGray;
             if (SourceSearch is null) SourceInput.BorderBrush = Brushes.Red;
             if (DestinationSearch is null) DestinationInput.BorderBrush = Brushes.Red;
 
