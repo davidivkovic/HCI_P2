@@ -22,7 +22,7 @@
                    Padding="8 0 8 10" Margin="0 0 0 -10" 
                    Foreground="Black" 
                    Text="{TemplateBinding Content}"/>
-        <Image Width="40" Height="40" Source="/Assets/icon.png"/>
+        <Image Width="40" Height="40" RenderOptions.BitmapScalingMode="HighQuality" Source="/Assets/icon.png"/>
       </StackPanel>
     </ControlTemplate>
   </UserControl.Resources>
@@ -54,7 +54,7 @@
                     Padding="15 5"
                     Cursor="Hand"
                     Command="{Binding CreateNewLineCommand}"
-                    ToolTip="Dodaj novu liniju">Dodaj liniju
+                    ToolTip="Dodaj novu voznu liniju (Ctrl+D)">Dodaj liniju
             </Button>
             <Button Name="EditButton"
                     Cursor="Hand"
@@ -63,7 +63,7 @@
                     Template="{StaticResource DefaultButtonTemplate}" 
                     Margin="10 0 0 0"
                     Padding="15 5"
-                    ToolTip="Izmeni odabranu liniju">
+                    ToolTip="Izmeni izabranu voznu liniju (Ctrl+I)">
               Izmeni liniju
             </Button>
             <Button Name="DeleteButton"
@@ -72,7 +72,7 @@
                     Template="{StaticResource RedButtonTemplate}" 
                     Command="{Binding DeleteLineCommand}"
                     Margin="10 0 0 0" Padding="15 5"
-                    ToolTip="Obriši odabranu liniju">
+                    ToolTip="Obriši izabranu voznu linija (Ctrl+O)">
               Obriši liniju
             </Button>
           </StackPanel>
@@ -88,7 +88,7 @@
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SearchInput">
             </TextBox>
-            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/magnifier.png"/>
+            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
             <TextBlock FontSize="22" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -118,7 +118,6 @@
                       Margin="0 10 0 0" 
                       SelectionChanged="LinesListViewSelectionChanged"
                       Name="LinesListView"
-               
                       Height="500">
               <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">

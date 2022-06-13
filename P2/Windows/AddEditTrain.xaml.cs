@@ -552,9 +552,8 @@ public partial class AddEditTrain : Primitives.Window
         {
             var w = new ConfirmCancelWindow
             {
-                Title = "Odustajanje",
                 Message = "Da li ste sigurni da želite da odustanete od izmene voza?",
-                ConfirmButtonText = "Odustani",
+                ConfirmButtonText = "Odustani od izmena",
                 CancelButtonText = "Otkaži",
                 ConfirmIsDanger = true,
                 Image = MessageBoxImage.Stop

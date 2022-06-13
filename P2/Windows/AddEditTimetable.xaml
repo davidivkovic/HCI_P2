@@ -86,7 +86,7 @@
               VerticalContentAlignment="Center"
         >
             </TextBox>
-            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/magnifier.png"/>
+            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
             <TextBlock FontSize="22" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">

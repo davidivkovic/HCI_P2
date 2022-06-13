@@ -28,7 +28,7 @@
                    Padding="8 0 8 10" Margin="0 0 0 -10" 
                    Foreground="Black" 
                    Text="{TemplateBinding Content}"/>
-        <Image Width="40" Height="40" Source="/Assets/icon.png"/>
+        <Image Width="40" Height="40" RenderOptions.BitmapScalingMode="HighQuality" Source="/Assets/icon.png"/>
       </StackPanel>
     </ControlTemplate>
   </Window.Resources>
@@ -68,7 +68,7 @@
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SearchInput">
               </TextBox>
-              <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/magnifier.png"/>
+              <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
 
               <TextBlock FontSize="26" IsHitTestVisible="False" Text="Ime stanice" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
                 <TextBlock.Style>
@@ -146,7 +146,6 @@
           <StackPanel
             Grid.Column="1" Grid.Row="1" 
             Drop="MapDragDrop"
-            DragLeave="MapDropLeave"
             AllowDrop="True"
             Margin="20 65 20 20" 
             Visibility="{Binding IsOverlayVisible}">

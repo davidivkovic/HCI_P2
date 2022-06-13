@@ -58,7 +58,7 @@
                     Command="{Binding AddNewDepartureCommand}"
                     Padding="15 5"
                     Cursor="Hand"
-                    ToolTip="Dodaj novi polazak"
+                    ToolTip="Dodaj novi polazak (Ctrl+D)"
                     >Dodaj polazak
             </Button>
             <Button Name="EditButton"
@@ -67,7 +67,7 @@
                     Template="{StaticResource DefaultButtonTemplate}" 
                     Margin="10 0 0 0"
                     Padding="15 5"
-                    ToolTip="Izmeni izabrani polazak">
+                    ToolTip="Izmeni izabrani polazak (Ctrl+I)">
               Izmeni polazak
             </Button>
             <Button Name="DeleteButton"
@@ -75,7 +75,7 @@
                     Template="{StaticResource RedButtonTemplate}" 
                     IsEnabled="{Binding IsEditable}"
                     Margin="10 0 0 0" Padding="15 5"
-                    ToolTip="Obriši izabrani polazak">
+                    ToolTip="Obriši izabrani polazak (Ctrl+O)">
               Obriši polazak
             </Button>
           </WrapPanel>
@@ -102,7 +102,7 @@
                      Text="{Binding SourceInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SourceInput">
             </TextBox>
-            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/pin.png"/>
+            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/pin.png"/>
             <TextBlock FontSize="24" IsHitTestVisible="False" Text="Polazna stanica" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -149,7 +149,7 @@
                      Text="{Binding DestinationInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="DestinationInput">
             </TextBox>
-            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="30" Height="30" Opacity="0.4" Source="/Assets/flag.png"/>
+            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="30" Height="30" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/flag.png"/>
             <TextBlock FontSize="24" IsHitTestVisible="False" Text="Odredištna stanica" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -227,7 +227,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                   <DataTemplate>
-                    <TextBlock Margin="10 15" MaxWidth="280" Grid.Column="0" TextWrapping="Wrap" Text="{Binding FormattedLine}"/>
+                    <TextBlock Padding="10 15" MaxWidth="280" Grid.Column="0" TextWrapping="Wrap" Text="{Binding FormattedLine}"/>
                   </DataTemplate>
                 </ListView.ItemTemplate>
               </ListView>

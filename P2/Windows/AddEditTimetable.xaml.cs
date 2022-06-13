@@ -19,6 +19,7 @@ public partial class AddEditTimetable : P2.Primitives.Window
         Trains = new(db.Trains
             .Include(t => t.Seating)
             .ThenInclude(s => s.Seats)
+            .Where(t => !t.IsDeleted)
             .ToList()
         );
         FilteredTrains = new(Trains.Take(3));
