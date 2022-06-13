@@ -91,6 +91,7 @@ namespace P2.Views
             if (Departures.Count == 0)
             {
                 TimetableDataGrid.Visibility = Visibility.Collapsed;
+                ErrorText = "Nema polazaka za tražene parametre";
                 ErrorTextBlock.Visibility = Visibility.Visible;
             }
             
