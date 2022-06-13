@@ -315,6 +315,7 @@ namespace P2.Views
             {
                 SourceSuggestionsListBox.ItemsSource = SourceSuggestions;
                 SourceSuggestionsListBox.Visibility = Visibility.Visible;
+                SourceSuggestionsListBox.SelectedIndex = 0;
             }
             else
             {
@@ -366,6 +367,7 @@ namespace P2.Views
             {
                 DestinationSuggestionsListBox.ItemsSource = DestinationSuggestions;
                 DestinationSuggestionsListBox.Visibility = Visibility.Visible;
+                DestinationSuggestionsListBox.SelectedIndex = 0;
             }
             else
             {

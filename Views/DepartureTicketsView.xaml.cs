@@ -240,6 +240,7 @@ public partial class DepartureTicketsView : Component
         {
             SourceSuggestionsListBox.ItemsSource = SourceSuggestions;
             SourceSuggestionsListBox.Visibility = Visibility.Visible;
+            SourceSuggestionsListBox.SelectedIndex = 0;
         }
         else
         {
@@ -291,6 +292,7 @@ public partial class DepartureTicketsView : Component
         {
             DestinationSuggestionsListBox.ItemsSource = DestinationSuggestions;
             DestinationSuggestionsListBox.Visibility = Visibility.Visible;
+            DestinationSuggestionsListBox.SelectedIndex = 0;
         }
         else
         {
