@@ -86,6 +86,7 @@
                      MaxLength="30"
                      Height="50"
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     PreviewKeyDown="SearchTextBoxKeyDown"
                      Name="SearchInput">
             </TextBox>
             <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
@@ -134,10 +135,10 @@
                 </DataTemplate>
               </ListView.ItemTemplate>
             </ListView>
-            <TextBlock IsHitTestVisible="False" Margin="10 20"></TextBlock>
+            <TextBlock Visibility="Collapsed" Padding="10" Name="ErrorTextBlock" Margin="10 20" Foreground="DimGray" FontSize="26" TextWrapping="Wrap">Nema linija sa traženim parametrom</TextBlock>
           </Grid>
         </StackPanel>
-        <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mrežna linija</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mreža linija</TextBlock>
         <m:Map Name="StationMap"
                 Focusable="True"
                 Grid.Column="1" Grid.Row="1" Margin="20 65 20 0" Height="560" VerticalAlignment="Top"

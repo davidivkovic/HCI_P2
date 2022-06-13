@@ -55,6 +55,17 @@ public partial class AddEditTimetable : P2.Primitives.Window
         CurrentDeparture = d;
     }
 
+    public void SearchTextBoxKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter || e.Key == Key.Tab || e.Key == Key.Down)
+        {
+            if (FilteredTrains.Count > 0)
+            {
+                TrainsListView.Focus();
+                TrainsListView.SelectedIndex = 0;
+            }
+        }
+    }
     public string HeadingText { get; set; }
     public string Filter { get; set; } = string.Empty;
     public Visibility ClearFilterVisible => string.IsNullOrEmpty(Filter) ? Visibility.Collapsed : Visibility.Visible;

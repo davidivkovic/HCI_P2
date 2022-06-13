@@ -394,6 +394,15 @@ public partial class CreateUpdateLine : Primitives.Window
                 FilteredStations.Add(item);
             }
         }
+
+        if(FilteredStations.Count == 0)
+        {
+            ErrorTextBlock.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            ErrorTextBlock.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void AddStationToRoute(Station station)

@@ -74,6 +74,18 @@ public partial class TrainsView : Component
         //TrainsListView.SelectedItem = null;
     }
 
+    public void SearchTextBoxKeyDown(object sender, KeyEventArgs e)
+    {
+        if(e.Key == Key.Enter || e.Key == Key.Tab || e.Key == Key.Down)
+        {
+            if(FilteredTrains.Count > 0)
+            {
+                TrainsListView.Focus();
+                TrainsListView.SelectedIndex = 0;
+            }
+        }
+    }
+
     public void OnFilterChanged()
     {
         List<Train> TempFiltered = Trains.Where(t =>
@@ -98,6 +110,15 @@ public partial class TrainsView : Component
             {
                 FilteredTrains.Add(item);
             }
+        }
+
+        if (FilteredTrains.Count == 0)
+        {
+            ErrorTextBlock.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            ErrorTextBlock.Visibility = Visibility.Collapsed;
         }
     }
 

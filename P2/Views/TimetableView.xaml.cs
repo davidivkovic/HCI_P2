@@ -67,13 +67,13 @@ namespace P2.Views
         public Visibility IsTableVisible => (Departures is not null && Departures.Count > 0) ? Visibility.Visible : Visibility.Collapsed;
 
         public Visibility IsNoResultsTextVisible => IsTableVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-        public string ErrorText { get; set; } = "Unesite parametre za pretragu";
+        public string ErrorText { get; set; } = "Molimo Vas izaberite liniju";
 
         public void FindTimetable()
         {
             using DbContext db = new();
             Departures = new(db.Departures
-                .Where(d => d.Line.Id == SelectedTrainLine.Id)
+                .Where(d => d.Line.Id == (SelectedTrainLine == null ? 0 : SelectedTrainLine.Id))
                 .Where(d => !d.IsDeleted)
                 .Include(d => d.Train)
                     .ThenInclude(t => t.Seating)
@@ -88,7 +88,12 @@ namespace P2.Views
                 .OrderBy(d => d.Time)
                 .ToList());
 
-            if (Departures.Count == 0) ErrorText = "Ne postoje polasci za izabranu relaciju";
+            if (Departures.Count == 0)
+            {
+                TimetableDataGrid.Visibility = Visibility.Collapsed;
+                ErrorTextBlock.Visibility = Visibility.Visible;
+            }
+            
         }
 
         public void OnDateFromChanged(DateTime oldDate, DateTime newDate)
@@ -100,6 +105,7 @@ namespace P2.Views
             }
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+            SelectedDeparture = null;
             FilteredLines.Clear();
         }
 
@@ -112,6 +118,7 @@ namespace P2.Views
             }
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+            SelectedDeparture = null;
             FilteredLines.Clear();
         }
 
@@ -124,6 +131,7 @@ namespace P2.Views
             }
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorText = "Promenjeni su parametri, pokrenite pretragu";
+            SelectedDeparture = null;
             FilteredLines.Clear();
         }
 
@@ -460,13 +468,11 @@ namespace P2.Views
                 LinesListView.Focus();
                 if (FilteredLines.Count > 0)
                 {
-                    LinesListView.Visibility = Visibility.Visible;
                     NoLinesErrorTextBlock.Visibility = Visibility.Collapsed;
                     ErrorText = "Molimo Vas izaberite liniju";
                 }
                 else
                 {
-                    LinesListView.Visibility = Visibility.Collapsed;
                     NoLinesErrorTextBlock.Visibility = Visibility.Visible;
                     ErrorText = "Nema polazaka, izaberite druge parametre";
                 }

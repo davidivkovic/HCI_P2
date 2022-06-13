@@ -19,7 +19,7 @@
     <StackPanel HorizontalAlignment="Center" Margin="30 10">
       <TextBlock Text="{Binding HeadingText}"
                  TextAlignment="Center"  
-                 FontSize="42" TextWrapping="Wrap" 
+                 FontSize="38" TextWrapping="Wrap" 
                  FontWeight="Medium" 
                  HorizontalAlignment="Center"/>
       <TextBlock Text="{Binding CurrentTrainLine.FormattedLine}"
@@ -37,7 +37,49 @@
           <RowDefinition Height="*"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Column="0" Grid.Row="0" Name="TrainsListView" Height="350" Margin="0 100 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
+        <StackPanel Grid.Column="0" >
+          <TextBlock FontWeight="Medium">
+          Pretraga vozova:
+          </TextBlock>
+          <Grid>
+            <TextBox 
+              Padding="45 0 50 0" Margin="0 10 0 0" 
+              Height="50"
+              Width="300"
+              MaxLength="20"
+              PreviewKeyDown="SearchTextBoxKeyDown"
+              Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+              Name="FilterInput"
+              VerticalContentAlignment="Center"
+        >
+            </TextBox>
+            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
+            <TextBlock FontSize="22" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=FilterInput}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <Button 
+              Width="50"
+              Height="50" 
+              Background="Transparent" 
+              BorderBrush="Transparent" 
+              Cursor="Hand" Margin="0 10 0 0" 
+              HorizontalAlignment="Right"
+              Visibility="{Binding ClearFilterVisible}"
+              Command="{Binding ClearFilterCommand}">
+              ×
+            </Button>
+          </Grid>
+        </StackPanel>
+        <ListView Grid.Column="0"  Grid.Row="0" Name="TrainsListView" Height="350" Margin="0 100 0 0" ItemsSource="{Binding FilteredTrains}" SelectedItem="{Binding SelectedTrain}" HorizontalContentAlignment="Stretch">
           <ListView.ItemContainerStyle>
             <Style TargetType="{x:Type ListViewItem}">
               <Style.Triggers>
@@ -71,51 +113,10 @@
             </DataTemplate>
           </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Grid.Column="0" >
-          <TextBlock FontWeight="Medium">
-          Pretraga vozova:
-          </TextBlock>
-          <Grid>
-            <TextBox 
-              Padding="45 0 50 0" Margin="0 10 0 0" 
-              Height="50"
-              Width="300"
-              MaxLength="20"
-              Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-              Name="FilterInput"
-              VerticalContentAlignment="Center"
-        >
-            </TextBox>
-            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" RenderOptions.BitmapScalingMode="HighQuality" Opacity="0.4" Source="/Assets/magnifier.png"/>
-            <TextBlock FontSize="22" IsHitTestVisible="False" Text="Broj voza, broj sedišta..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
-              <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding Text, ElementName=FilterInput}" Value="">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </TextBlock.Style>
-            </TextBlock>
-            <Button 
-            Width="50"
-            Height="50" 
-            Background="Transparent" 
-            BorderBrush="Transparent" 
-            Cursor="Hand" Margin="0 10 0 0" 
-            HorizontalAlignment="Right"
-            Visibility="{Binding ClearFilterVisible}"
-            Command="{Binding ClearFilterCommand}">
-              ×
-            </Button>
-          </Grid>
-        </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="20 0 0 0">
           <TextBlock FontWeight="Medium">Izabrani voz:</TextBlock>
           <TextBlock Foreground="DimGray" FontSize="22" Text="{Binding PleaseText}"/>
-          <Grid Visibility="{Binding AreTrainDetailsVisible}" Margin="6 -20 6 6">
+          <Grid MinWidth="260" Visibility="{Binding AreTrainDetailsVisible}" Margin="6 -20 6 6">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
@@ -139,7 +140,7 @@
               Vreme polaska:
             </TextBlock>
             <WrapPanel HorizontalAlignment="Left" Margin="0 10 0 0">
-              <ComboBox MaxDropDownHeight="200" Width="100" 
+              <ComboBox MaxDropDownHeight="200" Width="100" Focusable="True" IsTabStop="True"
                     Style="{DynamicResource ComboBoxStyle}" 
                     ItemsSource="{Binding Hours}"
                     SelectedItem="{Binding SelectedHours}" 
@@ -156,7 +157,7 @@
                 </ComboBox.ItemContainerStyle>
               </ComboBox>
               <TextBlock Margin="10 0 0 0" FontWeight="Medium">:</TextBlock>
-              <ComboBox MaxDropDownHeight="200"  Width="100"
+              <ComboBox MaxDropDownHeight="200"  Width="100" Focusable="True" IsTabStop="True"
                     Style="{DynamicResource ComboBoxStyle}" 
                     Margin="10 0 0 0" ItemsSource="{Binding Minutes}" 
                     SelectedItem="{Binding SelectedMinutes}"

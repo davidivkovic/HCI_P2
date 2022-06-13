@@ -122,6 +122,18 @@ public partial class LinesView : Component
         ClearMap();
     }
 
+    public void SearchTextBoxKeyDown(object sender, KeyEventArgs e)
+    {
+        if(e.Key == Key.Enter || e.Key == Key.Tab || e.Key == Key.Down)
+        {
+            if(FilteredLines.Count > 0)
+            {
+                LinesListView.Focus();
+                LinesListView.SelectedIndex = 0;
+            }
+        }
+    }
+
     [ICommand]
     public void DeleteLine()
     {
@@ -263,6 +275,16 @@ public partial class LinesView : Component
             {
                 FilteredLines.Add(item);
             }
+        }
+
+        if(FilteredLines.Count == 0)
+        {
+            ErrorTextBlock.Visibility = Visibility.Visible;
+            SelectedTrainLine = null;
+        }
+        else
+        {
+            ErrorTextBlock.Visibility = Visibility.Collapsed;
         }
     }
 }

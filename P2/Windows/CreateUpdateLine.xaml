@@ -94,30 +94,32 @@
                 x
               </Button>
             </Grid>
-            <ListView ItemsSource="{Binding FilteredStations}"                     
+            <Grid>
+
+              <ListView ItemsSource="{Binding FilteredStations}"                     
                     HorizontalContentAlignment="Stretch"
                     Margin="0 10 0 0" 
                     Name="FilteredStationsListView"
                     Height="530">
-              <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                  <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                      <Setter Property="Cursor" Value="Hand" />
-                    </Trigger>
-                  </Style.Triggers>
-                </Style>
-              </ListView.ItemContainerStyle>
-              <ListView.ItemTemplate>
-                <DataTemplate >
-                  <StackPanel Background="Transparent" MouseDown="StationMouseDown" Tag="{Binding Path=.}">
-                    <Grid Margin="8 20">
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                      </Grid.ColumnDefinitions>
-                      <TextBlock MaxWidth="170" Grid.Column="0" TextWrapping="Wrap"  Text="{Binding Name}"/>
-                      <Image 
+                <ListView.ItemContainerStyle>
+                  <Style TargetType="{x:Type ListViewItem}">
+                    <Style.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand" />
+                      </Trigger>
+                    </Style.Triggers>
+                  </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                  <DataTemplate >
+                    <StackPanel Background="Transparent" MouseDown="StationMouseDown" Tag="{Binding Path=.}">
+                      <Grid Margin="8 20">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock MaxWidth="170" Grid.Column="0" TextWrapping="Wrap"  Text="{Binding Name}"/>
+                        <Image 
                         HorizontalAlignment="Right" 
                         Grid.Column="1"
                         VerticalAlignment="Center" 
@@ -126,13 +128,15 @@
                         RenderOptions.BitmapScalingMode="HighQuality" 
                         Source="/Assets/icon.png" 
                     />
-                    </Grid>
-                  </StackPanel>
-                </DataTemplate>
-              </ListView.ItemTemplate>
-            </ListView>
+                      </Grid>
+                    </StackPanel>
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+              <TextBlock Visibility="Collapsed" Name="ErrorTextBlock" Foreground="DimGray" Margin="15 25 0 0" TextWrapping="Wrap" FontSize="26">Nema stanica za tražene parametre</TextBlock>
+            </Grid>
           </StackPanel>
-          <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mrežna linija</TextBlock>
+          <TextBlock Grid.Column="1" Grid.Row="1" Margin="20 20 0 0" FontWeight="Medium" TextWrapping="NoWrap">Mreža linija</TextBlock>
           <Grid Grid.Column="1" Grid.Row="1" Margin="20 65 20 20" Height="590">
             <m:Map Name="StationMap"
               DragEnter="MapDropEnter"

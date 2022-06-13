@@ -33,6 +33,7 @@ public partial class MonthlyTicketsView : Component
 
         InitializeComponent();
         Calendar.Visibility = Visibility.Hidden;
+        CalendarBorder.Focus();
 
         Dispatcher.BeginInvoke(() =>
         {
@@ -84,14 +85,7 @@ public partial class MonthlyTicketsView : Component
 
     private void BorderMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if(CanvasVisibility == Visibility.Collapsed)
-        {
-            Calendar.Focus();
-        }
-        else
-        {
-            CalendarBorder.Focus();
-        }
+        CalendarBorder.Focus();
         ToggleCanvasVisibility();
     }
 

@@ -309,14 +309,11 @@ public partial class DepartureTicketsView : Component
         {
             List<string> errors = new();
             errors.Add("Polazište i odredište moraju biti odabrani");
-            //ShowSearchError(errors);
         }
         else
         {
             Search();
         }
-
-        //if (SelectedTrainLine is null && !UserStore.IsManager) ErrorText = "Ne postoji linija na izabranoj relaciji";
     }
 
     public void SearchTimetable()

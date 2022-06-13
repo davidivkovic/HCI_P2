@@ -206,7 +206,7 @@
             ToolTip="Pretraži polaske"
             Command="{Binding SearchLinesCommand}">Pretraži</Button>
           <Grid>
-            <TextBlock Margin="0 20 0 0" Name="NoLinesErrorTextBlock" Visibility="Collapsed" FontSize="24" Foreground="DimGray" TextWrapping="Wrap">Nema linija za tražene parametre</TextBlock>
+            <TextBlock Panel.ZIndex="1" Margin="15 25 0 0" Name="NoLinesErrorTextBlock" Visibility="Collapsed" FontSize="26" Foreground="DimGray" TextWrapping="Wrap">Nema linija za tražene parametre</TextBlock>
             <StackPanel>
               <ListView Grid.Row="4" ItemsSource="{Binding FilteredLines}"  
                     Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToManager, Mode=OneWay}"
