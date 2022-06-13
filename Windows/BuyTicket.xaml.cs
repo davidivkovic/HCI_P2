@@ -127,6 +127,7 @@ public partial class BuyTicket : Primitives.Window
 
         var w = new ConfirmCancelWindow
         {
+            Title = errors.Count > 0 ? "Greška" : "Kupovina karte",
             Message = errors.Count > 0 ? "Nije moguće kupiti kartu zbog sledećeg:" : "Da li ste sigurni da želite da kupite kartu?",
             ConfirmButtonText = errors.Count > 0 ? "U redu" : "Kupi",
             Errors = errors,
@@ -172,8 +173,9 @@ public partial class BuyTicket : Primitives.Window
     {
         var w = new ConfirmCancelWindow
         {
+            Title = "Odustajanje",
             Message = "Da li ste sigurni da želite da odustanete od kupovine karte?",
-            ConfirmButtonText = "Odustani",
+            ConfirmButtonText = "Odustani od kupovine",
             CancelButtonText = "Otkaži",
             ConfirmIsDanger = true,
             Image = MessageBoxImage.Stop
@@ -193,8 +195,9 @@ public partial class BuyTicket : Primitives.Window
         {
             var w = new ConfirmCancelWindow
             {
+                Title = "Odustajanje",
                 Message = "Da li ste sigurni da želite da odustanete od kupovine karte?",
-                ConfirmButtonText = "Odustani",
+                ConfirmButtonText = "Odustani od kupovine",
                 CancelButtonText = "Otkaži",
                 ConfirmIsDanger = true,
                 Image = MessageBoxImage.Stop

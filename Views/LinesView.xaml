@@ -10,6 +10,7 @@
              mc:Ignorable="d"
              xmlns:l="clr-namespace:P2"
              FocusManager.IsFocusScope="True"
+             MinWidth="1000"
              FontSize="28"
              Background="White">
   <UserControl.Resources>
@@ -80,13 +81,14 @@
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Pretraga linija</TextBlock>
           <Grid>
             <TextBox VerticalContentAlignment="Center" 
-                     Padding="10 0 50 0"
+                     Padding="45 0 50 0"
                      Margin="0 10 0 0" 
                      Height="50"
                      Text="{Binding SearchInputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Name="SearchInput">
             </TextBox>
-            <TextBlock FontSize="26" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="DarkGray">
+            <Image HorizontalAlignment="Left" Margin="12 10 0 0" Width="25" Height="25" Opacity="0.4" Source="/Assets/magnifier.png"/>
+            <TextBlock FontSize="22" IsHitTestVisible="False" Text="Polazište ili destinacija" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" Foreground="DarkGray">
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
                   <Setter Property="Visibility" Value="Collapsed"/>

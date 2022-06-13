@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:P2.Windows"
         mc:Ignorable="d"
+        Title="Prodate karte za vožnju"
         FontSize="28"
-        Title="DepartureTickets" Height="450" Width="1200">
+        Height="450" Width="1200">
   <ScrollViewer VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="20">
       <TextBlock FontSize="38">
@@ -101,6 +102,7 @@
             <DataGridTextColumn.ElementStyle>
               <Style TargetType="TextBlock">
                 <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
@@ -108,7 +110,7 @@
         </DataGrid.Columns>
       </DataGrid>
       <Button HorizontalAlignment="Right" 
-              Padding="15 5" Margin="0 20 0 0"
+              Padding="25 5" Margin="0 20 0 0"
               Name="CloseButton"
               Template="{DynamicResource NeutralButtonTemplate}"
               Command="{Binding CloseDetailsCommand}">

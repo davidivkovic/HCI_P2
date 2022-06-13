@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         FontSize="28"
-        Title="DepartureDetails" Height="450" Width="720"
+        Title="Detalji polaska" Height="450" Width="720"
         FocusManager.IsFocusScope="True">
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
@@ -73,7 +73,8 @@
         </DataGrid.Columns>
       </DataGrid>
       <Button HorizontalAlignment="Right" 
-              Padding="15 5" Margin="0 20 0 0"
+              VerticalAlignment="Bottom"
+              Padding="25 5" Margin="0 20 0 0"
               Name="CloseButton"
               Template="{DynamicResource NeutralButtonTemplate}"
               Command="{Binding CloseDetailsCommand}"

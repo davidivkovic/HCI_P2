@@ -28,6 +28,7 @@ public partial class CreateUpdateLine : Primitives.Window
         UpdateRoute();
         
         InitializeComponent();
+        Title = "Dodavanje nove vozne linije";
 
         GeneratePins();
     }
@@ -43,6 +44,8 @@ public partial class CreateUpdateLine : Primitives.Window
     public ObservableCollection<Station> FilteredStations { get; set; }
 
     public bool ConfirmedSave { get; set; } = false;
+
+    public bool Cancelled { get; set; }
 
     public Stop SelectedStop { get; set; }
 
@@ -92,6 +95,7 @@ public partial class CreateUpdateLine : Primitives.Window
         }
         GeneratePins();
         UpdateRoute();
+        Title = "Izmena vozne linije";
     }
 
     public void GeneratePins()
@@ -194,7 +198,7 @@ public partial class CreateUpdateLine : Primitives.Window
             Message = "Da li ste sigurni da želite da obrišete stanicu iz linije?",
             ConfirmButtonText = "Obriši",
             ConfirmIsDanger = true,
-            Image = MessageBoxImage.Stop
+            Image = MessageBoxImage.Error
         };
         window.ShowDialog();
 
@@ -234,8 +238,8 @@ public partial class CreateUpdateLine : Primitives.Window
 
         var window = new ConfirmCancelWindow
         {
-            Title = "Čuvanje promena",
-            Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate promene?",
+            Title = Errors.Count > 0 ? "Greška" : "Čuvanje izmena",
+            Message = Errors.Count > 0 ? "Nije moguće sačuvati izmene zbog sledećih grešaka:" : "Da li ste sigurni da želite da sačuvate izmene?",
             Errors = Errors,
             ConfirmButtonText = Errors.Count > 0 ? "U redu" : "Sačuvaj izmene",
             ConfirmIsDanger = false,
@@ -260,8 +264,8 @@ public partial class CreateUpdateLine : Primitives.Window
         var window = new ConfirmCancelWindow
         {
             Title = "Odustajanje",
-            Message = "Da li ste sigurni da želite da odustanete od promena?",
-            ConfirmButtonText = "Odustani od promena",
+            Message = "Da li ste sigurni da želite da odustanete od izmena?",
+            ConfirmButtonText = "Odustani od izmena",
             CancelButtonText = "Otkaži",
             ConfirmIsDanger = true,
             Image = MessageBoxImage.Error
@@ -270,8 +274,29 @@ public partial class CreateUpdateLine : Primitives.Window
 
         if(window.Confirmed)
         {
+            Cancelled = true;
             Close();
         }
+    }
+
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        if (!Cancelled && !ConfirmedSave) // Closed by pressing x
+        {
+            var w = new ConfirmCancelWindow
+            {
+                Title = "Odustajanje",
+                Message = "Da li ste sigurni da želite da odustanete od izmena?",
+                ConfirmButtonText = "Odustani od izmena",
+                CancelButtonText = "Otkaži",
+                ConfirmIsDanger = true,
+                Image = MessageBoxImage.Error
+            };
+            w.ShowDialog();
+
+            if (!w.Confirmed) e.Cancel = true;
+        }
+        base.OnClosing(e);
     }
 
     [ICommand]
@@ -281,7 +306,7 @@ public partial class CreateUpdateLine : Primitives.Window
 
         var window = new ConfirmCancelWindow
         {
-            Title = "Promena cene",
+            Title = "Izmena cene",
             ConfirmButtonText = "Sačuvaj",
             CancelButtonText = "Odustani",
             Slot = new EditStopDialog() { Price = SelectedStop.Price.ToString(), StopName = SelectedStop.Station.Name },
@@ -296,7 +321,7 @@ public partial class CreateUpdateLine : Primitives.Window
                     {
                         var warningWindow = new ConfirmCancelWindow
                         {
-                            Title = "Neuspela promena cene",
+                            Title = "Neuspela izmena cene",
                             Message = "Nije moguće izmeniti cenu zbog sledećih grešaka:",
                             Errors = new() { "Cena mora biti brojčana vrednost" },
                             ConfirmButtonText = "U redu",

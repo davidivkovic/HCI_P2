@@ -20,6 +20,17 @@
   <Primitives:Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="ShowHelp"/>
   </Primitives:Window.CommandBindings>
+  <Primitives:Window.InputBindings>
+    <KeyBinding Modifiers="Control"
+                    Key="D"
+                    Command="{Binding AddCommand}" />
+    <KeyBinding Modifiers="Control"
+                    Key="I"
+                    Command="{Binding EditCommand}" />
+    <KeyBinding Modifiers="Control"
+                    Key="O"
+                    Command="{Binding DeleteCommand}" />
+  </Primitives:Window.InputBindings>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -47,7 +58,7 @@
         </MenuItem >
         
         <MenuItem Padding="15 5" Cursor="Hand" Header="_Nalog">
-          <MenuItem Cursor="Hand" Header="Odjava" InputGestureText="Ctrl+O"  Command="{Binding LogOutCommand}"/>
+          <MenuItem Cursor="Hand" Header="Odjava" Command="{Binding LogOutCommand}"/>
         </MenuItem >
         
         <MenuItem Padding="15 5" Cursor="Hand" Header="_Pomoć">

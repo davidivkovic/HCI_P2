@@ -124,12 +124,16 @@ public partial class LinesView : Component
     [ICommand]
     public void DeleteLine()
     {
+        if (!IsEditable) return;
+
         var window = new ConfirmCancelWindow
         {
             Title = "Brisanje vozne linije",
             Message = "Da li ste sigurni da želite da obrišete izabranu voznu liniju?",
             ConfirmButtonText = "Obriši",
-            ConfirmIsDanger = true
+            ConfirmIsDanger = true,
+            Image = MessageBoxImage.Error
+
         };
         window.ShowDialog();
 
@@ -150,6 +154,8 @@ public partial class LinesView : Component
     [ICommand]
     public void EditLine()
     {
+        if (!IsEditable) return;
+
         CreateUpdateLine window = new()
         {
             Header = $"Izmena linije {SelectedTrainLine.FormattedLine}"
