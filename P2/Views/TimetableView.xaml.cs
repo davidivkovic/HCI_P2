@@ -36,7 +36,7 @@ namespace P2.Views
             DestinationSuggestions = new(AvailableStations.Take(3));
 
             InitializeComponent();
-            if (FilteredLines.Count == 0) NoLinesErrorTextBlock.Visibility = Visibility.Visible;
+            if (FilteredLines.Count == 0 && UserStore.Store.IsManager) NoLinesErrorTextBlock.Visibility = Visibility.Visible;
         }
 
         public List<TrainLine> AvailableLines { get; set; } = new();
@@ -457,21 +457,21 @@ namespace P2.Views
                 {
                     SelectedTrainLine = null;
                     LinesListView.SelectedItem = null;
-                    Departures = new();
+                    Departures?.Clear();
                 }
             }
 
-            Departures = new();
+            Departures?.Clear();
             if (UserStore.Store.IsManager)
             {
-
                 SelectedTrainLine = null;
                 LinesListView.SelectedItem = null;
                 LinesListView.Focus();
                 if (FilteredLines.Count > 0)
                 {
                     NoLinesErrorTextBlock.Visibility = Visibility.Collapsed;
-                    ErrorText = "Molimo Vas izaberite liniju";
+                    SelectedTrainLine = FilteredLines.First();
+                    FindTimetable();
                 }
                 else
                 {
@@ -529,6 +529,10 @@ namespace P2.Views
             {
                 Departures.Add(window.CurrentDeparture);
                 SortDepartures();
+                FindTimetable();
+
+                TimetableDataGrid.Visibility = Visibility.Visible;
+                ErrorTextBlock.Visibility = Visibility.Collapsed;
 
                 var successWindow = new ConfirmCancelWindow
                 {
