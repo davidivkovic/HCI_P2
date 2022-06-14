@@ -237,7 +237,6 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="20 0 0 0">
           <TextBlock FontWeight="Medium" TextWrapping="NoWrap">Raspored vožnji</TextBlock>
           <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}"
-                    Visibility="{Binding IsTableVisible}"
                     CanUserSortColumns="False"
                     Name="TimetableDataGrid"
                     HeadersVisibility="Column"
