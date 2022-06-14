@@ -28,6 +28,8 @@
     <None Remove="Assets\pin.png" />
     <None Remove="Fonts\Inter.ttf" />
     <None Remove="HCI.db" />
+    <None Remove="HCI.db-shm" />
+    <None Remove="HCI.db-wal" />
     <None Remove="Help\AddEditTimetable.htm" />
     <None Remove="Help\AddEditTimetable1.png" />
     <None Remove="Help\AddEditTimetable2.png" />
@@ -123,6 +125,15 @@
     </Content>
     <Content Include="Assets\pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HCI.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HCI.db-shm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HCI.db-wal">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\AddEditTimetable1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

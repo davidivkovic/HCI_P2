@@ -155,7 +155,7 @@ public class Ticket : Entity
     public double Price { get; set; }
 
     public bool IsUnconfirmedUnexpiredReservation => !ReservationExpired && !IsConfirmed && IsReservation; 
-    public bool ReservationExpired => DepartureDate > DateOnly.FromDateTime(DateTime.Now);
+    public bool ReservationExpired => DepartureDate < DateOnly.FromDateTime(DateTime.Now);
     public string FormattedPrice => Price.ToString("C", new CultureInfo("sr-Latn-RS"));
     public string FormattedPriceNoSymbol => Price.ToString("N0", new CultureInfo("sr-Latn-RS"));
 }
