@@ -29,13 +29,14 @@ namespace P2.Views
                                      .ToList();
             foreach (TrainLine line in AvailableLines) { line.UpdateRoute(); }
 
-            FilteredLines = new(AvailableLines);
+            FilteredLines = new();
 
             AvailableStations = db.Stations.ToList();
             SourceSuggestions = new(AvailableStations.Take(3));
             DestinationSuggestions = new(AvailableStations.Take(3));
 
             InitializeComponent();
+            if (FilteredLines.Count == 0) NoLinesErrorTextBlock.Visibility = Visibility.Visible;
         }
 
         public List<TrainLine> AvailableLines { get; set; } = new();

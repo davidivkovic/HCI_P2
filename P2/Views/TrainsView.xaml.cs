@@ -20,11 +20,14 @@ public partial class TrainsView : Component
         InitializeComponent();
         using DbContext db = new();
         Trains = new(db.Trains
+            .Where(t => !t.IsDeleted)
             .Include(t => t.Seating)
             .ThenInclude(s => s.Seats)
             .ToList()
         );
         FilteredTrains = new(Trains);
+
+        if (FilteredTrains.Count == 0) ErrorTextBlock.Visibility = Visibility.Visible;
     }
 
     public List<Train> Trains { get; set; }
@@ -142,6 +145,15 @@ public partial class TrainsView : Component
                 CancelButtonText = "",
                 Image = MessageBoxImage.Information
             }.ShowDialog();
+
+            if (FilteredTrains.Count == 0)
+            {
+                ErrorTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ErrorTextBlock.Visibility = Visibility.Collapsed;
+            }
         }
     }
 
@@ -170,6 +182,15 @@ public partial class TrainsView : Component
             Trains.Remove(SelectedTrain);
             SelectedTrain = null;
             OnFilterChanged();
+
+            if (FilteredTrains.Count == 0)
+            {
+                ErrorTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ErrorTextBlock.Visibility = Visibility.Collapsed;
+            }
 
             new ConfirmCancelWindow()
             {

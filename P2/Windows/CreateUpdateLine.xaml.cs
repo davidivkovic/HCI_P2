@@ -98,6 +98,8 @@ public partial class CreateUpdateLine : Primitives.Window
         }
         GeneratePins();
         UpdateRoute();
+
+        NoStopsTextBlock.Visibility = Visibility.Collapsed;
         Title = "Izmena vozne linije";
     }
 
@@ -132,7 +134,6 @@ public partial class CreateUpdateLine : Primitives.Window
                 Width = 35,
                 ToolTip = stop.Station.Name,
             };
-            //StationMap.Children.Add(pin);
             pins.Add(pin);
             locations.Add(pin.Location);
         }
@@ -215,6 +216,8 @@ public partial class CreateUpdateLine : Primitives.Window
         if (SelectedStop is null) return;
         int currentIndex = CurrentStops.IndexOf(SelectedStop);
         CurrentStops.Remove(SelectedStop);
+
+        if (CurrentStops.Count == 0) NoStopsTextBlock.Visibility = Visibility.Visible;
 
         if (currentIndex == CurrentStops.Count && currentIndex != 0)
         {
@@ -418,6 +421,8 @@ public partial class CreateUpdateLine : Primitives.Window
             Station = station,
             Price = 0
         });
+
+        NoStopsTextBlock.Visibility = Visibility.Collapsed;
 
         UpdateRoute();
         GeneratePins();

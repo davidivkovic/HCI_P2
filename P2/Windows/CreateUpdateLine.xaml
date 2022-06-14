@@ -215,7 +215,8 @@
                 </Button>
               </StackPanel>
             </WrapPanel>
-            <ListView ItemsSource="{Binding CurrentStops}" 
+            <Grid>
+              <ListView ItemsSource="{Binding CurrentStops}" 
                     Tour:TourHelper.ElementID="StopsList" 
                     Tour:TourHelper.Placement="LeftCenter"
                     SelectionChanged="ListViewSelectionChanged"
@@ -225,39 +226,41 @@
                     HorizontalContentAlignment="Stretch"
                     Height="420"
                     >
-              <ListView.InputBindings>
-                <KeyBinding Modifiers="Ctrl" Key="Up" Command="{Binding BringUpCommand}"/>
-                <KeyBinding Modifiers="Ctrl" Key="Down" Command="{Binding BringDownCommand}"/>
-                <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
-              </ListView.InputBindings>
-              <ListView.ItemTemplate>
-                <DataTemplate>
-                  <Border Padding="8 12 10 12" Cursor="Hand" Background="Transparent">
-                    <StackPanel>
-                      <Grid>
-                        <Grid.ColumnDefinitions>
-                          <ColumnDefinition Width="Auto"/>
-                          <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0">
+                <ListView.InputBindings>
+                  <KeyBinding Modifiers="Ctrl" Key="Up" Command="{Binding BringUpCommand}"/>
+                  <KeyBinding Modifiers="Ctrl" Key="Down" Command="{Binding BringDownCommand}"/>
+                  <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
+                </ListView.InputBindings>
+                <ListView.ItemTemplate>
+                  <DataTemplate>
+                    <Border Padding="8 12 10 12" Cursor="Hand" Background="Transparent">
+                      <StackPanel>
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0">
                         <Run Text="{Binding Number}"/>.
                         <Run Text="{Binding Station.Name}" />
-                        </TextBlock>
-                        <TextBlock 
+                          </TextBlock>
+                          <TextBlock 
                         Grid.Column="1"
                         Text="{Binding FormattedPrice, Mode=OneWay}"
                         FontSize="26" VerticalAlignment="Bottom"
                         HorizontalAlignment="Right"
                       />
-                      </Grid>
-                      <TextBlock FontSize="26" Foreground="DimGray">
+                        </Grid>
+                        <TextBlock FontSize="26" Foreground="DimGray">
                         <Run Text="{Binding FormattedDistance, Mode=OneWay}"/>
-                      </TextBlock>
-                    </StackPanel>
-                  </Border>
-                </DataTemplate>
-              </ListView.ItemTemplate>
-            </ListView>
+                        </TextBlock>
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+              <TextBlock Visibility="Visible" Name="NoStopsTextBlock" FontSize="26" Foreground="DimGray" TextWrapping="Wrap" Margin="20 25 0 0">Molimo Vas dodajte stanice</TextBlock>
+            </Grid>
             <Button IsEnabled="{Binding IsStopSelected}"
                   Template="{StaticResource RedButtonTemplate}"
                   Command="{Binding DeleteCommand}"

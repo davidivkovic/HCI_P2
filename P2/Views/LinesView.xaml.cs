@@ -37,6 +37,7 @@ public partial class LinesView : Component
         FilteredLines = new(AvailableLines);
 
         InitializeComponent();
+        if (AvailableLines.Count == 0) ErrorTextBlock.Visibility = Visibility.Visible;
     }
 
     public List<TrainLine> AvailableLines { get; set; } = new();
@@ -45,6 +46,8 @@ public partial class LinesView : Component
     public TrainLine SelectedTrainLine { get; set; }
 
     public bool IsEditable => SelectedTrainLine is not null;
+
+    public Visibility IsNoStationTextVisible => IsEditable ? Visibility.Collapsed : Visibility.Visible;
 
     public Visibility IsInputClearable => SearchInputText != null && SearchInputText != "" ? Visibility.Visible : Visibility.Collapsed;
 
@@ -152,6 +155,7 @@ public partial class LinesView : Component
 
         if (window.Confirmed)
         {
+
             using DbContext db = new();
             SelectedTrainLine.IsDeleted = true;
             db.Update(SelectedTrainLine);
@@ -160,6 +164,7 @@ public partial class LinesView : Component
             AvailableLines.Remove(SelectedTrainLine);
             FilteredLines.Remove(SelectedTrainLine);
             SelectedTrainLine = null;
+            if (AvailableLines.Count == 0) ErrorTextBlock.Visibility = Visibility.Visible;
 
             ClearMap();
         }
@@ -219,6 +224,8 @@ public partial class LinesView : Component
         window.ShowDialog();
         if (window.ConfirmedSave)
         {
+            ErrorTextBlock.Visibility = Visibility.Collapsed;
+
             AvailableLines.Add(window.CurrentLine);
             if (SearchInputText is null)
             {
@@ -228,6 +235,8 @@ public partial class LinesView : Component
             {
                 OnSearchInputTextChanged();
             }
+
+
             SelectedTrainLine = window.CurrentLine;
             LinesListView.SelectedItem = SelectedTrainLine;
 
@@ -247,6 +256,7 @@ public partial class LinesView : Component
             };
             successWindow.ShowDialog();
             UpdateMap();
+
         }
         LinesListView.Focus();
     }
