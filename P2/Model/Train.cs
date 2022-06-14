@@ -150,8 +150,12 @@ public class Ticket : Entity
     public DateOnly DepartureDate { get; set; }
     public DateTime Timestamp { get; set; }
     public bool IsReturn { get; set; }
+    public bool IsConfirmed { get; set; }
+    public bool IsReservation { get; set; }
     public double Price { get; set; }
 
+    public bool IsUnconfirmedUnexpiredReservation => !ReservationExpired && !IsConfirmed && IsReservation; 
+    public bool ReservationExpired => DepartureDate > DateOnly.FromDateTime(DateTime.Now);
     public string FormattedPrice => Price.ToString("C", new CultureInfo("sr-Latn-RS"));
     public string FormattedPriceNoSymbol => Price.ToString("N0", new CultureInfo("sr-Latn-RS"));
 }

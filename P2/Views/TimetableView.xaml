@@ -80,11 +80,11 @@
             </Button>
           </WrapPanel>
           <Button Visibility="{Binding Source={x:Static Stores:UserStore.Store}, Path=VisibleOnlyToCustomer, Mode=OneWay}"
-                  HorizontalAlignment="Right" Padding="15 5"
+                  HorizontalAlignment="Right" Padding="20 5"
                   IsEnabled="{Binding IsEditable}"
                   Command="{Binding BuyTicketCommand}"
                   Template="{DynamicResource DefaultButtonTemplate}"
-                  ToolTip="Kupi kartu za izabrani polazak">
+                  ToolTip="Kupi ili rezerviši kartu za izabrani polazak">
             Kupi kartu
           </Button>
         </Grid>

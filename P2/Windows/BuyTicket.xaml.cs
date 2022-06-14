@@ -28,6 +28,7 @@ public partial class BuyTicket : Primitives.Window
     public bool IsReturnTicket { get; set; }
     public bool Saved { get; set; }
     public bool Cancelled { get; set; }
+    public bool Reservation { get; set; }
 
     public void OnIsReturnTicketChanged() => TotalPrice = CalculatePrice().ToString("C", new CultureInfo("sr-Latn-RS"));
 
@@ -164,6 +165,58 @@ public partial class BuyTicket : Primitives.Window
             Saved = true;
             Close();
             
+        }
+    }
+
+    [ICommand]
+    public void Reserve()
+    {
+        List<string> errors = new();
+        if (TakenSeats.Count == 0)
+        {
+            errors.Add("Morate odabrati bar jedno sedište");
+        }
+
+        var w = new ConfirmCancelWindow
+        {
+            Title = errors.Count > 0 ? "Greška" : "Rezervacija karte",
+            Message = errors.Count > 0 ? "Nije moguće rezervisati kartu zbog sledećeg:" : "Da li ste sigurni da želite da rezervišete kartu?",
+            ConfirmButtonText = errors.Count > 0 ? "U redu" : "Rezerviši",
+            Errors = errors,
+            Image = errors.Count > 0 ? MessageBoxImage.Error : MessageBoxImage.Question
+        };
+        w.ShowDialog();
+
+        if (errors.Count == 0 && w.Confirmed)
+        {
+            List<Seat> seats = TakenSeats.Select(s => new Seat()
+            {
+                Col = s.Col,
+                Row = s.Row,
+                SeatNumber = s.SeatNumber,
+            }).ToList();
+
+            Ticket ticket = new()
+            {
+                Departure = Departure,
+                DepartureDate = DepartureDate,
+                Source = StartStation,
+                Destination = EndStation,
+                IsReturn = IsReturnTicket,
+                Price = CalculatePrice(),
+                Seats = seats,
+                Timestamp = DateTime.Now,
+                Customer = UserStore.Store.User,
+                IsReservation = true
+            };
+
+            using DbContext db = new();
+            db.Update(ticket);
+            db.SaveChanges();
+
+            Reservation = true;
+            Saved = true;
+            Close();
         }
     }
 

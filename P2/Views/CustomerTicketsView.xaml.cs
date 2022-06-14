@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using P2.Model;
 using P2.Stores;
@@ -23,8 +24,18 @@ public partial class CustomerTicketsView : Primitives.Component
             .Include(t => t.Departure)
                 .ThenInclude(d => d.Line)
                     .ThenInclude(l => l.Stops)
+                        .ThenInclude(s => s.Station)
             .Where(t => t.Customer.Id == UserStore.Store.User.Id)
             .ToList()
         );
+    }
+
+    [ICommand]
+    public void ConfirmReservation(Ticket ticket)
+    {
+        ticket.IsConfirmed = true;
+        using DbContext db = new();
+        db.Update(ticket);
+        db.SaveChanges();
     }
 }

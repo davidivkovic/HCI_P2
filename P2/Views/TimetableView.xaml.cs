@@ -620,7 +620,7 @@ namespace P2.Views
                 var successWindow = new ConfirmCancelWindow
                 {
                     Title = "Uspeh",
-                    Message = "Uspešno ste kupili kartu",
+                    Message = window.Reservation ? "Uspešno ste rezervisali kartu" : "Uspešno ste kupili kartu",
                     ConfirmButtonText = "U redu",
                     CancelButtonText = "",
                     Image = MessageBoxImage.Information

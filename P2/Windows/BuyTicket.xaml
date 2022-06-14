@@ -154,8 +154,9 @@
         </StackPanel>
       </StackPanel>
       <StackPanel Margin="0 40 10 0" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button Template="{StaticResource DefaultButtonTemplate}" IsDefault="True" Cursor="Hand" MinWidth="150" FontSize="32" Padding="32 10" Command="{Binding BuyCommand}" Content="Kupi kartu"/>
-        <Button Template="{StaticResource NeutralButtonTemplate}" Cursor="Hand" MinWidth="150" FontSize="32" Padding="20 10"  Margin="10 0 0 0" Command="{Binding CancelCommand}"  Content="Odustani"/>
+        <Button Template="{StaticResource DefaultButtonTemplate}" IsDefault="True" Cursor="Hand" MinWidth="150" FontSize="32" Padding="42 10" Command="{Binding BuyCommand}" Content="Kupi kartu"/>
+        <Button Template="{StaticResource DefaultButtonTemplate}" Cursor="Hand" MinWidth="150" FontSize="32" Padding="20 10"  Margin="10 0 0 0" Command="{Binding ReserveCommand}" Content="Rezerviši kartu"/>
+        <Button Template="{StaticResource NeutralButtonTemplate}" Cursor="Hand" MinWidth="150" FontSize="32" Padding="20 10"  Margin="10 0 0 0" Command="{Binding CancelCommand}" Content="Odustani"/>
       </StackPanel>
     </Grid>
   </ScrollViewer>

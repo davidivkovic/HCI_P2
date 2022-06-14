@@ -109,13 +109,17 @@
                           </ItemsControl.ItemTemplate>
                         </ItemsControl>
                       </StackPanel>
-                      <TextBlock Visibility="{Binding IsReturn, Converter={StaticResource BoolToVis}}" Margin="0 2 0 0" FontSize="22" Text="Povratna karta"/>
-
+                    <TextBlock Visibility="{Binding IsReturn, Converter={StaticResource BoolToVis}}" Margin="0 2 0 0" FontSize="22" Text="Povratna karta"/>
+                  </StackPanel>
+                    <StackPanel VerticalAlignment="Bottom">
+                      <Button Command="{Binding ConfirmReservationCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding .}" Visibility="{Binding IsUnconfirmedUnexpiredReservation, Converter={StaticResource BoolToVis}}" VerticalAlignment="Top" FontSize="24" Padding="10" Template="{StaticResource DefaultButtonTemplate}">Potvrdi Rezervaciju</Button>
+                      <TextBlock Visibility="{Binding IsConfirmed, Converter={StaticResource BoolToVis}}" FontSize="24">Potvrđena rezervacija</TextBlock>
+                      <TextBlock Visibility="{Binding ReservationExpired, Converter={StaticResource BoolToVis}}" FontSize="24">Istekla rezervacija</TextBlock>
+                      <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0" FontSize="22" VerticalAlignment="Bottom">
+                        Cena:
+                        <Run FontWeight="Medium" Text="{Binding FormattedPrice, Mode=OneWay}"/>
+                      </TextBlock>
                     </StackPanel>
-                    <TextBlock Margin="10 0 0 0" FontSize="22" VerticalAlignment="Bottom">
-                    Cena:
-                    <Run FontWeight="Medium" Text="{Binding FormattedPrice, Mode=OneWay}"/>
-                    </TextBlock>
                   </StackPanel>
                 </Border>
               </Grid>
