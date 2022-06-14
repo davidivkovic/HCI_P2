@@ -27,23 +27,74 @@
     <None Remove="Assets\magnifier.png" />
     <None Remove="Assets\pin.png" />
     <None Remove="Fonts\Inter.ttf" />
+    <None Remove="HCI.db" />
     <None Remove="Help\AddEditTimetable.htm" />
+    <None Remove="Help\AddEditTimetable1.png" />
+    <None Remove="Help\AddEditTimetable2.png" />
+    <None Remove="Help\AddEditTimetable3.png" />
+    <None Remove="Help\AddEditTimetable4.png" />
     <None Remove="Help\AddEditTrain.htm" />
+    <None Remove="Help\AddEditTrain1.PNG" />
+    <None Remove="Help\AddEditTrain2.PNG" />
+    <None Remove="Help\AddEditTrain3.PNG" />
+    <None Remove="Help\AddEditTrain4.PNG" />
+    <None Remove="Help\AddEditTrain5.PNG" />
+    <None Remove="Help\AddEditTrain6.png" />
     <None Remove="Help\BuyTicket.htm" />
+    <None Remove="Help\BuyTicket1.png" />
+    <None Remove="Help\BuyTicket2.png" />
+    <None Remove="Help\BuyTicket3.png" />
+    <None Remove="Help\CardViewC1.png" />
     <None Remove="Help\CreateUpdateLineHelp.htm" />
+    <None Remove="Help\CULine1.PNG" />
+    <None Remove="Help\CULine2.PNG" />
+    <None Remove="Help\CULine3.PNG" />
+    <None Remove="Help\CULine4.PNG" />
+    <None Remove="Help\CustomerNav1.png" />
+    <None Remove="Help\CustomerNav2.png" />
     <None Remove="Help\CustomerTicketsViewCustomer.htm" />
     <None Remove="Help\DepartureDetails.htm" />
     <None Remove="Help\DepartureTickets.htm" />
+    <None Remove="Help\DepartureTicketsM1.png" />
+    <None Remove="Help\DepartureTicketsM2.png" />
+    <None Remove="Help\DepartureTicketsM3.png" />
     <None Remove="Help\DepartureTicketsViewManager.htm" />
+    <None Remove="Help\Details.png" />
     <None Remove="Help\GeneralHelpCustomer.htm" />
     <None Remove="Help\GeneralHelpManager.htm" />
+    <None Remove="Help\LinesView1.png" />
+    <None Remove="Help\LinesView2.png" />
+    <None Remove="Help\LinesView3.png" />
+    <None Remove="Help\LinesViewC1.png" />
+    <None Remove="Help\LinesViewC2.png" />
     <None Remove="Help\LinesViewCustomer.htm" />
     <None Remove="Help\LinesViewManager.htm" />
     <None Remove="Help\LoginView.htm" />
+    <None Remove="Help\LoginView1.png" />
+    <None Remove="Help\LoginView2.png" />
+    <None Remove="Help\ManagerNav1.png" />
+    <None Remove="Help\ManagerNav2.png" />
+    <None Remove="Help\ManagerNav3.png" />
+    <None Remove="Help\ManagerNav4.png" />
+    <None Remove="Help\MonthlyTickets.png" />
     <None Remove="Help\MonthlyTicketsViewManager.htm" />
     <None Remove="Help\Registration.htm" />
+    <None Remove="Help\Registration1.png" />
+    <None Remove="Help\Registration2.png" />
+    <None Remove="Help\Registration3.png" />
+    <None Remove="Help\SearchDepartureM1.png" />
+    <None Remove="Help\SearchDepartureM2.png" />
+    <None Remove="Help\SearchDepartureM3.png" />
+    <None Remove="Help\SearchDepartureM4.png" />
+    <None Remove="Help\SearchDepartures1.png" />
+    <None Remove="Help\SearchDepartures2.png" />
+    <None Remove="Help\SearchDepartures3.png" />
     <None Remove="Help\TimetableViewCustomer.htm" />
     <None Remove="Help\TimetableViewManager.htm" />
+    <None Remove="Help\TrainsView1.png" />
+    <None Remove="Help\TrainsView2.png" />
+    <None Remove="Help\TrainsView3.png" />
+    <None Remove="Help\TrainsView4.png" />
     <None Remove="Help\TrainsViewManager.htm" />
   </ItemGroup>
 
@@ -73,6 +124,69 @@
     <Content Include="Assets\pin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="HCI.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTimetable1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTimetable2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTimetable3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTimetable4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain3.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain4.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain5.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\AddEditTrain6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\BuyTicket1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\BuyTicket2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\BuyTicket3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CardViewC1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CULine1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CULine2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CULine3.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CULine4.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CustomerNav1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\CustomerNav2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\CustomerTicketsViewCustomer.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -82,7 +196,19 @@
     <Content Include="Help\DepartureTickets.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\DepartureTicketsM1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\DepartureTicketsM2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\DepartureTicketsM3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\DepartureTicketsViewManager.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Details.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\GeneralHelpCustomer.htm">
@@ -91,10 +217,46 @@
     <Content Include="Help\GeneralHelpManager.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\LinesView1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LinesView2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LinesView3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LinesViewC1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LinesViewC2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\LinesViewCustomer.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\LoginView.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LoginView1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\LoginView2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\ManagerNav1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\ManagerNav2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\ManagerNav3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\ManagerNav4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\MonthlyTickets.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\MonthlyTicketsViewManager.htm">
@@ -103,10 +265,52 @@
     <Content Include="Help\Registration.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\Registration1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Registration2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Registration3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartureM1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartureM2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartureM3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartureM4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartures1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartures2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SearchDepartures3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\TimetableViewCustomer.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\TimetableViewManager.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TrainsView1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TrainsView2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TrainsView3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\TrainsView4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\Icons\danger.png">
