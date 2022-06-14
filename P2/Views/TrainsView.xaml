@@ -118,7 +118,7 @@
         <StackPanel Margin="30 2 0 0" Orientation="Horizontal">
           <StackPanel Margin="0 0 20 0">
             <TextBlock FontWeight="Medium">Izabrani voz</TextBlock>
-            <Grid>
+            <Grid MinWidth="260">
               <TextBlock Foreground="Gray" FontSize="26" Text="{Binding PleaseText}"/>
               <Grid Visibility="{Binding DetailsVisible}">
                 <Grid.ColumnDefinitions>

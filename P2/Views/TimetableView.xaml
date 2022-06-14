@@ -120,9 +120,9 @@
             <ListBox Name="SourceSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
               <ListBox.ItemTemplate>
                 <DataTemplate>
-                  <StackPanel Cursor="Hand" Width="286" Margin="0 5">
+                  <Border Cursor="Hand" Width="286" Padding="0 5">
                     <TextBlock  Text="{Binding Name}"/>
-                  </StackPanel>
+                  </Border>
                 </DataTemplate>
               </ListBox.ItemTemplate>
             </ListBox>
@@ -167,9 +167,9 @@
             <ListBox Name="DestinationSuggestionsListBox" Background="#feffed" Visibility="Collapsed">
               <ListBox.ItemTemplate>
                 <DataTemplate>
-                  <StackPanel Cursor="Hand" Width="286" Margin="0 5">
+                  <Border Cursor="Hand" Width="286" Padding="0 5">
                     <TextBlock  Text="{Binding Name}"/>
-                  </StackPanel>
+                  </Border>
                 </DataTemplate>
               </ListBox.ItemTemplate>
             </ListBox>
@@ -239,6 +239,7 @@
           <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Departures}"
                     CanUserSortColumns="False"
                     Name="TimetableDataGrid"
+                    Visibility="Collapsed"
                     HeadersVisibility="Column"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"

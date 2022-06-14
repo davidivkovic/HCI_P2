@@ -172,7 +172,15 @@ namespace P2.Views
 
         public void SourceInputLostFocus(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(SourceInputText) && SourceSuggestions.Count != 0 && SourceInputText.Length >= 2)
+            var element = FocusManager.GetFocusedElement(this);
+
+            if (element is ListBoxItem)
+            {
+                ListBoxItem item = element as ListBoxItem;
+                SourceSearch = item.DataContext as Station;
+                SourceInputText = SourceSearch.Name;
+            }
+            else if (!string.IsNullOrWhiteSpace(SourceInputText) && SourceSuggestions.Count != 0 && SourceInputText.Length >= 2)
             {
                 SourceSearch = SourceSuggestions[0];
                 SourceSuggestionsListBox.SelectedItem = SelectedTrainLine;
@@ -197,7 +205,16 @@ namespace P2.Views
 
         public void DestinationInputLostFocus(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(DestinationInputText) && DestinationSuggestions.Count != 0 && DestinationInputText.Length >= 2)
+            var element = FocusManager.GetFocusedElement(this);
+
+            if (element is ListBoxItem)
+            {
+                ListBoxItem item = element as ListBoxItem;
+                DestinationSearch = item.DataContext as Station;
+                DestinationInputText = DestinationSearch.Name;
+            }
+
+            else if (!string.IsNullOrWhiteSpace(DestinationInputText) && DestinationSuggestions.Count != 0 && DestinationInputText.Length >= 2)
             {
                 DestinationSearch = DestinationSuggestions[0];
                 DestinationSuggestionsListBox.SelectedItem = SelectedTrainLine;

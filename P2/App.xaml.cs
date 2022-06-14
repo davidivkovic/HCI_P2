@@ -46,7 +46,7 @@ public partial class App : Application
 
             db.Add(new Station
             {
-                Name = "Novi Sad (MAS)",
+                Name = "Novi Sad",
                 Latitude = 45.248851,
                 Longitude = 19.810473
             });
@@ -67,9 +67,30 @@ public partial class App : Application
 
             db.Add(new Station
             {
-                Name = "Kucevo",
-                Latitude = 44.4772,
-                Longitude = 21.6677
+                Name = "Kragujevac",
+                Latitude = 44.028780,
+                Longitude = 20.916775
+            });
+
+            db.Add(new Station
+            {
+                Name = "Kraljevo",
+                Latitude = 43.695556,
+                Longitude = 20.717321
+            });
+
+            db.Add(new Station
+            {
+                Name = "Valjevo",
+                Latitude = 44.265948,
+                Longitude = 19.878333
+            });
+
+            db.Add(new Station
+            {
+                Name = "Subotica",
+                Latitude = 46.076635,
+                Longitude = 19.669257
             });
         }
 
