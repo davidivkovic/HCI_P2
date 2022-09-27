@@ -1,8 +1,15 @@
 # HCI Projekat - Železnice Srbije
+Pristupačna aplikacija za obavljanje železničkih poslova razvijena pomoću WPF-a
 
-## Pokretanje projekta
-Pokretanjem izvršne datoteke u direktorijumu `/publish/P2.exe`
+# Pregled 📸
+![edit-line](/images/edit-line.png)
+![timetable](/images/timetable.png)
+![edit-train](/images/edit-train.png)
+![edit-departure](/images/edit-departure.png)
+![buy-tickets](/images/buy-tickets.png)
 
-ili
+# Informacije ℹ️
+Aplikacija je razvijena tokom kursa interakcija čovek-računar 2022 na Fakultetu tehničkih nauka u Novom Sadu.
 
-Pokretanjem projekta klikom na zeleno dugme unutar Visual Studio okruženja
+- Pristupačna je i pre svega namenjena za slabovide korisnike. 
+- Sadrži veliki broj prečica, što omogućava efikasan rad pomoću tastature.
