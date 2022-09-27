@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using P2.Model;
 using P2.Primitives;

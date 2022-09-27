@@ -62,7 +62,6 @@ public partial class BuyTicket : Primitives.Window
              .Where(s => takenSeats.Any(ts => ts.Row == s.Row && ts.Col == s.Col))
              .ToList()
              .ForEach(s => s.PreviewSeatType = SeatType.Taken);
-
     }
 
     public List<List<Slot>> GetSeats()
